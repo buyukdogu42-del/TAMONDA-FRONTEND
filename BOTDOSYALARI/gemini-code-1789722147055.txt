@@ -1,0 +1,8 @@
+tamonda_basarili_islemler_gunlugu.txt
+-------------------------------------------------
+1. Müşteri Paneli WhatsApp Entegrasyonu: Müşteri paneline mesaj kutusu eklendi ve ustanın telefon numarası MongoDB'den çekilerek "Kabul Et" / "Reddet" butonlarıyla ustaya otomatik WhatsApp şablonu gönderimi sağlandı.
+2. Usta Paneli UX İyileştirmesi: "Verdiğim Teklifler" listesi ilan ID'sine göre gruplandırıldı ve ustanın gereksiz ilanları ekranından silebilmesi için "Gizle" butonu global olarak aktif edildi.
+3. Müşteri Paneli Akordiyon ve Silme İşlemi: Müşteri ekranındaki teklif listesi akordiyon (açılır/kapanır) tasarımla sadeleştirildi ve müşterinin kendi ilanını veritabanından tamamen silmesini sağlayan uçtan uca (frontend-backend) yapı kuruldu.
+-------------------------------------------------
+
+4. Oturum açmış müşteriler için OTP doğrulamasını atlayan, sekmeli (İlanlarım/Profilim) müşteri paneli oluşturan, ilan verme aşamasında kullanıcı bilgilerini otomatik doldurup form alanlarını kilitleyen ve onay butonu metnini oturum durumuna göre dinamik değiştiren altyapı başarıyla entegre edildi.

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yönetici Girişi - TamOnda</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 flex items-center justify-center min-h-screen p-4">
+  <div class="w-full max-w-sm bg-slate-800 p-8 rounded-3xl shadow-2xl border border-slate-700 text-center">
+    <div class="w-16 h-16 bg-slate-900 border-2 border-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-500 text-2xl shadow-[0_0_15px_rgba(249,115,22,0.4)]">
+      <i class="fa-solid fa-shield-halved"></i>
+    </div>
+    <h1 class="text-2xl font-black text-white mb-1">Yönetici Portalı</h1>
+    <p class="text-xs text-slate-400 mb-6">Lütfen yetkili numaranızı giriniz.</p>
+
+    <div id="step1">
+      <input type="text" id="adminPhone" placeholder="5XXXXXXXXX" class="w-full text-center text-sm p-3 rounded-xl border border-slate-600 bg-slate-900 text-white focus:border-orange-500 focus:outline-none mb-4 tracking-wider">
+      <button onclick="sendAdminOtp()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+        <i class="fa-solid fa-paper-plane"></i> Kod Gönder
+      </button>
+    </div>
+
+    <div id="step2" class="hidden">
+      <p class="text-xs text-emerald-400 mb-3 font-bold"><i class="fa-solid fa-check-circle"></i> Kod gönderildi</p>
+      <input type="text" id="adminOtp" maxlength="6" placeholder="******" class="w-full text-center text-xl p-3 rounded-xl border border-slate-600 bg-slate-900 text-white focus:border-orange-500 focus:outline-none mb-4 tracking-[0.5em] font-black">
+      <button onclick="verifyAdminOtp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+        <i class="fa-solid fa-unlock"></i> Doğrula ve Giriş Yap
+      </button>
+    </div>
+  </div>
+
+  <script>
+  // Ortama göre API adresini otomatik belirle
+  window.API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000'
+    : 'https://tamonda-backend.onrender.com';
+
+  async function sendAdminOtp() {
+    const phone = document.getElementById('adminPhone').value.replace(/\D/g, '').replace(/^0/, '');
+    if (phone !== '5065456697') return alert('Yetkisiz Numara!');
+    
+    try {
+      const res = await fetch(`${window.API_BASE_URL}/api/auth/admin/send-otp`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone })
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('step2').classList.remove('hidden');
+      } else alert(data.message);
+    } catch (err) { alert('Sunucu hatası!'); }
+  }
+
+  async function verifyAdminOtp() {
+    const phone = '5065456697';
+    const otpCode = document.getElementById('adminOtp').value.trim();
+    
+    try {
+      const res = await fetch(`${window.API_BASE_URL}/api/auth/admin/verify-otp`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, otpCode })
+      });
+      const data = await res.json();
+      if (data.success) {
+        // İZOLE EDİLMİŞ ADMİN ANAHTARINI KAYDET
+        localStorage.setItem('tamonda_admin_token', data.adminToken);
+        window.location.replace('admin.html');
+      } else alert(data.message);
+    } catch (err) { alert('Sunucu hatası!'); }
+  }
+</script>
+</body>
+</html>

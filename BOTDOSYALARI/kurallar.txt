@@ -1,0 +1,36 @@
+TAMONDA PROJESİ KURALLAR 
+
+1. kural hiçbir kod bloğunu yada fonksiyonu, mevcut halini benden istemeden değiştirme düzenleme önerisinde bulunma. 
+2. değişiklik yapacağın kod bloğu yada fonksiyon için o kod bloğu ve fonksiyonun iletişim halinde olduğu olabileceği tüm frontend backend dosyalarını ta teker teker benden isteyerek tam ve eksiksiz bir şekilde mevcut durum analizi yap. 
+3. 1. ve 2. kuralı yerine getridikten sonra düzenleyeceğimiz kod bloğunu benimle paylaş. 
+4. yapılan işlemler ve promptlar sonucunda benden BAŞARILI ifadesini duyduğun anda, bu prompt ile yaptığımız işlemin ne işe yaradığını kısa bir cümle ile özetleyen txt. dosyası oluştur.
+5. oluşturduğun günlük başarılı işlem dosyasını MOLA dediğim prompta kadar kendi hafızanda tut MOLA dediğimde oluşan txt dosyasını bana sun. bu şekilde bu kurallar promptunu sana iletmem ile başlayan ve MOLA ile	 biten çalışma aralığının başarılı iş listesi elimizde olacak. 
+6. BU KURALLARI ESNETME 
+7. mola komutu ile başarılı işlem günlüğünü bu formatta ver: ====================================================================
+TAMONDA PROJESİ - BAŞARILI İŞLEMLER GÜNLÜĞÜ
+Tarih: 19 Eylül 2026
+====================================================================
+
+1. Ustaların indirim hissini en yüksek seviyede yaşayabilmesi için Plus Abonelik penceresine (plusModal) dinamik olarak çalışan, lansman ve çoklu il indirimlerini gösteren "İndirim Uyarı Satırı" eklendi (index.html ve auth.js güncellendi).
+
+2. Usta paneli ilan listesine yatay kaydırılabilir, sayaçlı "Şehir Filtresi" eklendi; Standart paketli veya yetki alanı dışındaki ustalar için ilanların iletişim bilgileri hem frontend hem de backend tarafında maskelenerek "Plus'a Geç" satış butonuna yönlendirildi (app.js ve demandController.js güncellendi).
+
+
+
+başarılı işlemler günlüğü:
+
+1. Ustaların indirim hissini en yüksek seviyede yaşayabilmesi için Plus Abonelik penceresine (plusModal) dinamik olarak çalışan, lansman ve çoklu il indirimlerini gösteren "İndirim Uyarı Satırı" eklendi (index.html ve auth.js güncellendi).
+
+2. Usta paneli ilan listesine yatay kaydırılabilir, sayaçlı "Şehir Filtresi" eklendi; Standart paketli veya yetki alanı dışındaki ustalar için ilanların iletişim bilgileri hem frontend hem de backend tarafında maskelenerek "Plus'a Geç" satış butonuna yönlendirildi (app.js ve demandController.js güncellendi).
+
+tamonda_basarili_islemler_gunlugu.txt
+-------------------------------------------------
+1. Müşteri Paneli WhatsApp Entegrasyonu: Müşteri paneline mesaj kutusu eklendi ve ustanın telefon numarası MongoDB'den çekilerek "Kabul Et" / "Reddet" butonlarıyla ustaya otomatik WhatsApp şablonu gönderimi sağlandı.
+2. Usta Paneli UX İyileştirmesi: "Verdiğim Teklifler" listesi ilan ID'sine göre gruplandırıldı ve ustanın gereksiz ilanları ekranından silebilmesi için "Gizle" butonu global olarak aktif edildi.
+3. Müşteri Paneli Akordiyon ve Silme İşlemi: Müşteri ekranındaki teklif listesi akordiyon (açılır/kapanır) tasarımla sadeleştirildi ve müşterinin kendi ilanını veritabanından tamamen silmesini sağlayan uçtan uca (frontend-backend) yapı kuruldu.
+-------------------------------------------------
+
+4. Oturum açmış müşteriler için OTP doğrulamasını atlayan, sekmeli (İlanlarım/Profilim) müşteri paneli oluşturan, ilan verme aşamasında kullanıcı bilgilerini otomatik doldurup form alanlarını kilitleyen ve onay butonu metnini oturum durumuna göre dinamik değiştiren altyapı başarıyla entegre edildi.
+
+
+şimdi : projemizin hangi aşamada olduğunu görmek için dizinden hangi dosya yada dosyaları görmek istersin. geçmiş hafızamızı tazeleyip kaldığımız yerden devam edeceğiz. 

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TamOnda - Hizmet Tam Vaktinde, Tam Onda</title>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f97316">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M18 48 A34 34 0 0 1 82 48' fill='none' stroke='%23f97316' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M18 52 A34 34 0 0 0 82 52' fill='none' stroke='%230f172a' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M50 24 L50 50 L34 38' fill='none' stroke='%230f172a' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M32 50 L48 68 L88 22' fill='none' stroke='%23f97316' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+    @keyframes floatDelayed { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(6px); } }
+    .floating-badge-left { animation: floatSlow 4s ease-in-out infinite; }
+    .floating-badge-right { animation: floatDelayed 4.5s ease-in-out infinite; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen pb-12">
+  <!-- Header -->
+  <header class="bg-slate-900 sticky top-0 z-50 border-b border-slate-800 px-4 py-2.5 shadow-md">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 group">
+        <img src="logo_tamonda.png" alt="TamOnda Logo" class="h-11 w-auto object-contain block">
+      </a>
+      <div class="flex bg-slate-800 p-1 rounded-xl border border-slate-700 gap-1">
+        <button class="px-3 py-1 text-xs font-bold rounded-lg bg-orange-500 text-white shadow-sm transition">
+          <i class="fa-solid fa-briefcase mr-1"></i> İş / Proje Sahibi
+        </button>
+        <a href="usta.html" class="px-3 py-1 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center">
+          <i class="fa-solid fa-truck-fast mr-1"></i> Usta Paneli
+        </a>
+      </div>
+    </div>
+  </header>
+
+<!-- Lansman Banner -->
+<div class="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-700 text-white text-xs sm:text-[13px] py-2.5 px-4 text-center shadow-sm">
+    <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2">
+        <span class="bg-black/25 px-2.5 py-0.5 rounded font-bold tracking-wide">Lansman Fırsatı</span>
+        <span class="font-medium">İlinizde ilk 20 ustaya özel <strong>1 Yıllık Abonelik 1.000 TL!</strong></span>
+        <button onclick="document.getElementById('launchModal').classList.remove('hidden')" class="underline font-bold hover:text-orange-200">Detayları Gör</button>
+    </div>
+</div>
+
+<!-- Lansman Detay Modalı -->
+<div id="launchModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md p-6 relative">
+        <button onclick="document.getElementById('launchModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+        <h3 class="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-rocket text-orange-500"></i> Lansman Fırsatı Koşulları
+        </h3>
+        <div class="space-y-3 text-sm text-slate-600">
+            <p>• Sadece kayıtlı olduğunuz <strong>ana il ve sektör</strong> kombinasyonunda ilk 20 usta arasına girmeniz durumunda 1 Yıllık <em>'Sadece İl'</em> aboneliği <strong>1.000 TL</strong> olarak ücretlendirilir.</p>
+            <p>• <strong>Nakliyat</strong> ve <strong>Ağır Nakliyat</strong> kategorileri için bu lansman fiyatı <strong>3.000 TL</strong>'dir.</p>
+            <p>• Eğer lansman kotasındayken <em>'Çoklu İl'</em> veya <em>'Tüm Türkiye'</em> paketlerinden birini seçerseniz, lansmana özel olarak o anki güncel fiyat üzerinden <strong>%50 net indirim</strong> uygulanır.</p>
+            <p>• Sektörünüzdeki 20 kişilik kota dolduğunda, sistem standart dinamik fiyatlandırma modeline geçer.</p>
+            <p>• TamOnda'da yıllık abonelik taban fiyatı, sektörel dinamiklerden bağımsız olarak minimum <strong>1.000 TL</strong> olarak sabitlenmiştir.</p>
+        </div>
+        <button onclick="document.getElementById('launchModal').classList.add('hidden')" class="w-full mt-6 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition shadow-sm">Anladım, Kapat</button>
+    </div>
+</div>
+
+<!-- İÇERİĞİ TOPLAYAN ANA KAPSAYICI BURAYA EKLENDİ -->
+<main class="max-w-xl mx-auto px-4 mt-6">
+      <!-- ==================== İŞ / PROJE SAHİBİ AKIŞI ==================== -->
+    <div id="customerSection" class="space-y-4">
+      
+      <!-- Üst Bilgi / Hızlı Giriş Barı -->
+      <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between text-xs">
+        <span class="text-slate-600 font-medium"><i class="fa-solid fa-circle-info text-orange-500 mr-1.5"></i>Daha önce ilan verdiniz mi?</span>
+        <button type="button" onclick="openOwnerLoginModal()" class="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition">
+          <i class="fa-solid fa-right-to-bracket mr-1"></i> İlanlarım & Gelen Teklifler
+        </button>
+      </div>
+
+      <!-- İlerleme Çubuğu -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex justify-between items-center text-xs font-bold text-slate-600 mb-2">
+          <span id="stepLabel">Adım 1: Hizmet Seçimi</span>
+          <span id="stepPercent" class="text-orange-600 font-extrabold">25%</span>
+        </div>
+        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+          <div id="stepProgressBar" class="bg-orange-500 h-full w-1/4 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Form Kutusu -->
+<div id="mainFormContainer" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">  
+        <!-- ADIM 1 -->
+        <div id="step1" class="space-y-4">
+          <div class="relative text-left pt-1">
+            
+            <!-- Hareketli Sosyal Kanıt Rozetleri (İleride gerçek verilerle dinamikleştirilecek) -->
+<!-- 
+<div class="hidden sm:flex items-center gap-2 absolute -top-2 right-0 bg-white/95 border border-emerald-200 px-2.5 py-1 rounded-full shadow-md floating-badge-left text-[10px] z-10" id="dynamicSocialBadge">
+  <img src="" class="w-4 h-4 rounded-full object-cover" id="badgeImg">
+  <span class="text-slate-700 font-bold" id="badgeName"></span>
+  <span class="text-amber-500 font-black" id="badgeStars"></span>
+  <span class="text-emerald-700 font-bold bg-emerald-50 px-1 rounded" id="badgeCategory"></span>
+</div>
+-->
+          
+
+            <h2 class="text-lg font-black text-slate-900 leading-tight">Hangi hizmete ihtiyacınız var?</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Doğrulanmış uzmanlardan anında fiyat teklifi alın.</p>
+          </div>
+
+          <!-- Vitrin Hızlı Kategori Butonları -->
+          <div class="grid grid-cols-6 gap-1.5 pt-1 pb-1">
+            <button type="button" onclick="filterCustomerCatalog('agir_nakliye')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="agir_nakliye"><div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-trailer"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Ağır Nakliye</span></button>
+            <button type="button" onclick="filterCustomerCatalog('nakliyat')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="nakliyat"><div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-truck-moving"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Nakliyat</span></button>
+            <button type="button" onclick="filterCustomerCatalog('temizlik')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="temizlik"><div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-broom"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Temizlik</span></button>
+            <button type="button" onclick="filterCustomerCatalog('oto')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="oto"><div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-car-side"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Oto Servis</span></button>
+            <button type="button" onclick="filterCustomerCatalog('tamir')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="tamir"><div class="w-9 h-9 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-wrench"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Tamir</span></button>
+            <button type="button" onclick="filterCustomerCatalog('tadilat')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="tadilat"><div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-paint-roller"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Tadilat</span></button>
+          </div>
+
+          <!-- Canlı Arama Barı -->
+          <div class="relative text-left">
+            <input type="text" id="custSearchInput" placeholder="75+ alt hizmet içinde ara (Örn: Evden Eve, Botoks, Yazılım)..." oninput="handleUniversalSearch('custSearchInput','custSearchResults')" class="w-full text-xs p-3 pl-9 rounded-xl border-2 border-slate-300 focus:border-orange-500 bg-slate-50 focus:bg-white focus:outline-none transition shadow-inner font-medium" autocomplete="off">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-orange-500 text-xs"></i>
+            <div id="custSearchResults" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-50 text-xs py-1 divide-y divide-slate-100"></div>
+          </div>
+
+          <!-- 15 Ana Sektör Yatay Filtre Çubuğu (Oklu Kaydırma) -->
+          <div class="relative group border-b border-slate-100 mb-1">
+            <button type="button" onclick="scrollCategories(-200)" class="absolute left-0 top-0 bottom-1 w-10 bg-gradient-to-r from-white via-white to-transparent flex items-center justify-start z-10 text-slate-400 hover:text-orange-500 transition opacity-0 group-hover:opacity-100 hidden md:flex cursor-pointer">
+              <i class="fa-solid fa-chevron-left bg-white rounded-full shadow p-1.5 ml-1 border border-slate-100"></i>
+            </button>
+            
+            <div id="categoryPillContainer" class="flex gap-1.5 overflow-x-auto pb-2 text-[11px] font-bold no-scrollbar scroll-smooth relative z-0 px-1">
+              <button type="button" onclick="filterCustomerCatalog('all')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-900 text-white whitespace-nowrap">Tümü</button>
+              <button type="button" onclick="filterCustomerCatalog('agir_nakliye')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Ağır Nakliye</button>
+              <button type="button" onclick="filterCustomerCatalog('nakliyat')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Nakliyat</button>
+              <button type="button" onclick="filterCustomerCatalog('temizlik')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Temizlik</button>
+              <button type="button" onclick="filterCustomerCatalog('oto')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Oto Servis</button>
+              <button type="button" onclick="filterCustomerCatalog('organizasyon')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Organizasyon</button>
+              <button type="button" onclick="filterCustomerCatalog('tamir')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Tamir</button>
+              <button type="button" onclick="filterCustomerCatalog('tadilat')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Tadilat</button>
+              <button type="button" onclick="filterCustomerCatalog('ders')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Özel Ders</button>
+              <button type="button" onclick="filterCustomerCatalog('medya')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Foto & Video</button>
+              <button type="button" onclick="filterCustomerCatalog('pet')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Evcil Hayvan</button>
+              <button type="button" onclick="filterCustomerCatalog('saglik')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Sağlık & Terapi</button>
+              <button type="button" onclick="filterCustomerCatalog('spor')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Spor & Fitness</button>
+              <button type="button" onclick="filterCustomerCatalog('guzellik')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Güzellik</button>
+              <button type="button" onclick="filterCustomerCatalog('dijital')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Dijital & Yazılım</button>
+              <button type="button" onclick="filterCustomerCatalog('danismanlik')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Danışmanlık</button>
+            </div>
+
+            <button type="button" onclick="scrollCategories(200)" class="absolute right-0 top-0 bottom-1 w-10 bg-gradient-to-l from-white via-white to-transparent flex items-center justify-end z-10 text-slate-400 hover:text-orange-500 transition opacity-0 group-hover:opacity-100 hidden md:flex cursor-pointer">
+              <i class="fa-solid fa-chevron-right bg-white rounded-full shadow p-1.5 mr-1 border border-slate-100"></i>
+            </button>
+          </div>
+
+          <!-- Kartlar Grid -->
+          <div id="serviceCardsGrid" class="grid grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1"></div>
+
+          <!-- Sayfa Sonu Tamamlanan İşler & Yorumlar Galerisi -->
+          <div class="pt-4 border-t border-slate-200 text-left">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Son Tamamlanan Hizmetler</span>
+              <span class="text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-check-circle mr-1"></i>Doğrulanmış Yorumlar</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 flex flex-col justify-between">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=200&auto=format&fit=crop&q=80" class="w-full h-16 object-cover rounded-lg mb-1.5">
+                <div>
+                  <div class="text-[10px] font-bold text-slate-800 line-clamp-1">Ev Boya & Badana</div>
+                  <div class="text-[9px] text-slate-500">Ali R. ★★★★★</div>
+                  <div class="text-[9px] text-emerald-600 font-semibold mt-0.5">"Zamanında teslim."</div>
+                </div>
+              </div>
+
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 flex flex-col justify-between">
+                <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=200&auto=format&fit=crop&q=80" class="w-full h-16 object-cover rounded-lg mb-1.5">
+                <div>
+                  <div class="text-[10px] font-bold text-slate-800 line-clamp-1">PPF Araç Kaplama</div>
+                  <div class="text-[9px] text-slate-500">Murat E. ★★★★★</div>
+                  <div class="text-[9px] text-emerald-600 font-semibold mt-0.5">"İşçilik harika."</div>
+                </div>
+              </div>
+
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 flex flex-col justify-between">
+                <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=200&auto=format&fit=crop&q=80" class="w-full h-16 object-cover rounded-lg mb-1.5">
+                <div>
+                  <div class="text-[10px] font-bold text-slate-800 line-clamp-1">Evden Eve Nakliyat</div>
+                  <div class="text-[9px] text-slate-500">Selin Y. ★★★★★</div>
+                  <div class="text-[9px] text-emerald-600 font-semibold mt-0.5">"Sıfır çizik."</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADIM 2: Dinamik Form -->
+        <div id="step2" class="space-y-4 hidden text-left">
+          <div>
+            <span id="selectedCategoryBadge" class="text-[11px] font-extrabold bg-orange-100 text-orange-800 border border-orange-200 px-2.5 py-0.5 rounded-full">Kategori</span>
+            <h2 class="text-base font-black text-slate-900 mt-1" id="step2Title">Hizmet Detayları</h2>
+          </div>
+          
+          <div id="dynamicFormFields" class="space-y-3"></div>
+
+          <!-- Lojistik/Nakliyat ise açılacak Varış Adresi Modülü -->
+          <div id="nakliyatExtraFields" class="space-y-3 pt-2 border-t border-slate-200 hidden">
+            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-location-crosshairs text-orange-600"></i> Varış / Teslimat Bilgileri
+            </h3>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="relative">
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Varış İli</label>
+                <input type="text" id="destCitySearch" placeholder="İl yazın..." oninput="handleCityInput('destCitySearch','destCityDropdown','destDistrict','destCitySelected')" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none" autocomplete="off">
+                <input type="hidden" id="destCitySelected" value="">
+                <div id="destCityDropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-40 overflow-y-auto z-50 text-xs py-1"></div>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Varış İlçesi</label>
+                <select id="destDistrict" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none"><option value="">Önce İl Seçin</option></select>
+              </div>
+            </div>
+            
+            <div id="evNakliyatSpecificFields" class="grid grid-cols-2 gap-2 hidden">
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Varış Katı</label>
+                <select id="destFloor" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50"><option>Zemin / Giriş</option><option>1-3. Kat Arası</option><option>Yüksek Kat (Asansörlü)</option></select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-700 block mb-1">Varış Asansör</label>
+                <select id="destElevator" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50"><option>Bina Asansörü Var</option><option>Bina Asansörü Yok</option></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-2 pt-2">
+            <button type="button" onclick="goToStep(1)" class="w-1/3 py-2.5 text-xs font-bold text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-50">Geri</button>
+            <button type="button" onclick="validateAndGoStep3()" class="w-2/3 py-2.5 text-xs font-bold bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow-sm transition">Devam Et</button>
+          </div>
+        </div>
+
+        <!-- ADIM 3: Lokasyon & İletişim & Tercihler -->
+        <div id="step3" class="space-y-3.5 hidden text-left">
+          <h2 id="step3Title" class="text-base font-black text-slate-900">Konum ve İletişim</h2>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="relative">
+              <label id="inpCityLabel" class="text-xs font-semibold text-slate-700 block mb-1">Hizmetin Verileceği İl</label>
+              <input type="text" id="inpCitySearch" placeholder="İl yazın..." oninput="handleCityInput('inpCitySearch','inpCityDropdown','inpDistrict','inpCitySelected')" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none" autocomplete="off">
+              <input type="hidden" id="inpCitySelected" value="">
+              <div id="inpCityDropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-40 overflow-y-auto z-50 text-xs py-1"></div>
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-slate-700 block mb-1">İlçe</label>
+              <select id="inpDistrict" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none"><option value="">Önce İl Seçiniz</option></select>
+            </div>
+          </div>
+          <div>
+            <label id="inpDescLabel" class="text-xs font-semibold text-slate-700 block mb-1">İş Detayı / Ek Açıklamalar</label>
+            <textarea id="inpDescription" rows="2" placeholder="Ustanın bilmesi gereken özel detaylar..." class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none"></textarea>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-xs font-semibold text-slate-700 block mb-1">Ad Soyad</label>
+              <input type="text" id="inpName" placeholder="Adınız" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50">
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-slate-700 block mb-1">Telefon</label>
+              <input type="tel" id="inpPhone" placeholder="05XXXXXXXXX" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50">
+            </div>
+          </div>
+
+          <!-- İletişim Tercihi Alanı -->
+          <div>
+            <label class="text-xs font-semibold text-slate-700 block mb-1">İletişim Tercihi</label>
+            <select id="inpContactPref" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none">
+              <option value="Fark Etmez (Her Zaman Aranabilir)">Fark Etmez (Her Zaman Aranabilir)</option>
+              <option value="Sadece WhatsApp'tan Yazılsın">Sadece WhatsApp'tan Yazılsın</option>
+              <option value="Sadece 10:00 - 18:00 Arası Aransın">Sadece 10:00 - 18:00 Arası Aransın</option>
+            </select>
+          </div>
+
+          <div class="flex gap-2 pt-2">
+            <button type="button" onclick="goToStep(2)" class="w-1/3 py-2.5 text-xs font-bold text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-50">Geri</button>
+            <button type="button" onclick="sendOtpCode()" class="w-2/3 py-2.5 text-xs font-bold bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow-sm transition">SMS Onayı Al</button>
+          </div>
+        </div>
+
+        <!-- ADIM 4: SMS Onayı -->
+        <div id="step4" class="space-y-4 hidden text-center">
+          <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+          <h2 class="text-base font-black text-slate-900">Telefonunuzu Doğrulayın</h2>
+          <p class="text-xs text-slate-500"><span id="targetPhoneDisplay" class="font-bold text-slate-800"></span> numarasına gönderilen onay kodunu giriniz.</p>
+          <input type="text" id="demandOtpInput" maxlength="6" placeholder="••••" class="w-36 tracking-widest text-center text-xl font-black py-2 border-2 border-orange-500 rounded-xl bg-orange-50/50 focus:outline-none">
+          <button type="button" onclick="completeDemand()" class="w-full py-3 text-xs font-extrabold bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow transition">Talebi Ücretsiz Yayınla</button>
+        </div>
+
+        <!-- Başarı Ekranı -->
+        <div id="stepSuccess" class="space-y-4 hidden text-center py-4">
+          <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl"><i class="fa-solid fa-circle-check"></i></div>
+          <h2 class="text-lg font-black text-slate-900">Talebiniz Başarıyla Yayınlandı!</h2>
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-left text-xs space-y-1">
+            <div><span class="text-slate-400">Hizmet:</span> <strong id="resCat" class="text-slate-800"></strong></div>
+            <div><span class="text-slate-400">Lokasyon:</span> <span id="resRoute" class="font-bold text-slate-800"></span></div>
+            <div><span class="text-slate-400">Özet:</span> <span id="resSummary" class="text-slate-600"></span></div>
+          </div>
+          <button type="button" onclick="openOwnerDashboardForPhone(currentDemand.phone)" class="w-full py-2.5 text-xs font-bold bg-slate-900 text-white rounded-xl hover:bg-slate-800 shadow transition">
+            Gelen Teklifleri İncele <i class="fa-solid fa-arrow-right ml-1 text-orange-400"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+ <!-- İş / Proje Sahibi İlanlarım & Gelen Teklifler Modalı -->
+    <div id="ownerModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-list-check text-orange-500 mr-2"></i>İş İlanlarım ve Gelen Teklifler</h3>
+                <button onclick="closeOwnerModal()" class="text-slate-400 hover:text-slate-700 text-xs font-bold">✕ Kapat</button>
+            </div>
+
+            <!-- Telefon Giriş Alanı -->
+            <div id="ownerLoginArea" class="space-y-3">
+                <p class="text-xs text-slate-500">İlanlarınıza gelen teklifleri görmek için ilan verdiğiniz telefon numaranızı giriniz:</p>
+                <div class="space-y-2">
+                    <input type="tel" id="ownerPhoneInput" placeholder="5XXXXXXXXX" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none">
+                    <div id="ownerOtpArea" class="hidden">
+                      <input type="text" id="ownerOtpInput" maxlength="6" placeholder="******" class="w-full text-center text-lg font-bold p-2 border-2 border-orange-500 rounded-xl bg-orange-50/40 focus:outline-none">
+                    </div>
+                    <button type="button" id="btnOwnerLoginAction" onclick="handleOwnerLogin()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition whitespace-nowrap">SMS Kodu Gönder</button>
+                </div>
+            </div>
+            
+            <!-- İlanlar ve Gelen Teklifler / Profilim Modal İçeriği -->
+            <div id="ownerDashboardArea" class="space-y-4 hidden">
+                
+                <!-- Tab Menü -->
+                <div class="flex border-b border-slate-200">
+                    <button onclick="switchCustomerTab('demands')" id="tabBtnDemands" class="flex-1 py-3 text-sm font-bold border-b-2 border-orange-500 text-orange-600 transition">İlanlarım</button>
+                    <button onclick="switchCustomerTab('profile')" id="tabBtnProfile" class="flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition">Profilim</button>
+                </div>
+
+                <!-- Ortak Üst Bilgi ve Butonlar -->
+                <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+                    <span>Telefon: <strong id="ownerActivePhoneDisplay" class="text-slate-900"></strong></span>
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="window.location.reload()" class="text-emerald-600 font-bold hover:underline"><i class="fa-solid fa-plus mr-1"></i>Yeni İlan Ver</button>
+                        <span class="text-slate-300">|</span>
+                        <button type="button" onclick="logoutOwner()" class="text-rose-600 font-bold hover:underline">Çıkış Yap</button>
+                    </div>
+                </div>
+
+                <!-- SEKME 1: İLANLARIM (Mevcut Kapsayıcı) -->
+                <div id="ownerDemandsContainer" class="space-y-4"></div>
+
+                <!-- SEKME 2: PROFİLİM -->
+                <div id="ownerProfileContainer" class="hidden space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="space-y-3 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Ad Soyad</label>
+                            <input type="text" id="profFullName" class="w-full border border-slate-300 rounded-lg p-2 outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">E-Posta Adresi</label>
+                            <input type="email" id="profEmail" placeholder="ornek@mail.com" class="w-full border border-slate-300 rounded-lg p-2 outline-none focus:border-orange-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">İletişim Tercihi</label>
+                            <select id="profContactPref" class="w-full border border-slate-300 rounded-lg p-2 outline-none focus:border-orange-500 bg-white">
+                                <option value="Fark Etmez (Her Zaman Aranabilir)">Fark Etmez (Her Zaman Aranabilir)</option>
+                                <option value="Sadece Mesaj Atılsın">Sadece Mesaj Atılsın</option>
+                                <option value="Sadece Hafta Sonu Aranabilir">Sadece Hafta Sonu Aranabilir</option>
+                            </select>
+                        </div>
+                        <button onclick="updateCustomerProfile()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-lg transition shadow-sm mt-2">
+                            Bilgilerimi Kaydet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YENİ EKLENEN: İşi Onayla ve Tarih Seç Modalı (3 Butonlu Güncel Tasarım) -->
+    <div id="acceptOfferModal" class="fixed inset-0 bg-black/70 hidden z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative text-left">
+            <button onclick="document.getElementById('acceptOfferModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+            <h3 class="text-lg font-black text-slate-900"><i class="fa-solid fa-handshake text-emerald-500 mr-2"></i>Ustayla Anlaş</h3>
+            <p class="text-xs text-slate-600">Bu teklifi kabul ettiğinizde ilanınız diğer ustalara kapatılacaktır. Değerlendirme yapabilmemiz için işin yapılacağı tarihi seçiniz.</p>
+            
+            <input type="hidden" id="acceptDemandId">
+            <input type="hidden" id="acceptOfferId">
+            <input type="hidden" id="acceptProPhone">
+            
+            <div>
+                <label class="block font-bold text-slate-700 text-xs mb-1">İşin Yapılacağı Tarih <span class="text-red-500">*</span></label>
+                <input type="date" id="acceptJobDate" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-emerald-500 bg-slate-50">
+            </div>
+            
+            <!-- YENİ 3'LÜ BUTON YAPISI -->
+            <div class="mt-4 space-y-3">
+                <!-- 1. Ana Buton (Sadece Anlaş) -->
+                <button onclick="submitAcceptOffer('only')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check-circle text-lg"></i> Anlaşmayı Onayla (İlanı Kapat)
+                </button>
+                
+                <!-- Ayırıcı Çizgi -->
+                <div class="flex items-center gap-2">
+                    <div class="h-px bg-slate-200 flex-1"></div>
+                    <span class="text-[10px] font-bold text-slate-400">veya iletişime geçin</span>
+                    <div class="h-px bg-slate-200 flex-1"></div>
+                </div>
+
+                <!-- 2. İletişim Butonları (Yan Yana) -->
+                <div class="flex gap-2">
+                    <button onclick="submitAcceptOffer('wa')" class="w-1/2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold py-2.5 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
+                    </button>
+                    <button onclick="submitAcceptOffer('call')" class="w-1/2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold py-2.5 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-phone text-sm"></i> Ara
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- YENİ EKLENEN: İş Tamamlandı ve Değerlendirme Modalı -->
+    <div id="completeJobModal" class="fixed inset-0 bg-black/70 hidden z-[70] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative text-left text-center">
+            <button onclick="document.getElementById('completeJobModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl mb-2"><i class="fa-solid fa-star"></i></div>
+            <h3 class="text-lg font-black text-slate-900">İşi Tamamla & Değerlendir</h3>
+            <p class="text-xs text-slate-600 px-2">Hizmet tamamlandıysa ustamızı değerlendirebilirsiniz. Bu işlem zorunlu değildir, puan vermeden de işi sonlandırabilirsiniz.</p>
+            
+            <input type="hidden" id="completeDemandId">
+            
+            <div class="py-2">
+                <label class="block font-bold text-slate-700 text-xs mb-2">Puanınız (1-5)</label>
+                <div class="flex justify-center gap-3 text-2xl text-slate-300" id="starRatingContainer">
+                    <i class="fa-solid fa-star cursor-pointer hover:text-orange-400 transition" onclick="setJobRating(1)"></i>
+                    <i class="fa-solid fa-star cursor-pointer hover:text-orange-400 transition" onclick="setJobRating(2)"></i>
+                    <i class="fa-solid fa-star cursor-pointer hover:text-orange-400 transition" onclick="setJobRating(3)"></i>
+                    <i class="fa-solid fa-star cursor-pointer hover:text-orange-400 transition" onclick="setJobRating(4)"></i>
+                    <i class="fa-solid fa-star cursor-pointer hover:text-orange-400 transition" onclick="setJobRating(5)"></i>
+                </div>
+                <input type="hidden" id="completeJobRating" value="0">
+            </div>
+            <!-- YENİ EKLENEN: Yorum Alanı -->
+            <div class="mb-3">
+                <textarea id="completeJobComment" rows="3" placeholder="Ustanın işçiliği, iletişimi vb. hakkındaki düşünceleriniz (Zorunlu değil, diğer müşterilere rehber olacaktır)..." class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-emerald-500 focus:outline-none resize-none"></textarea>
+            </div>
+            <button onclick="submitCompleteJob()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow-sm mt-2">
+                İşi Sonlandır ve Kaydet
+            </button>
+        </div>
+    </div>    
+  </main>
+  <!-- YENİ: İlk Giriş Karşılama (Hoş Geldin) Modalı - Genişletilmiş 3 Kademeli -->
+<!-- YENİ: İlk Giriş Karşılama (Hoş Geldin) Modalı - Full Flow -->
+<div id="welcomeModal" class="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 transition-opacity duration-500 opacity-0 pointer-events-none">
+    <div class="bg-white rounded-3xl w-full max-w-xl p-1 shadow-2xl relative transform scale-95 transition-transform duration-500 overflow-hidden flex flex-col" id="welcomeModalContent">
+        
+        <!-- Kapatma Butonu -->
+        <button onclick="closeWelcomeModal()" class="absolute top-4 right-4 w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-full flex items-center justify-center z-[70] transition">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        
+        <!-- AŞAMA 1: Karşılama ve Harekete Geçirme -->
+        <div id="welcomeStep1" class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-[22px] p-8 text-center border border-orange-100 transition-all duration-300">
+            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto shadow-md mb-4 border-4 border-orange-100">
+                <i class="fa-solid fa-rocket text-4xl text-orange-500"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 leading-tight mb-2">Hizmet Tam Vaktinde, <br><span class="text-orange-600">TamOnda!</span></h2>
+            <p class="text-sm text-slate-600 font-medium mb-6 px-4">İhtiyacın olan hizmeti saniyeler içinde tanımla, şehrindeki en iyi ustalardan anında teklif al.</p>
+            <div class="space-y-3 px-4">
+                <button onclick="showWelcomeStep2()" class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-black text-base py-4 rounded-xl shadow-lg shadow-orange-500/40 transition transform hover:-translate-y-0.5 flex justify-center items-center gap-2"><i class="fa-solid fa-bolt"></i> Hemen Ücretsiz İlan Ver</button>
+                <button onclick="closeWelcomeModal()" class="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 transition">Daha Sonra İnceleyeceğim</button>
+            </div>
+        </div>
+
+        <!-- AŞAMA 2: Arama ve Renkli Kategoriler -->
+        <div id="welcomeStep2" class="bg-white rounded-[22px] p-6 text-center hidden transition-all duration-300 flex-col max-h-[85vh]">
+            <div class="mb-5"><h2 class="text-xl font-black text-slate-900 leading-tight">Harika! <br><span class="text-orange-500 text-base">Hangi hizmete ihtiyacınız var?</span></h2></div>
+            
+            <div class="relative text-left mb-6 z-[60]">
+                <input type="text" id="modalQuickSearch" placeholder="Örn: Nakliyat, Boya, Temizlik..." oninput="handleModalQuickSearch(this.value)" class="w-full text-sm p-4 pl-12 rounded-xl border-2 border-slate-200 focus:border-orange-500 bg-slate-50 focus:bg-white focus:outline-none transition font-medium">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-4.5 text-orange-400 text-lg"></i>
+                <div id="modalQuickSearchResults" class="absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-2xl max-h-56 overflow-y-auto overscroll-contain z-[80] text-sm py-1 divide-y divide-slate-50 hidden"></div>
+            </div>
+
+            <div class="text-xs font-black text-slate-400 uppercase tracking-widest text-left mb-3 pl-1">Hızlı Kategoriler</div>
+            <div class="grid grid-cols-3 sm:grid-cols-5 gap-2.5 overflow-y-auto max-h-[35vh] overscroll-contain pb-2 custom-scrollbar">
+                <button onclick="filterFromModal('agir_nakliye')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-trailer text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Ağır Nakliye</span></button>
+                <button onclick="filterFromModal('nakliyat')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-orange-50 hover:border-orange-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-truck-moving text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Nakliyat</span></button>
+                <button onclick="filterFromModal('temizlik')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-broom text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Temizlik</span></button>
+                <button onclick="filterFromModal('oto')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-car-side text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Oto Servis</span></button>
+                <button onclick="filterFromModal('organizasyon')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-pink-50 hover:border-pink-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 group-hover:bg-pink-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-champagne-glasses text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Organizasyon</span></button>
+                <button onclick="filterFromModal('tamir')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-cyan-50 hover:border-cyan-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-wrench text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tamir</span></button>
+                <button onclick="filterFromModal('tadilat')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-purple-50 hover:border-purple-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 group-hover:bg-purple-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-paint-roller text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Tadilat</span></button>
+                <button onclick="filterFromModal('ders')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-graduation-cap text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Özel Ders</span></button>
+                <button onclick="filterFromModal('medya')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-red-50 hover:border-red-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 group-hover:bg-red-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-camera text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Medya</span></button>
+                <button onclick="filterFromModal('pet')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-teal-50 hover:border-teal-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 group-hover:bg-teal-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-paw text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Pet</span></button>
+                <button onclick="filterFromModal('saglik')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 group-hover:bg-rose-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-heart-pulse text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Sağlık</span></button>
+                <button onclick="filterFromModal('spor')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-lime-50 hover:border-lime-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-lime-100 flex items-center justify-center text-lime-700 group-hover:bg-lime-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-dumbbell text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Spor</span></button>
+                <button onclick="filterFromModal('guzellik')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-fuchsia-50 hover:border-fuchsia-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-fuchsia-100 flex items-center justify-center text-fuchsia-600 group-hover:bg-fuchsia-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-spa text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Güzellik</span></button>
+                <button onclick="filterFromModal('dijital')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-laptop-code text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Dijital</span></button>
+                <button onclick="filterFromModal('danismanlik')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-slate-200 hover:border-slate-400 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 group-hover:bg-slate-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-user-tie text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Danışman</span></button>
+            </div>
+            <div class="pt-4 mt-2 border-t border-slate-100">
+                <button onclick="openModalStep3()" class="w-full py-3.5 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 text-white rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 shadow-md"><i class="fa-solid fa-wand-magic-sparkles text-orange-400"></i> Listede Yok mu? Özel Talep Oluştur</button>
+            </div>
+        </div>
+        <!-- AŞAMA 2.5: Alt Kategori Seçimi (YENİ EKLENEN) -->
+        <div id="welcomeStepSub" class="bg-white rounded-[22px] p-6 text-center hidden transition-all duration-300 flex-col max-h-[85vh]">
+            <div class="mb-5 relative">
+                <button onclick="backToWelcomeStep2()" class="absolute left-0 top-0 w-8 h-8 flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-orange-50 hover:text-orange-500 rounded-full transition"><i class="fa-solid fa-arrow-left"></i></button>
+                <h2 class="text-xl font-black text-slate-900 leading-tight" id="modalSubTitle">Hizmet Seçin</h2>
+                <p class="text-xs text-slate-500 mt-1.5 font-medium">Lütfen tam olarak ihtiyacınız olan alt hizmeti seçiniz.</p>
+            </div>
+            <div id="modalSubGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 overflow-y-auto max-h-[45vh] overscroll-contain pb-2 pr-1 custom-scrollbar text-left">
+                <!-- Alt kategoriler Javascript ile buraya dinamik basılacak -->
+            </div>
+        </div>
+
+        <!-- AŞAMA 3: Özel Talep Ana Kategori Seçimi -->
+        <div id="welcomeStep3" class="bg-white rounded-[22px] p-6 text-center hidden transition-all duration-300 flex-col max-h-[85vh]">
+            <div class="mb-6 relative">
+                <button onclick="backToModalStep2()" class="absolute left-0 top-1 w-8 h-8 flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-orange-50 hover:text-orange-500 rounded-full transition"><i class="fa-solid fa-arrow-left"></i></button>
+                <h2 class="text-xl font-black text-slate-900 leading-tight">Özel Hizmet Talebi <br><span class="text-orange-500 text-base">Hangi alana giriyor?</span></h2>
+                <p class="text-xs text-slate-500 mt-2 font-medium">Sizi şehrinizdeki en doğru ustayla eşleştirebilmemiz için lütfen en yakın ana kategoriyi seçin.</p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto max-h-[50vh] overscroll-contain pb-2 pr-1 custom-scrollbar">
+                <button onclick="startCustomDemandFromModal('agir_nakliye', 'Ağır Nakliye')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-amber-50 hover:border-amber-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-trailer text-amber-600 w-4"></i> Ağır Nakliye</button>
+                <button onclick="startCustomDemandFromModal('nakliyat', 'Nakliyat')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-truck-moving text-orange-600 w-4"></i> Nakliyat</button>
+                <button onclick="startCustomDemandFromModal('temizlik', 'Temizlik')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-blue-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-broom text-blue-600 w-4"></i> Temizlik</button>
+                <button onclick="startCustomDemandFromModal('oto', 'Oto Servis')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-car-side text-emerald-600 w-4"></i> Oto Servis</button>
+                <button onclick="startCustomDemandFromModal('organizasyon', 'Organizasyon')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-pink-50 hover:border-pink-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-champagne-glasses text-pink-600 w-4"></i> Organizasyon</button>
+                <button onclick="startCustomDemandFromModal('tamir', 'Tamir & Servis')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50 hover:border-cyan-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-wrench text-cyan-600 w-4"></i> Tamir</button>
+                <button onclick="startCustomDemandFromModal('tadilat', 'Tadilat')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-purple-50 hover:border-purple-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-paint-roller text-purple-600 w-4"></i> Tadilat</button>
+                <button onclick="startCustomDemandFromModal('ders', 'Özel Ders')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-indigo-600 w-4"></i> Özel Ders</button>
+                <button onclick="startCustomDemandFromModal('medya', 'Foto & Video')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-red-50 hover:border-red-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-camera text-red-600 w-4"></i> Foto & Video</button>
+                <button onclick="startCustomDemandFromModal('pet', 'Evcil Hayvan')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-teal-50 hover:border-teal-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-paw text-teal-600 w-4"></i> Evcil Hayvan</button>
+                <button onclick="startCustomDemandFromModal('saglik', 'Sağlık & Terapi')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-rose-50 hover:border-rose-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-heart-pulse text-rose-600 w-4"></i> Sağlık</button>
+                <button onclick="startCustomDemandFromModal('spor', 'Spor & Fitness')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-lime-50 hover:border-lime-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-dumbbell text-lime-700 w-4"></i> Spor</button>
+                <button onclick="startCustomDemandFromModal('guzellik', 'Güzellik & Bakım')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-fuchsia-50 hover:border-fuchsia-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-spa text-fuchsia-600 w-4"></i> Güzellik</button>
+                <button onclick="startCustomDemandFromModal('dijital', 'Dijital & Yazılım')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-laptop-code text-sky-600 w-4"></i> Dijital</button>
+                <button onclick="startCustomDemandFromModal('danismanlik', 'Danışmanlık')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-200 hover:border-slate-500 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-user-tie text-slate-700 w-4"></i> Danışmanlık</button>
+            </div>
+        </div>
+
+        <!-- AŞAMA 4: Form Ekranı (Popup İçine Işınlanan Alan) -->
+        <div id="welcomeStepForm" class="bg-white rounded-[22px] p-6 text-center hidden transition-all duration-300 flex-col max-h-[85vh]">
+            <div class="flex justify-between items-center text-xs font-bold text-slate-600 mb-2 mt-2">
+                <span id="modalStepLabel">Adım 2: İş Detayları</span>
+                <span id="modalStepPercent" class="text-orange-600 font-extrabold">50%</span>
+            </div>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-4">
+                <div id="modalStepProgressBar" class="bg-orange-500 h-full w-2/4 transition-all duration-300"></div>
+            </div>
+            <div id="modalFormBody" class="overflow-y-auto max-h-[60vh] overscroll-contain px-1 custom-scrollbar text-left">
+                 <!-- Form alanları buraya dinamik taşınacak -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- YENİ: Usta Yorumları Modalı -->
+<div id="reviewsModal" class="fixed inset-0 bg-black/70 hidden z-[80] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl relative text-left flex flex-col max-h-[80vh]">
+        <button onclick="document.getElementById('reviewsModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+        
+        <h3 class="text-sm font-black text-slate-900 border-b border-slate-100 pb-2 mb-3"><i class="fa-solid fa-comments text-orange-500 mr-2"></i>Usta Değerlendirmeleri</h3>
+        
+        <!-- Puan Filtresi -->
+        <div class="flex gap-2 mb-3">
+            <select id="reviewStarFilter" onchange="window.currentReviewPage = 1; fetchProReviews();" class="w-full text-xs p-2 rounded-lg border border-slate-300 bg-slate-50 font-medium outline-none">
+                <option value="0">Tüm Yorumlar</option>
+                <option value="5">5 Yıldızlılar</option>
+                <option value="4">4 Yıldızlılar</option>
+                <option value="3">3 Yıldızlılar</option>
+                <option value="2">2 Yıldızlılar</option>
+                <option value="1">1 Yıldızlılar</option>
+            </select>
+        </div>
+
+        <!-- Yorumlar Listesi (Scroll edilebilir alan) -->
+        <div id="reviewsListContainer" class="flex-1 overflow-y-auto space-y-3 no-scrollbar pb-2">
+            <!-- Yorumlar buraya JS ile basılacak -->
+        </div>
+
+        <!-- Sayfalama (Oklar ile 5'erli) -->
+        <div id="reviewsPagination" class="pt-3 border-t border-slate-100 flex justify-between items-center mt-auto">
+            <!-- JS ile sayfalama butonları basılacak -->
+        </div>
+    </div>
+</div>
+<script src="data.js"></script>
+<script src="categorySchemas.js"></script>
+  <script src="auth.js"></script>
+  <script src="legal.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

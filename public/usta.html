@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usta Paneli - TamOnda</title>
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M18 48 A34 34 0 0 1 82 48' fill='none' stroke='%23f97316' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M18 52 A34 34 0 0 0 82 52' fill='none' stroke='%230f172a' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M50 24 L50 50 L34 38' fill='none' stroke='%230f172a' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M32 50 L48 68 L88 22' fill='none' stroke='%23f97316' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen pb-12">
+  <!-- Header -->
+  <header class="bg-slate-900 sticky top-0 z-50 border-b border-slate-800 px-4 py-2.5 shadow-md">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 group">
+        <img src="logo_tamonda.png" alt="TamOnda Logo" class="h-11 w-auto object-contain block">
+      </a>
+      <div class="flex bg-slate-800 p-1 rounded-xl border border-slate-700 gap-1">
+        <a href="index.html" class="px-3 py-1 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center">
+          <i class="fa-solid fa-briefcase mr-1"></i> İş / Proje Sahibi
+        </a>
+        <button class="px-3 py-1 text-xs font-bold rounded-lg bg-orange-500 text-white shadow-sm transition">
+          <i class="fa-solid fa-truck-fast mr-1"></i> Usta Paneli
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Lansman Banner -->
+<div class="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-700 text-white text-xs sm:text-[13px] py-2.5 px-4 text-center shadow-sm">
+    <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2">
+        <span class="bg-black/25 px-2.5 py-0.5 rounded font-bold tracking-wide">Lansman Fırsatı</span>
+        <span class="font-medium">İlinizde ilk 20 ustaya özel <strong>1 Yıllık Abonelik 1.000 TL!</strong></span>
+        <button onclick="document.getElementById('launchModal').classList.remove('hidden')" class="underline font-bold hover:text-orange-200">Detayları Gör</button>
+    </div>
+</div>
+
+<!-- Lansman Detay Modalı -->
+<div id="launchModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md p-6 relative">
+        <button onclick="document.getElementById('launchModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+        <h3 class="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-rocket text-orange-500"></i> Lansman Fırsatı Koşulları
+        </h3>
+        <div class="space-y-3 text-sm text-slate-600">
+            <p>• Sadece kayıtlı olduğunuz <strong>ana il ve sektör</strong> kombinasyonunda ilk 20 usta arasına girmeniz durumunda 1 Yıllık <em>'Sadece İl'</em> aboneliği <strong>1.000 TL</strong> olarak ücretlendirilir.</p>
+            <p>• <strong>Nakliyat</strong> ve <strong>Ağır Nakliyat</strong> kategorileri için bu lansman fiyatı <strong>3.000 TL</strong>'dir.</p>
+            <p>• Eğer lansman kotasındayken <em>'Çoklu İl'</em> veya <em>'Tüm Türkiye'</em> paketlerinden birini seçerseniz, lansmana özel olarak o anki güncel fiyat üzerinden <strong>%50 net indirim</strong> uygulanır.</p>
+            <p>• Sektörünüzdeki 20 kişilik kota dolduğunda, sistem standart dinamik fiyatlandırma modeline geçer.</p>
+            <p>• TamOnda'da yıllık abonelik taban fiyatı, sektörel dinamiklerden bağımsız olarak minimum <strong>1.000 TL</strong> olarak sabitlenmiştir.</p>
+        </div>
+        <button onclick="document.getElementById('launchModal').classList.add('hidden')" class="w-full mt-6 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition shadow-sm">Anladım, Kapat</button>
+    </div>
+</div>
+
+  <main class="max-w-xl mx-auto px-4 mt-6">
+
+    <!-- ==================== USTA PANELİ AKIŞI ==================== -->
+    <!-- Not: 'hidden' class'ı kaldırıldı, sayfa açılır açılmaz usta paneli görünür -->
+    <div id="proSection" class="space-y-4">
+      
+      <!-- Usta Kayıt & Giriş Konteyneri -->
+      <div id="proAuthContainer" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex border-b border-slate-200">
+          <button type="button" id="tabBtnLogin" onclick="switchAuthTab('login')" class="w-1/2 py-2 text-xs font-bold text-orange-600 border-b-2 border-orange-600">Giriş Yap</button>
+          <button type="button" id="tabBtnRegister" onclick="switchAuthTab('register')" class="w-1/2 py-2 text-xs font-bold text-slate-400 hover:text-slate-700">Yeni Usta Kaydı</button>
+        </div>
+
+        <!-- Giriş Formu -->
+        <div id="proLoginForm" class="space-y-3 text-left">
+          <input type="tel" id="loginPhone" placeholder="05XXXXXXXXX" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50">
+          <div id="loginOtpArea" class="hidden">
+            <input type="text" id="loginOtp" maxlength="6" placeholder="******" class="w-full text-center text-lg font-bold p-2 border-2 border-orange-500 rounded-xl bg-orange-50/40">
+          </div>
+          <button type="button" id="btnLoginAction" onclick="handleProLogin()" class="w-full py-2.5 text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white rounded-xl transition">SMS Kodu Gönder</button>
+        <!-- YENİ EKLENEN: Hesap Kurtarma Butonu -->
+          <div class="text-center mt-2">
+            <button type="button" onclick="openRecoveryModal()" class="text-[11px] font-bold text-slate-500 hover:text-orange-600 transition underline decoration-dotted underline-offset-2">Telefonuma erişemiyorum / Numaram değişti</button>
+          </div>
+        </div>
+
+        <!-- Kayıt Formu -->
+        <div id="proRegisterForm" class="space-y-3 hidden text-left">
+          <div class="grid grid-cols-2 gap-2">
+            <input type="text" id="regFirstName" placeholder="Adınız (Kimlikteki gibi)" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50">
+            <input type="text" id="regLastName" placeholder="Soyadınız (Kimlikteki gibi)" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <input type="text" id="regTcNo" maxlength="11" placeholder="11 Haneli TC No" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50">
+            <input type="number" id="regBirthYear" placeholder="Doğum Yılı (Örn: 1990)" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-700 block mb-1">Ana Faaliyet Alanınız</label>
+            <select id="regMainCategory" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none">
+              <option value="nakliyat">Nakliyat</option>
+  <option value="agir_nakliye">Ağır Nakliye</option>
+  <option value="temizlik">Temizlik</option>
+  <option value="oto">Oto Servis</option>
+  <option value="organizasyon">Organizasyon</option>
+  <option value="tamir">Tamir & Servis</option>
+  <option value="tadilat">Tadilat</option>
+  <option value="ders">Özel Ders</option>
+  <option value="medya">Foto & Video</option>
+  <option value="pet">Evcil Hayvan</option>
+  <option value="saglik">Sağlık</option>
+  <option value="spor">Spor & Fitness</option>
+  <option value="guzellik">Güzellik</option>
+  <option value="dijital">Dijital & Yazılım</option>
+  <option value="danismanlik">Danışmanlık</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div class="relative">
+              <label class="text-xs font-semibold text-slate-700 block mb-1">Bulunduğunuz İl</label>
+              <input type="text" id="regCitySearch" placeholder="İl yazın..." oninput="handleCityInput('regCitySearch','regCityDropdown','regDistrict','regCitySelected')" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:outline-none" autocomplete="off">
+              <input type="hidden" id="regCitySelected" value="">
+              <div id="regCityDropdown" class="hidden absolute mt-8 bg-white border border-slate-200 rounded-xl shadow-lg max-h-40 overflow-y-auto z-50 text-xs"></div>
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-slate-700 block mb-1">İlçe</label>
+              <select id="regDistrict" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:outline-none"><option value="">Önce İl Seçin</option></select>
+            </div>
+          </div>
+
+          <input type="tel" id="regPhone" placeholder="Telefon Numaranız (05XXXXXXXXX)" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50">
+
+          <div id="regOtpArea" class="hidden">
+            <input type="text" id="regOtp" maxlength="6" placeholder="******" class="w-full text-center text-lg font-bold p-2 border-2 border-orange-500 rounded-xl bg-orange-50/40">
+          </div>
+          <button type="button" id="btnRegAction" onclick="handleProRegister()" class="w-full py-2.5 text-xs font-bold bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow transition">KAYIT OL</button>
+        </div>
+      </div>
+
+<!-- Usta Dashboard (Giriş yaptıktan sonra açılır) -->
+      <div id="proDashboardContainer" class="space-y-4 hidden">
+        
+        <!-- YENİ ŞIK PROFİL KARTI -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden flex flex-col gap-4">
+          <!-- Dekoratif Sol Çizgi -->
+          <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-orange-400 to-orange-600"></div>
+          
+          <!-- Üst Satır: İsim, Slogan, Kategori ve Çıkış -->
+<div class="flex justify-between items-start pl-2">
+  <div class="flex flex-col">
+    <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+      <span id="proNameDisplay" class="font-extrabold text-xl sm:text-2xl text-slate-800 capitalize tracking-wide drop-shadow-sm"></span>
+      <span class="text-[11px] text-slate-400 italic font-serif tracking-wide opacity-80">büyük usta, aradığın her şey TamOnda</span>
+    </div>
+    <!-- YENİ EKLENEN: Telefon Numarası Gösterimi -->
+    <div class="text-xs font-bold text-slate-700 mt-2 flex items-center gap-2">
+       <i class="fa-solid fa-phone text-orange-500"></i> <span id="proPhoneDisplay"></span>
+    </div>
+    <div id="proCategoryDisplay" class="text-xs font-medium text-slate-600 mt-2"></div>
+  </div>
+  
+  <button type="button" onclick="handleProLogout()" class="flex items-center gap-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white rounded-xl text-xs font-bold transition shadow-sm ml-3 shrink-0">
+    <i class="fa-solid fa-power-off text-sm"></i> <span class="hidden sm:inline">Güvenli Çıkış</span>
+  </button>
+</div>
+          <!-- Alt Satır: Plus Banner (Tam Genişlikte Ortalanmış) -->
+          <div id="proPlusDisplay" class="hidden w-full pl-2"></div>
+        </div>
+        
+        <!-- USTA PANELİ SEKME BUTONLARI (Yeşil Sayaç Geri Eklendi + Profilim Eklendi) -->
+        <div class="flex border-b border-slate-200 mb-6 gap-4 bg-white px-4 pt-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto no-scrollbar">
+            <button onclick="openProTab('demands')" id="tabBtnDemands" class="pb-3 font-bold text-sm text-orange-600 border-b-2 border-orange-600 transition flex items-center shrink-0">
+                <i class="fa-solid fa-list mr-1.5"></i> Uygun İş İlanları
+                <!-- Yeşil Sayaç -->
+                <span id="proTotalDemandsBadge" class="ml-2 bg-emerald-100 text-emerald-700 text-[10px] font-black px-2 py-0.5 rounded-full border border-emerald-200 shadow-sm hidden">0</span>
+            </button>
+            <button onclick="openProTab('offers')" id="tabBtnOffers" class="pb-3 font-bold text-sm text-slate-500 hover:text-slate-800 transition shrink-0">
+                <i class="fa-solid fa-paper-plane mr-1.5"></i> Verdiğim Teklifler
+            </button>
+            <!-- YENİ EKLENEN: Profilim Sekme Butonu -->
+            <button onclick="openProTab('profile')" id="tabBtnProfile" class="pb-3 font-bold text-sm text-slate-500 hover:text-slate-800 transition shrink-0">
+                <i class="fa-solid fa-user-gear mr-1.5"></i> Profilim
+            </button>
+            <!-- YENİ EKLENEN: Usta Yorumları Sekme Butonu -->
+            <button onclick="openProTab('reviews')" id="tabBtnReviews" class="pb-3 font-bold text-sm text-slate-500 hover:text-slate-800 transition shrink-0">
+                <i class="fa-solid fa-comments mr-1.5"></i> Yorumlar
+            </button>
+        </div>
+
+        <!-- SEKME İÇERİKLERİ -->
+        <div id="tabContentDemands" class="block">
+            
+            <!-- Gelişmiş Filtre Çubuğu (Yerleşimi Düzenlenmiş Grid Yapısı) -->
+            <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm mb-4 space-y-3">
+                
+                <!-- 1. Satır: Kelime Arama (Tam Genişlik) -->
+                <div class="w-full">
+                    <input type="text" id="proFilterKeyword" placeholder="Kelime ile ara (Açıklamalarda arar. Örn: Piyano, Acil, 3+1...)" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none font-medium">
+                </div>
+                
+                <!-- 2. Satır: Standart İl/İlçe ve Butonlar -->
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <select id="proFilterCity" onchange="populateProFilterDistrict(this.value, 'proFilterDistrict')" class="flex-1 text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none cursor-pointer font-medium">
+                        <option value="">İl Seç (Tümü)</option>
+                    </select>
+                    <select id="proFilterDistrict" class="flex-1 text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:border-orange-500 focus:outline-none cursor-pointer font-medium">
+                        <option value="">İlçe Seç (Tümü)</option>
+                    </select>
+
+                    <div class="flex gap-2 sm:w-auto shrink-0">
+                        <button onclick="window.currentProPage = 1; renderProDemands();" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition shadow-sm flex items-center justify-center">
+                            <i class="fa-solid fa-filter mr-1.5"></i> Filtrele
+                        </button>
+                        <button onclick="resetProFilters()" class="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition shadow-sm flex items-center justify-center">
+                            Sıfırla
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Satır: Ekstra Çıkış/Varış Kutuları (Grid mimarisi ile taşma engellendi) -->
+                <div id="transportFiltersArea" class="hidden pt-2 border-t border-slate-100">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <select id="proFilterFromCity" onchange="populateProFilterDistrict(this.value, 'proFilterFromDistrict')" class="w-full text-xs p-2.5 rounded-xl border border-blue-200 bg-blue-50 text-blue-900 focus:border-blue-500 focus:outline-none cursor-pointer font-medium">
+                            <option value="">Çıkış İli (Tümü)</option>
+                        </select>
+                        <select id="proFilterFromDistrict" class="w-full text-xs p-2.5 rounded-xl border border-blue-200 bg-blue-50 text-blue-900 focus:border-blue-500 focus:outline-none cursor-pointer font-medium">
+                            <option value="">Çıkış İlçesi (Tümü)</option>
+                        </select>
+                        <select id="proFilterToCity" onchange="populateProFilterDistrict(this.value, 'proFilterToDistrict')" class="w-full text-xs p-2.5 rounded-xl border border-orange-200 bg-orange-50 text-orange-900 focus:border-orange-500 focus:outline-none cursor-pointer font-medium">
+                            <option value="">Varış İli (Tümü)</option>
+                        </select>
+                        <select id="proFilterToDistrict" class="w-full text-xs p-2.5 rounded-xl border border-orange-200 bg-orange-50 text-orange-900 focus:border-orange-500 focus:outline-none cursor-pointer font-medium">
+                            <option value="">Varış İlçesi (Tümü)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- İLANLAR BURAYA ÇİZİLECEK -->
+            <div class="w-full space-y-3" id="demandListContainer"></div>
+            
+            <!-- Sayfalama (Pagination) Konteyneri -->
+            <div id="proPaginationContainer" class="flex justify-center items-center gap-1 mt-6 pb-4"></div>
+        </div>
+        <!-- Verdiğim Teklifler Sekmesi (Eksik olan alan eklendi) -->
+        <div id="tabContentOffers" class="hidden">
+            <div id="myOffersContainer" class="w-full space-y-3"></div>
+        </div>
+
+        <!-- YENİ EKLENEN: Profilim Sekmesi (Telefon Güncelleme) -->
+        <div id="tabContentProfile" class="hidden">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4 max-w-2xl mx-auto text-left">
+             <h3 class="font-black text-slate-800 border-b border-slate-100 pb-2"><i class="fa-solid fa-id-card text-orange-500 mr-2"></i>Usta Kimlik Bilgileri</h3>
+             
+             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                   <label class="text-[10px] font-bold text-slate-500 block mb-1">Ad Soyad (Sabit)</label>
+                   <div id="profNameStatic" class="text-xs p-2.5 bg-slate-100 rounded-xl border border-slate-200 text-slate-500 font-bold"></div>
+                </div>
+                <div>
+                   <label class="text-[10px] font-bold text-slate-500 block mb-1">Sektör (Sabit)</label>
+                   <div id="profCategoryStatic" class="text-xs p-2.5 bg-slate-100 rounded-xl border border-slate-200 text-slate-500 font-bold"></div>
+                </div>
+             </div>
+
+             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                   <label class="text-[10px] font-bold text-slate-500 block mb-1">İl (Sabit)</label>
+                   <div id="profCityStatic" class="text-xs p-2.5 bg-slate-100 rounded-xl border border-slate-200 text-slate-500 font-bold"></div>
+                </div>
+                <div>
+                   <label class="text-[10px] font-bold text-slate-500 block mb-1">İlçe (Sabit)</label>
+                   <div id="profDistStatic" class="text-xs p-2.5 bg-slate-100 rounded-xl border border-slate-200 text-slate-500 font-bold"></div>
+                </div>
+             </div>
+
+             <!-- Telefon Güncelleme Alanı -->
+             <div class="mt-6 pt-4 border-t border-slate-100">
+                <h4 class="font-bold text-sm text-slate-800 mb-3"><i class="fa-solid fa-mobile-screen-button text-orange-500 mr-1.5"></i>Telefon Numarası Güncelleme</h4>
+                <p class="text-[11px] text-slate-500 mb-3 font-medium">Güvenliğiniz için numara değişikliği yeni numaraya SMS onayı gerektirir. İşlem sonrası sistemden çıkış yapılacaktır.</p>
+                
+                <div class="flex flex-col sm:flex-row gap-2">
+                   <input type="tel" id="profNewPhone" placeholder="Yeni Numara (Örn: 5321112233)" class="flex-1 text-xs p-2.5 rounded-xl border border-slate-300 bg-white focus:outline-none focus:border-orange-500 font-bold">
+                   <button type="button" id="btnRequestPhoneOtp" onclick="requestPhoneUpdate()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-sm whitespace-nowrap">SMS Kodu Gönder</button>
+                </div>
+
+                <!-- OTP Doğrulama Alanı -->
+                <div id="profPhoneOtpArea" class="hidden mt-3 p-4 bg-orange-50 border border-orange-200 rounded-xl space-y-3">
+                   <label class="text-xs font-bold text-orange-800 block text-center">Yeni Numaranıza Gelen Kodu Girin</label>
+                   <input type="text" id="profPhoneOtpInput" maxlength="6" placeholder="******" class="w-full max-w-[200px] mx-auto block text-center text-lg font-bold p-2 border-2 border-orange-500 rounded-xl bg-white">
+                   <button type="button" onclick="confirmPhoneUpdate()" class="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition shadow-sm">Kodu Doğrula ve Güncelle</button>
+                </div>
+             </div>
+          </div>
+        </div>
+        <!-- YENİ EKLENEN: Usta Yorumları Sekmesi -->
+        <div id="tabContentReviews" class="hidden">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm mb-4">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                    <h3 class="font-black text-slate-800"><i class="fa-solid fa-star text-orange-500 mr-2"></i>Müşteri Değerlendirmeleri</h3>
+                    <!-- Puan Filtresi -->
+                    <select id="proOwnReviewFilter" onchange="window.currentProOwnReviewPage = 1; fetchProOwnReviews();" class="text-xs p-1.5 rounded-lg border border-slate-300 bg-slate-50 font-medium outline-none">
+                        <option value="0">Tüm Yorumlar</option>
+                        <option value="5">5 Yıldızlılar</option>
+                        <option value="4">4 Yıldızlılar</option>
+                        <option value="3">3 Yıldızlılar</option>
+                        <option value="2">2 Yıldızlılar</option>
+                        <option value="1">1 Yıldızlılar</option>
+                    </select>
+                </div>
+                
+                <!-- Yorumlar Listesi -->
+                <div id="proOwnReviewsListContainer" class="space-y-3 mb-2 min-h-[100px]"></div>
+
+                <!-- Sayfalama -->
+                <div id="proOwnReviewsPagination" class="pt-3 border-t border-slate-100 flex justify-between items-center"></div>
+            </div>
+        </div>
+    <!-- Plus Abonelik Dinamik Hesaplama Modalı (Sadece Ustalara Özel) -->
+    <div id="plusModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl relative text-left">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-crown text-orange-500 mr-2"></i>Plus Abonelik Planı Oluştur</h3>
+                <button onclick="closePlusModal()" class="text-slate-400 hover:text-slate-700 text-xs font-bold">✕ Kapat</button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="font-semibold text-slate-700 block mb-1">Coğrafi Kapsam</label>
+                    <select id="plusScope" onchange="updatePlusCalculation()" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-medium">
+                        <option value="single_city">Sadece Bulunduğum İl</option>
+                        <option value="multi_city">Komşu İller & Bölgesel (En Fazla 3 İl)</option>
+                        <option value="all_turkey">Tüm Türkiye Geneli</option>
+                    </select>
+                </div>
+
+                <!-- Çoklu İl Seçim Alanı -->
+                <div id="multiCityContainer" class="hidden space-y-2 border border-orange-200 p-3 rounded-xl bg-orange-50/50 mt-2">
+                  <label class="font-semibold text-slate-700 block text-[10px]">Hizmet Verilecek Ek İller (Kendi iliniz haricinde en fazla 3 il)</label>
+                  <div class="relative">
+                    <input type="text" id="plusCity1" placeholder="1. Ek İl (Örn: Kocaeli)" oninput="handleCityInput('plusCity1','plusCityDrop1','dummy','plusCitySel1')" class="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-orange-500" autocomplete="off">
+                    <input type="hidden" id="plusCitySel1">
+                    <div id="plusCityDrop1" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-32 overflow-y-auto z-50 text-xs py-1"></div>
+                  </div>
+                  <div class="relative">
+                    <input type="text" id="plusCity2" placeholder="2. Ek İl (Örn: Düzce)" oninput="handleCityInput('plusCity2','plusCityDrop2','dummy','plusCitySel2')" class="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-orange-500" autocomplete="off">
+                    <input type="hidden" id="plusCitySel2">
+                    <div id="plusCityDrop2" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-32 overflow-y-auto z-50 text-xs py-1"></div>
+                  </div>
+                  <div class="relative">
+                    <input type="text" id="plusCity3" placeholder="3. Ek İl (Örn: Bolu)" oninput="handleCityInput('plusCity3','plusCityDrop3','dummy','plusCitySel3')" class="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-orange-500" autocomplete="off">
+                    <input type="hidden" id="plusCitySel3">
+                    <div id="plusCityDrop3" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-32 overflow-y-auto z-50 text-xs py-1"></div>
+                  </div>
+                </div>
+
+                <div>
+                    <label class="font-semibold text-slate-700 block mb-1 mt-3">Abonelik Süresi</label>
+                    <select id="plusMonths" onchange="updatePlusCalculation()" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-medium">
+                        <option value="1">1 Aylık Standart</option>
+                        <option value="3">3 Aylık (%10 Avantajlı)</option>
+                        <option value="12" selected>1 Yıllık (Lansmana Özel %25 İndirimli)</option>
+                    </select>
+                </div>
+
+                <!-- Dinamik Fiyat Özet Kutusu -->
+<div class="bg-orange-50 border border-orange-200 p-3.5 rounded-xl space-y-1.5">
+    <div class="flex justify-between text-slate-600"><span>Sektör Çarpanı:</span> <strong id="summarySector" class="text-slate-900">-</strong></div>
+    <div class="flex justify-between text-slate-600"><span>İl / Rekabet Faktörü:</span> <strong id="summaryFactor" class="text-slate-900">-</strong></div>
+    
+    <!-- YENİ EKLENEN: Dinamik İndirim Uyarı Satırı (Başlangıçta Gizli) -->
+    <div id="launchDiscountRow" class="hidden bg-green-100/80 border border-green-200 text-green-700 px-2 py-1.5 rounded-lg flex items-center justify-between mt-2 mb-1">
+        <span id="launchDiscountText" class="text-[10.5px] font-bold">🎁 İlk 20 Kotası: Ekstra %50 İndirim</span>
+        <span class="text-[10px] font-black bg-green-200 px-1.5 py-0.5 rounded text-green-800">UYGULANDI</span>
+    </div>
+
+    <div class="border-t border-orange-200 pt-2 flex justify-between items-center">
+        <span class="font-bold text-slate-800">Toplam Tutar:</span>
+        <span id="summaryTotalFee" class="text-base font-black text-orange-600">0 TL</span>
+    </div>
+</div>
+            </div>
+
+            <button type="button" onclick="completePlusSubscription()" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs rounded-xl shadow transition">
+                Hemen Plus Üye Ol & İletişimleri Aç
+            </button>
+        </div>
+    </div>
+  </main>
+  <!-- HESAP KURTARMA MODALI -->
+  <div id="recoveryModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative text-left">
+        <button onclick="closeRecoveryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+        <h3 class="text-sm font-black text-slate-900 border-b border-slate-100 pb-2"><i class="fa-solid fa-life-ring text-orange-500 mr-2"></i>Hesap Kurtarma</h3>
+        
+        <p class="text-[11px] text-slate-500 font-medium leading-relaxed">Hesabınızı yeni bir numaraya taşımak için güvenlik bilgilerini eksiksiz girmelisiniz.</p>
+        
+        <div class="space-y-3">
+            <div>
+               <label class="text-[10px] font-bold text-slate-700 block mb-1">Kayıtlı Eski Numaranız</label>
+               <input type="tel" id="recOldPhone" placeholder="05XXXXXXXXX" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:outline-none focus:border-orange-500 font-bold">
+            </div>
+            <div>
+               <label class="text-[10px] font-bold text-slate-700 block mb-1">TC Kimlik Numaranız</label>
+               <input type="text" id="recTcNo" maxlength="11" placeholder="11 Haneli TC Kimlik No" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:outline-none focus:border-orange-500 font-bold">
+            </div>
+            <div>
+               <label class="text-[10px] font-bold text-slate-700 block mb-1">Kullanacağınız YENİ Numara</label>
+               <input type="tel" id="recNewPhone" placeholder="05XXXXXXXXX" class="w-full text-xs p-2.5 rounded-xl border-2 border-orange-200 bg-white focus:outline-none focus:border-orange-500 font-bold">
+            </div>
+        </div>
+
+        <button type="button" id="btnRequestRecoveryOtp" onclick="sendRecoveryOtp()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-sm mt-2">Yeni Numarama SMS Gönder</button>
+
+        <!-- OTP Doğrulama Alanı -->
+        <div id="recOtpArea" class="hidden mt-3 p-4 bg-orange-50 border border-orange-200 rounded-xl space-y-3">
+            <label class="text-xs font-bold text-orange-800 block text-center">Yeni Numaranıza Gelen Kodu Girin</label>
+            <input type="text" id="recOtpInput" maxlength="6" placeholder="******" class="w-full max-w-[150px] mx-auto block text-center text-lg font-bold p-2 border-2 border-orange-500 rounded-xl bg-white">
+            <button type="button" onclick="confirmRecoveryOtp()" class="w-full py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition shadow-sm">Kodu Doğrula & Hesabımı Kurtar</button>
+        </div>
+    </div>
+  </div>
+  <script src="welcomeMessages.js"></script>
+  <script src="data.js"></script>
+  <script src="auth.js"></script>
+  <script src="legal.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
