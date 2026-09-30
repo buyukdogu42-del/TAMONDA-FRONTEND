@@ -281,11 +281,18 @@ async function sendOtpCode(){
   var inpContactPrefEl = document.getElementById('inpContactPref');
 
   var rawPhone = inpPhoneEl ? inpPhoneEl.value.trim() : '';
+  
+  // YAKLAŞIM A: Tüm harf, boşluk ve sembolleri temizle, sadece rakam kalsın
   var cleanPhone = rawPhone.replace(/\D/g, '');
-  if (cleanPhone.startsWith('0')) { cleanPhone = cleanPhone.substring(1); }
+  
+  // Eğer kullanıcı 11 hane girdiyse ve 0 ile başlıyorsa (Örn: 05351112233), 0'ı at
+  if (cleanPhone.length === 11 && cleanPhone.startsWith('05')) { 
+      cleanPhone = cleanPhone.substring(1); 
+  }
 
-  if (!/^5\d{9}$/.test(cleanPhone)) {
-    alert('Lütfen telefon numaranızı başında sıfır (0) olmadan, 10 haneli olarak giriniz.');
+  // Son kontroller: Numara tam olarak 10 hane mi ve 5 ile mi başlıyor?
+  if (cleanPhone.length !== 10 || !cleanPhone.startsWith('5')) {
+    alert('Lütfen geçerli bir cep telefonu numarası giriniz. (Örn: 05321112233 veya 5321112233)');
     return;
   }
 
@@ -297,7 +304,7 @@ async function sendOtpCode(){
   currentDemand.description = inpDescEl ? (inpDescEl.value || 'Özel açıklama girilmedi.') : 'Özel açıklama girilmedi.';
   currentDemand.contactPreference = inpContactPrefEl ? inpContactPrefEl.value : "Fark Etmez (Her Zaman Aranabilir)";
 
-  // YENİ EKLENEN: Oturum (Token) Kontrolü
+  // Oturum (Token) Kontrolü (Aynen korundu)
   const token = localStorage.getItem('tamonda_token');
   if (token) {
     try {
@@ -328,8 +335,7 @@ async function sendOtpCode(){
       
       const demandData = await demandRes.json();
       if (demandData.success) {
-        // OTP'siz doğrudan başarı ekranına geçiş
-        var currentStepEl = document.getElementById('step3'); // İletişim bilgilerinin girildiği adım
+        var currentStepEl = document.getElementById('step3'); 
         var stepSuccessEl = document.getElementById('stepSuccess');
         if (currentStepEl) currentStepEl.classList.add('hidden');
         if (stepSuccessEl) stepSuccessEl.classList.remove('hidden');
@@ -347,9 +353,8 @@ async function sendOtpCode(){
         }
         if (resSummaryEl) resSummaryEl.innerText = Object.values(currentDemand.params).join(', ');
         
-        return; // İşlemi burada kes, OTP gönderme
+        return; 
       } else if(demandData.message.includes('Token') || demandRes.status === 401) {
-        // Token süresi dolmuşsa silip normal SMS akışına devam etsin
         localStorage.removeItem('tamonda_token');
       } else {
         alert(demandData.message);
@@ -360,7 +365,7 @@ async function sendOtpCode(){
     }
   }
 
-  // --- MEVCUT SMS GÖNDERME AKIŞI (Token yoksa veya geçersizse çalışır) ---
+  // --- MEVCUT SMS GÖNDERME AKIŞI ---
   try {
     const response = await fetch(`${window.API_BASE_URL}/api/auth/send-otp`, {
       method: 'POST',
@@ -378,6 +383,7 @@ async function sendOtpCode(){
       if (targetPhoneDisplay) targetPhoneDisplay.innerText = currentDemand.phone;
       
       goToStep(4);
+      startOtpTimer(); // YENİ EKLENDİ: Butonu kilitler ve 60 sn sayacı başlatır
     } else {
       alert(data.message || 'SMS kodu gönderilemedi.');
     }
@@ -1815,3 +1821,77 @@ function urlBase64ToUint8Array(base64String) {
     }
     return outputArray;
 }
+// --- YENİ UX KURGU FONKSİYONLARI ---
+
+// 1. Yeni OTP İsteme Fonksiyonu (Sadece kodu tekrar ister, form işlemlerini atlar)
+async function resendOtpCode() {
+    try {
+        const response = await fetch(`${window.API_BASE_URL}/api/auth/send-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                phone: currentDemand.phone,
+                fullName: currentDemand.name 
+            })
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            console.log("Yeni OTP Kodu (Test):", data.debugOtp);
+            alert('Yeni onay kodu telefonunuza gönderildi.');
+            startOtpTimer(); // Sayacı tekrar sıfırla ve başlat
+        } else {
+            alert(data.message || 'SMS kodu gönderilemedi.');
+        }
+    } catch (error) {
+        console.error('OTP Tekrar Gönderim Hatası:', error);
+        alert('Sunucuya bağlanılamadı.');
+    }
+}
+
+// 2. OTP 60 Saniye Geri Sayım Sayacı
+window.startOtpTimer = function() {
+    const btn = document.getElementById('resendOtpBtn');
+    if(!btn) return;
+    
+    let timeLeft = 60;
+    btn.disabled = true;
+    btn.classList.replace('text-orange-500', 'text-slate-400');
+    btn.classList.add('cursor-not-allowed');
+    btn.innerText = `Tekrar Gönder (${timeLeft}s)`;
+
+    // Varsa eski sayacı temizle (üst üste binmeyi önler)
+    if(window.otpTimerInterval) clearInterval(window.otpTimerInterval);
+
+    window.otpTimerInterval = setInterval(() => {
+        timeLeft--;
+        btn.innerText = `Tekrar Gönder (${timeLeft}s)`;
+        
+        if (timeLeft <= 0) {
+            clearInterval(window.otpTimerInterval);
+            btn.disabled = false;
+            btn.innerText = "Kodu Tekrar Gönder";
+            btn.classList.replace('text-slate-400', 'text-orange-500');
+            btn.classList.remove('cursor-not-allowed');
+        }
+    }, 1000);
+};
+
+// 3. Numarayı Düzenle (Geri Dön) Fonksiyonu
+window.goBackToPhoneStep = function() {
+    var step4El = document.getElementById('step4');
+    var step3El = document.getElementById('step3');
+    if (step4El) step4El.classList.add('hidden');
+    if (step3El) step3El.classList.remove('hidden');
+    
+    // Geri dönüldüğünde sayacı temizle
+    if(window.otpTimerInterval) clearInterval(window.otpTimerInterval);
+};
+
+// 4. İlanı İptal Et ve Vazgeç Fonksiyonu
+window.cancelDemandProcess = function() {
+    const isConfirmed = confirm("İlanınıza ait tüm veri girişi silinecektir. Onaylıyor musunuz?");
+    if (isConfirmed) {
+        window.location.reload(); // İlan verilerini silmenin ve ana sayfaya dönmenin en güvenli yoludur
+    }
+};
