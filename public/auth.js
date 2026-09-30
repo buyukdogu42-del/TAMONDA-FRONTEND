@@ -1597,6 +1597,16 @@ window.openOwnerDashboardForPhone = function(phone) {
         goToStep(1);
     }
     
+    // --- YENİ EKLENEN KISIM: İlan Verme Modalını Kapat ---
+    // (Projedeki genel standart demandModal ID'sidir, eğer farklıysa güncelleyebilirsin)
+    var demandModal = document.getElementById('demandModal'); 
+    if (demandModal) {
+        demandModal.classList.add('hidden');
+    } else if (typeof closeDemandModal === 'function') {
+        closeDemandModal(); // Eğer projende özel bir kapatma fonksiyonu varsa onu tetikler
+    }
+    // --- YENİ EKLENEN KISIM SONU ---
+
     // Doğrudan Müşteri panelini aç (Token olduğu için SMS atlanacak)
     openOwnerLoginModal();
 };
