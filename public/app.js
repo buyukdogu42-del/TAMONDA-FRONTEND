@@ -1691,11 +1691,19 @@ window.renderAdminReviews = function(reviewsArray) {
         var stars = Array(5).fill(0).map((_, i) => i < r.rating ? '<i class="fa-solid fa-star text-amber-400"></i>' : '<i class="fa-solid fa-star text-slate-200"></i>').join('');
         var dateStr = new Date(r.date).toLocaleDateString('tr-TR');
         
+        // Telefon numarası backend'den geliyorsa göster, gelmiyorsa boş bırak
+        var phoneBadge = r.customerPhone 
+            ? `<span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md border border-slate-200 ml-2"><i class="fa-solid fa-phone text-slate-400 mr-1"></i>${r.customerPhone}</span>` 
+            : '';
+        
         container.innerHTML += `
             <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col gap-2 relative group hover:border-orange-200 transition">
                 <div class="flex justify-between items-start pr-8">
                     <div>
-                       <span class="text-xs font-bold text-slate-800"><i class="fa-solid fa-user-circle text-slate-400 mr-1.5"></i>${r.customerName}</span>
+                       <div class="flex items-center">
+                           <span class="text-xs font-bold text-slate-800"><i class="fa-solid fa-user-circle text-slate-400 mr-1.5"></i>${r.customerName}</span>
+                           ${phoneBadge}
+                       </div>
                        <div class="text-sm tracking-widest mt-1">${stars}</div>
                     </div>
                     <span class="text-[10px] text-slate-400 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-100">${dateStr}</span>
