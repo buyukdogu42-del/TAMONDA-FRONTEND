@@ -1487,55 +1487,73 @@ function updatePlusCalculation() {
           elTot.innerText = finalFee.toLocaleString('tr-TR') + ' TL';
       }
   }
+  // YENİ EKLENEN SATIR: Hesaplanan son fiyatı ödeme fonksiyonuna aktarmak için hafızada tutuyoruz
+  window.currentPlusFee = finalFee;
 }
+// YENİDEN YAZILAN FONKSİYON: PayTR Token Alma ve iFrame Açma
 async function completePlusSubscription() {
-  if (currentProUser) {
-    var scope = document.getElementById('plusScope').value;
-    var months = parseInt(document.getElementById('plusMonths').value, 10) || 1;
-    var days = months * 30; // Backend API, süreyi gün olarak beklediği için aya göre güne çeviriyoruz
+  if (!currentProUser) return;
+  
+  var scope = document.getElementById('plusScope').value;
+  var months = parseInt(document.getElementById('plusMonths').value, 10) || 1;
+  var days = months * 30; 
+  var price = window.currentPlusFee || 1000; // Fiyat değişkenini yakala
 
-    try {
-      // Backend'e abonelik tanımlama isteği atıyoruz
-      const response = await fetch(`${window.API_BASE_URL}/api/auth/pro/` + currentProUser.phone + '/plus', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ scope: scope, days: days })
-      });
+  // Butonu bekleme moduna al
+  var btn = event.currentTarget;
+  var originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Güvenli Ödeme Başlatılıyor...';
+  btn.disabled = true;
 
-      const data = await response.json();
+  try {
+    const response = await fetch(`${window.API_BASE_URL}/api/payment/paytr-token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+          phone: currentProUser.phone, 
+          scope: scope, 
+          days: days, 
+          price: price 
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.success) {
+      // 1. Plus seçim modalını kapat
+      closePlusModal();
       
-      if (data.success) {
-        // İşlem başarılıysa kullanıcının anlık arayüz bilgilerini güncelliyoruz
-        currentProUser.packageType = 'plus_' + scope;
-        currentProUser.subscriptionStatus = true;
-        currentProUser.subscriptionEndDate = data.subscriptionEndDate; 
-        currentProUser.subscriptionDays = data.subscriptionDays || days; // GÜN BİLGİSİ GÜNCELLENDİ
-
-        if (scope === 'multi_city') {
-          var c1 = document.getElementById('plusCitySel1') ? document.getElementById('plusCitySel1').value : '';
-          var c2 = document.getElementById('plusCitySel2') ? document.getElementById('plusCitySel2').value : '';
-          var c3 = document.getElementById('plusCitySel3') ? document.getElementById('plusCitySel3').value : '';
-          var extras = [];
-          if(c1) extras.push(c1); if(c2) extras.push(c2); if(c3) extras.push(c3);
-          currentProUser.extraCities = extras;
-        } else if (scope === 'all_turkey') {
-          currentProUser.extraCities = ['Tüm Türkiye'];
-        } else {
-          currentProUser.extraCities = [];
-        }
-
-        saveToStorage(); // Yenilenen profili tarayıcıya kaydet
-        alert('Tebrikler! Plus aboneliğiniz başarıyla aktifleşti/uzatıldı. Bitiş: ' + new Date(data.subscriptionEndDate).toLocaleDateString('tr-TR'));
-        closePlusModal();
-        checkProAuthState(); // Arayüzü yeniden çizdir
-      } else {
-        alert(data.message || 'Plus tanımlama işlemi başarısız oldu.');
-      }
-    } catch (err) {
-      alert("Bağlantı hatası oluştu: " + err.message);
+      // 2. PayTR Token'ını iFrame URL'sine göm ve ödeme modalını aç
+      document.getElementById('paytrIframe').src = "https://www.paytr.com/odeme/guvenli/" + data.token;
+      document.getElementById('paymentModal').classList.remove('hidden');
+    } else {
+      alert(data.message || 'Ödeme sistemi başlatılamadı. Lütfen tekrar deneyin.');
     }
+  } catch (err) {
+    alert("Sunucu ile iletişim kurulamadı: " + err.message);
+  } finally {
+    // Butonu eski haline getir
+    btn.innerHTML = originalText;
+    btn.disabled = false;
   }
-}// ==========================================
+}
+
+// YENİ EKLENEN: PayTR iFrame'inden Dönen "Başarılı / Başarısız" Sinyallerini Dinleme
+window.addEventListener('message', function(event) {
+    // Güvenlik: Sadece beklediğimiz sinyalleri yakala
+    if (event.data.status === 'success') {
+        document.getElementById('paymentModal').classList.add('hidden');
+        alert("Tebrikler! Ödemeniz başarıyla tamamlandı. Plus yetkileriniz hesabınıza tanımlandı.");
+        
+        // Veritabanı arkaplanda (Webhook ile) güncellendiği için, güncel paketi sunucudan almak adına sayfayı yeniliyoruz
+        window.location.reload(); 
+    } 
+    else if (event.data.status === 'fail') {
+        document.getElementById('paymentModal').classList.add('hidden');
+        alert("Ödeme işlemi başarısız oldu veya tarafınızca iptal edildi. Lütfen tekrar deneyiniz.");
+    }
+});
+
 // MÜŞTERİ PANELİ GİRİŞ İŞLEMLERİ
 // ==========================================
 async function openOwnerLoginModal() {
