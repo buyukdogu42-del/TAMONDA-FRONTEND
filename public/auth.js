@@ -494,8 +494,8 @@ window.openAdminEditProModal = function(phone) {
         </div>
       </div>
 
-      <!-- Plus Tanımlama Alanı -->
-      <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 shadow-sm">
+      <!-- Plus Tanımlama Alanı (Mevcut) -->
+      <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 shadow-sm mt-3">
         <label class="text-xs font-black text-indigo-900 block mb-2"><i class="fa-solid fa-gift mr-1"></i>Yeni Plus Paket Tanımla</label>
         <div class="grid grid-cols-3 gap-2 items-end">
           <div>
@@ -512,6 +512,16 @@ window.openAdminEditProModal = function(phone) {
           </div>
           <button type="button" onclick="assignPlusToPro('${phone}')" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold shadow-md transition">Tanımla</button>
         </div>
+      </div>
+
+      <!-- YENİ EKLENEN: Saha Personeli Atama Kutusu -->
+      <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 shadow-sm mt-3 flex justify-between items-center">
+        <div>
+            <label class="text-xs font-black text-emerald-900 block"><i class="fa-solid fa-briefcase mr-1"></i>Saha Personeli (Promoter) Yetkisi</label>
+            <div class="text-[10px] text-emerald-700 mt-0.5">Bu ustaya referans kodu üretip kayıt yetkisi verin.</div>
+        </div>
+        <button type="button" onclick="assignAdminPromoter('${phone}')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold shadow-md transition">Personel Yap</button>
+      </div>
       </div>
 
       <!-- İşlem Butonları -->
@@ -553,7 +563,7 @@ window.renderAdminProPagination = function(totalPages, currentPage) {
   
   paginationBox.innerHTML = pagHtml;
 };
-function renderAdminDashboard() {
+window.renderAdminDashboard = function() {
   var c = document.getElementById('demandListContainer');
   if (!c) return;
   c.innerHTML = '';
@@ -561,75 +571,84 @@ function renderAdminDashboard() {
   var adminBox = document.createElement('div');
   adminBox.className = 'bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-left';
 
-  // --- SEKMELER (TABS) ÜST KISMI ---
+  // --- SEKMELER (TABS) ÜST KISMI (3. Sekme Eklendi) ---
   var tabsHTML = '<div class="flex border-b border-slate-200 mb-4">' +
                  '<button id="adminTabProsBtn" onclick="switchAdminTab(\'pros\')" class="px-4 py-2 text-sm font-bold text-orange-600 border-b-2 border-orange-600 transition">Usta Yönetimi</button>' +
                  '<button id="adminTabDemandsBtn" onclick="switchAdminTab(\'demands\')" class="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition">İlan Yönetimi</button>' +
+                 '<button id="adminTabPromoterBtn" onclick="switchAdminTab(\'promoter\')" class="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition">Saha Personelleri</button>' +
                  '</div>' +
                  '<div id="adminTabContentPros"></div>' +
-                 '<div id="adminTabContentDemands" class="hidden"></div>';
+                 '<div id="adminTabContentDemands" class="hidden"></div>' +
+                 '<div id="adminTabContentPromoter" class="hidden"></div>';
 
   adminBox.innerHTML = tabsHTML;
   c.appendChild(adminBox);
 
-  // ==========================================
-// USTA YÖNETİMİ SEKTÖR LİSTESİ (categorySchemas.js Uyumlu)
-// ==========================================
+  // Kategori Listesi (Ortak Kullanım İçin)
   var catOptionsHTML = '<option value="">Tüm Sektörler</option>';
   var catOptions = [
-    {k:'nakliyat', t:'Nakliyat'}, 
-    {k:'agir_nakliye', t:'Ağır Nakliye'},
-    {k:'temizlik', t:'Temizlik'}, 
-    {k:'oto', t:'Oto Servis'},
-    {k:'organizasyon', t:'Organizasyon'}, 
-    {k:'tamir', t:'Tamir & Servis'},
-    {k:'tadilat', t:'Tadilat'}, 
-    {k:'ders', t:'Özel Ders'},
-    {k:'medya', t:'Foto & Video'}, 
-    {k:'pet', t:'Evcil Hayvan'},
-    {k:'saglik', t:'Sağlık'}, 
-    {k:'spor', t:'Spor & Fitness'},
-    {k:'guzellik', t:'Güzellik'}, 
-    {k:'dijital', t:'Dijital & Yazılım'},
-    {k:'danismanlik', t:'Danışmanlık'}
+    {k:'nakliyat', t:'Nakliyat'}, {k:'agir_nakliye', t:'Ağır Nakliye'}, {k:'temizlik', t:'Temizlik'}, 
+    {k:'oto', t:'Oto Servis'}, {k:'organizasyon', t:'Organizasyon'}, {k:'tamir', t:'Tamir & Servis'},
+    {k:'tadilat', t:'Tadilat'}, {k:'ders', t:'Özel Ders'}, {k:'medya', t:'Foto & Video'}, 
+    {k:'pet', t:'Evcil Hayvan'}, {k:'saglik', t:'Sağlık'}, {k:'spor', t:'Spor & Fitness'},
+    {k:'guzellik', t:'Güzellik'}, {k:'dijital', t:'Dijital & Yazılım'}, {k:'danismanlik', t:'Danışmanlık'}
   ];
   catOptions.forEach(function(co) { catOptionsHTML += '<option value="' + co.k + '">' + co.t + '</option>'; });
 
+  // 1. USTA YÖNETİMİ
   var proHtmlContent = '<div class="flex justify-between items-center border-b border-slate-100 pb-3">' +
                        '<h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-users-gear text-orange-600 mr-2"></i>Kayıtlı Usta Yönetim Paneli</h3>' +
                        '<div class="flex items-center gap-2">' +
                        '<button type="button" onclick="openBulkWaModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition flex items-center gap-1"><i class="fa-brands fa-whatsapp"></i>Toplu Mesaj</button>' +
                        '<button type="button" onclick="window.location.href=\`${window.API_BASE_URL}/api/auth/export-pros-csv\`" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition flex items-center gap-1"><i class="fa-solid fa-file-excel"></i>Excel İndir</button>' +
-                       '<button type="button" onclick="resetDatabase()" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition"><i class="fa-solid fa-trash mr-1"></i>Sıfırla</button>' +
-                       '<span id="adminTotalProCount" class="text-xs bg-slate-900 text-white px-2.5 py-1 rounded-full font-bold">Toplam Usta: ' + registeredPros.length + '</span>' +
+                       '<button type="button" onclick="triggerAdminReset(\'pros\')" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition"><i class="fa-solid fa-trash mr-1"></i>Sıfırla</button>' +
+                       '<span id="adminTotalProCount" class="text-xs bg-slate-900 text-white px-2.5 py-1 rounded-full font-bold">Toplam Usta: 0</span>' +
                        '</div></div>' +
-                       '<div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4 mt-3">' +
-                       '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Telefon ile Ara</label><div class="relative"><input type="text" id="adminSearchPhone" placeholder="Örn: 532..." oninput="filterAdminPros()" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><i class="fa-solid fa-phone absolute left-2 top-2.5 text-slate-400 text-[10px]"></i></div></div>' +
-                       '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">İl ile Filtrele</label><div class="relative"><input type="text" id="adminSearchCity" placeholder="Örn: İstanbul" oninput="filterAdminPros()" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><i class="fa-solid fa-map-location-dot absolute left-2 top-2.5 text-slate-400 text-[10px]"></i></div></div>' +
-                       '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Sektör Filtresi</label><select id="adminSearchCat" onchange="filterAdminPros()" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">' + catOptionsHTML + '</select></div>' +
-                       '</div><div id="adminProListContainer" class="space-y-3 max-h-[600px] overflow-y-auto pr-1"></div>';                       
+                       '<div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-5 gap-3 mb-4 mt-3">' + // grid-cols-5 olarak güncellendi
+                       '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Telefon ile Ara</label><div class="relative"><input type="text" id="adminSearchPhone" placeholder="Örn: 532..." oninput="loadAdminProsFromDB(1)" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><i class="fa-solid fa-phone absolute left-2 top-2.5 text-slate-400 text-[10px]"></i></div></div>' +
+                       '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">TC Kimlik No</label><div class="relative"><input type="text" id="adminSearchTcNo" placeholder="Örn: 123456..." oninput="loadAdminProsFromDB(1)" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><i class="fa-solid fa-id-card absolute left-2 top-2.5 text-slate-400 text-[10px]"></i></div></div>' + // TC Filtresi eklendi
+                       '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">İl ile Filtrele</label><div class="relative"><input type="text" id="adminSearchCity" placeholder="Örn: İstanbul" oninput="handleAdminCityAutocomplete()" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><i class="fa-solid fa-map-location-dot absolute left-2 top-2.5 text-slate-400 text-[10px]"></i><div id="adminCityDropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto"></div></div></div>' +
+                       '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Sektör Filtresi</label><select id="adminSearchCat" onchange="loadAdminProsFromDB(1)" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">' + catOptionsHTML + '</select></div>' +
+                       '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Üyelik Tipi</label><select id="adminSearchPackage" onchange="loadAdminProsFromDB(1)" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><option value="">Tümü</option><option value="plus">Plus Ustalar</option><option value="normal">Standart Ustalar</option></select></div>' + // Üyelik Tipi Filtresi eklendi
+                       '</div><div id="adminProListContainer" class="space-y-3 max-h-[600px] overflow-y-auto pr-1"></div><div id="adminProPagination" class="flex justify-center items-center gap-1 mt-4 pb-2"></div>';                       
   document.getElementById('adminTabContentPros').innerHTML = proHtmlContent;
 
-  // --- 2. İLAN YÖNETİMİ İÇERİĞİ (Yeni Modül) ---
+  // 2. İLAN YÖNETİMİ
   var demandHtmlContent = '<div class="flex justify-between items-center border-b border-slate-100 pb-3">' +
                           '<h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-list-check text-orange-600 mr-2"></i>İlan Yönetim & Moderasyon</h3>' +
                           '<div class="flex items-center gap-2">' +
+                          '<button type="button" onclick="downloadFilteredDemandsCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition flex items-center gap-1"><i class="fa-solid fa-file-csv"></i> Excel/CSV İndir</button>' +
+                          '<button type="button" onclick="triggerAdminReset(\'demands\')" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition"><i class="fa-solid fa-bomb mr-1"></i>Tümünü Sıfırla</button>' +
                           '<button id="btnAdminDeleteDemands" onclick="deleteSelectedAdminDemands()" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded-md text-xs font-bold shadow transition opacity-50 cursor-not-allowed" disabled><i class="fa-solid fa-trash mr-1"></i>Seçilenleri Sil (0)</button>' +
                           '<span id="adminDemandTotalCount" class="text-xs bg-slate-900 text-white px-2.5 py-1 rounded-full font-bold">Toplam İlan: 0</span>' +
                           '</div></div>' +
-                          '<div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-4 gap-3 mb-4 mt-3">' +
+                          '<div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-6 gap-3 mb-4 mt-3">' + // grid-cols-6 olarak güncellendi
                           '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Müşteri Tel</label><input type="text" id="adminFilterDemandPhone" placeholder="Örn: 532..." class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"></div>' +
                           '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Sektör</label><select id="adminFilterDemandCat" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">' + catOptionsHTML + '</select></div>' +
+                          '<div class="relative"><label class="text-[10px] font-bold text-slate-500 block mb-1">İl</label><input type="text" id="adminFilterDemandCity" placeholder="Örn: Sakarya" autocomplete="off" onkeyup="handleDemandCityAutocomplete()" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><div id="demandCityDropdown" class="absolute z-50 w-full bg-white border border-slate-200 shadow-lg rounded-lg mt-1 hidden max-h-48 overflow-y-auto"></div></div>' + // İl Filtresi eklendi
+                          '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">İlçe</label><select id="adminFilterDemandDistrict" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white cursor-pointer"><option value="">Tüm İlçeler</option></select></div>' + // İlçe Filtresi eklendi
                           '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Başlangıç Tarihi</label><input type="date" id="adminFilterDemandStart" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"></div>' +
                           '<div><label class="text-[10px] font-bold text-slate-500 block mb-1">Bitiş Tarihi</label><div class="flex gap-2"><input type="date" id="adminFilterDemandEnd" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><button onclick="loadAdminDemandsFromDB()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm">Filtrele</button></div></div>' +
                           '</div>' +
                           '<div class="w-full overflow-x-auto"><table class="w-full text-left text-xs text-slate-600"><thead class="bg-slate-100 text-[10px] uppercase text-slate-500 font-black"><tr><th class="p-3 w-10"><input type="checkbox" id="adminDemandSelectAll" onchange="toggleAllAdminDemands(this)"></th><th class="p-3">Tarih</th><th class="p-3">Kategori</th><th class="p-3">Müşteri / Tel</th><th class="p-3">Konum</th><th class="p-3 w-12 text-center">İşlem</th></tr></thead><tbody id="adminDemandTableBody"></tbody></table></div>';
-  
   document.getElementById('adminTabContentDemands').innerHTML = demandHtmlContent;
 
-  loadAdminProsFromDB();
-}
+  // 3. YENİ: SAHA PERSONELİ (PROMOTER) YÖNETİMİ
+  var promoterHtmlContent = '<div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">' +
+                            '<h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-briefcase text-orange-600 mr-2"></i>Saha Personelleri (Promoter) & Referans Takibi</h3>' +
+                            '</div>' +
+                            '<div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 mb-4 flex gap-2 items-end">' +
+                            '<div class="flex-1"><label class="text-[10px] font-bold text-indigo-800 block mb-1">Mevcut Ustayı Saha Personeli (Promoter) Yap</label><input type="text" id="adminNewPromoterPhone" placeholder="Telefon (Örn: 532...)" class="w-full text-xs p-2 rounded-lg border border-indigo-200 focus:border-indigo-500 focus:outline-none bg-white font-mono"></div>' +
+                            '<button type="button" onclick="assignAdminPromoter()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-bold shadow transition flex items-center gap-1"><i class="fa-solid fa-user-plus"></i> Ata ve Kod Üret</button>' +
+                            '</div>' +
+                            '<div class="bg-slate-50 p-3 rounded-xl border border-slate-200 mb-4">' +
+                            '<div class="relative"><input type="text" id="adminFilterPromoter" placeholder="İsim, Telefon veya Koda göre filtrele... (Örn: K298)" oninput="filterPromoterTable()" class="w-full text-xs p-2.5 pl-9 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white"><i class="fa-solid fa-search absolute left-3 top-3 text-slate-400"></i></div>' +
+                            '</div>' +
+                            '<div class="w-full overflow-x-auto"><table class="w-full text-left text-xs text-slate-600"><thead class="bg-slate-100 text-[10px] uppercase text-slate-500 font-black"><tr><th class="p-3">Adı / Telefon</th><th class="p-3 text-center">Referans Kodu</th><th class="p-3 text-center">Getirdiği Usta</th><th class="p-3 text-center">Plus\'a Geçen</th><th class="p-3 text-center">İşlem</th></tr></thead><tbody id="adminPromoterTableBody"><tr><td colspan="5" class="p-4 text-center text-slate-400 italic text-xs">Veriler yükleniyor...</td></tr></tbody></table></div>';
+  document.getElementById('adminTabContentPromoter').innerHTML = promoterHtmlContent;
 
+  loadAdminProsFromDB(1);
+}
 // ADMİN İŞLEMLERİ (Artık Telefon Numarası Üzerinden Sorguluyor)
 async function deletePro(phone) {
   if (confirm('DİKKAT: Bu ustayı veritabanından kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz!')) {
@@ -656,26 +675,38 @@ async function deletePro(phone) {
 // ==========================================
 var adminLoadedDemands = [];
 
-function switchAdminTab(tab) {
+window.switchAdminTab = function(tab) {
   var btnPros = document.getElementById('adminTabProsBtn');
   var btnDemands = document.getElementById('adminTabDemandsBtn');
+  var btnPromoter = document.getElementById('adminTabPromoterBtn'); 
   var contentPros = document.getElementById('adminTabContentPros');
   var contentDemands = document.getElementById('adminTabContentDemands');
+  var contentPromoter = document.getElementById('adminTabContentPromoter'); 
+
+  const activeBtnClass = 'px-4 py-2 text-sm font-bold text-orange-600 border-b-2 border-orange-600 transition';
+  const passiveBtnClass = 'px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition';
+
+  if(btnPros) btnPros.className = passiveBtnClass;
+  if(btnDemands) btnDemands.className = passiveBtnClass;
+  if(btnPromoter) btnPromoter.className = passiveBtnClass;
+  
+  if(contentPros) contentPros.classList.add('hidden');
+  if(contentDemands) contentDemands.classList.add('hidden');
+  if(contentPromoter) contentPromoter.classList.add('hidden');
 
   if (tab === 'pros') {
-    btnPros.className = 'px-4 py-2 text-sm font-bold text-orange-600 border-b-2 border-orange-600 transition';
-    btnDemands.className = 'px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition';
-    contentPros.classList.remove('hidden');
-    contentDemands.classList.add('hidden');
-  } else {
-    btnPros.className = 'px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition';
-    btnDemands.className = 'px-4 py-2 text-sm font-bold text-orange-600 border-b-2 border-orange-600 transition';
-    contentPros.classList.add('hidden');
-    contentDemands.classList.remove('hidden');
-    loadAdminDemandsFromDB(); // İlan sekmesine geçildiğinde verileri otomatik çek
+    if(btnPros) btnPros.className = activeBtnClass;
+    if(contentPros) contentPros.classList.remove('hidden');
+  } else if (tab === 'demands') {
+    if(btnDemands) btnDemands.className = activeBtnClass;
+    if(contentDemands) contentDemands.classList.remove('hidden');
+    loadAdminDemandsFromDB(); 
+  } else if (tab === 'promoter') { 
+    if(btnPromoter) btnPromoter.className = activeBtnClass;
+    if(contentPromoter) contentPromoter.classList.remove('hidden');
+    loadAdminPromoterReport(); // Sekme açıldığında verileri otomatik çeker
   }
-}
-
+};
 async function loadAdminDemandsFromDB(page = 1) {
   var phone = document.getElementById('adminFilterDemandPhone') ? document.getElementById('adminFilterDemandPhone').value.trim() : '';
   var cat = document.getElementById('adminFilterDemandCat') ? document.getElementById('adminFilterDemandCat').value : '';
@@ -1076,6 +1107,10 @@ async function handleProRegister() {
   
   var bPhone = document.getElementById('regPhone').value.trim();
 
+  // YENİ EKLENEN: Referans Kodu (Opsiyonel olduğu için boş ise hata vermeyecek şekilde alıyoruz)
+  var refCodeInput = document.getElementById('regReferralCode');
+  var refCode = refCodeInput ? refCodeInput.value.trim() : '';
+
   if (!fName || !lName || !tc || !bYear) {
     alert('Lütfen Ad, Soyad, TC Kimlik No ve Doğum Yılı alanlarını eksiksiz doldurun.');
     return;
@@ -1109,7 +1144,8 @@ async function handleProRegister() {
           categoryKey: catKey,
           categoryTitle: catTitle,
           city: c,
-          district: d
+          district: d,
+          referralCode: refCode // YENİ EKLENEN: Referans kodunu backend'e gönderiyoruz
         })
       });
       
@@ -1170,7 +1206,7 @@ async function handleProRegister() {
       console.error(error);
     }
   }
-}  
+}
 function getRandomWelcomeMessage(categoryKey, ustaFullName) {
   const tamIsim = ustaFullName || 'Büyük Usta';
 
@@ -1553,7 +1589,130 @@ window.addEventListener('message', function(event) {
         alert("Ödeme işlemi başarısız oldu veya tarafınızca iptal edildi. Lütfen tekrar deneyiniz.");
     }
 });
+// --- YENİ EKLENEN SAHA PERSONELİ FRONTEND FONKSİYONLARI ---
 
+window.assignAdminPromoter = async function(phoneArg) {
+    var phoneInput = document.getElementById('adminNewPromoterPhone');
+    var phone = phoneArg || (phoneInput ? phoneInput.value.trim() : '');
+    
+    if(!phone || phone.length < 10) {
+        alert("Lütfen geçerli bir telefon numarası giriniz.");
+        return;
+    }
+
+    try {
+        var token = localStorage.getItem('tamonda_admin_token');
+        // DÜZELTME: /api/admin/ yerine /api/auth/admin/ olarak güncellendi
+        const res = await fetch(`${window.API_BASE_URL}/api/auth/admin/promoter/assign`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ targetPhone: phone })
+        });
+        
+        const data = await res.json();
+        if(data.success) {
+            alert(`Saha personeli başarıyla atandı!\nÜretilen Referans Kodu: ${data.referralCode}`);
+            if(phoneInput) phoneInput.value = '';
+            
+            var editModal = document.getElementById('adminEditProModal');
+            if (editModal && !editModal.classList.contains('hidden')) {
+                editModal.classList.add('hidden');
+            }
+            
+            switchAdminTab('promoter');
+        } else {
+            alert("Hata: " + data.message);
+        }
+    } catch(err) {
+        alert("Sunucu bağlantı hatası.");
+        console.error(err);
+    }
+};
+
+window.adminLoadedPromoters = []; // Verileri filtrelemek için hafızada tutuyoruz
+
+window.loadAdminPromoterReport = async function() {
+    var tbody = document.getElementById('adminPromoterTableBody');
+    if(!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400 italic text-xs"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Rapor çekiliyor...</td></tr>';
+
+    try {
+        var token = localStorage.getItem('tamonda_admin_token');
+        const res = await fetch(`${window.API_BASE_URL}/api/auth/admin/promoter/report`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        
+        const data = await res.json();
+        if(data.success) {
+            window.adminLoadedPromoters = data.report || [];
+            renderPromoterTable(window.adminLoadedPromoters);
+        } else {
+            tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-500 text-xs">Rapor çekilemedi.</td></tr>';
+        }
+    } catch(err) {
+        tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-500 text-xs">Bağlantı hatası.</td></tr>';
+    }
+};
+
+window.renderPromoterTable = function(dataArray) {
+    var tbody = document.getElementById('adminPromoterTableBody');
+    if(!tbody) return;
+
+    if(!dataArray || dataArray.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400 italic text-xs">Kriterlere uygun saha personeli bulunamadı.</td></tr>';
+        return;
+    }
+
+    var html = '';
+    dataArray.forEach(function(p) {
+        html += `
+            <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
+                <td class="p-3">
+                    <div class="font-bold text-slate-700">${p.name}</div>
+                    <div class="text-[10px] text-slate-400">${p.phone}</div>
+                </td>
+                <td class="p-3 text-center">
+                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-lg font-black text-sm tracking-widest">${p.referralCode}</span>
+                </td>
+                <td class="p-3 text-center">
+                    <span class="font-bold text-slate-700 text-sm">${p.totalPros}</span>
+                </td>
+                <td class="p-3 text-center">
+                    <span class="font-bold text-emerald-600 text-sm">${p.plusPros}</span>
+                </td>
+                <td class="p-3 text-center">
+                    <button type="button" onclick="openEarningsModal('${p.id}')" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold shadow transition flex items-center justify-center gap-1 mx-auto">
+                        <i class="fa-solid fa-wallet"></i> Detay / Öde
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+};
+
+// Klavyeden her tuşa basıldığında anında filtreleyen fonksiyon
+window.filterPromoterTable = function() {
+    var keyword = document.getElementById('adminFilterPromoter').value.trim().toLocaleLowerCase('tr');
+    
+    if(!keyword) {
+        renderPromoterTable(window.adminLoadedPromoters);
+        return;
+    }
+
+    var filtered = window.adminLoadedPromoters.filter(function(p) {
+        var matchName = p.name && p.name.toLocaleLowerCase('tr').includes(keyword);
+        var matchPhone = p.phone && p.phone.includes(keyword);
+        var matchCode = p.referralCode && p.referralCode.toLocaleLowerCase('tr').includes(keyword);
+        
+        return matchName || matchPhone || matchCode;
+    });
+
+    renderPromoterTable(filtered);
+};
 // MÜŞTERİ PANELİ GİRİŞ İŞLEMLERİ
 // ==========================================
 async function openOwnerLoginModal() {

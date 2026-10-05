@@ -39,211 +39,47 @@
 
   <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6">
 
-    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-      <div>
-        <h1 class="text-lg font-black text-slate-900">Sistem Yöneticisi (Admin)</h1>
-        <p class="text-xs font-bold text-orange-600 mt-0.5">Tam Yetkili Sistem Yöneticisi</p>
-      </div>
-      <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-xl">
-        <i class="fa-solid fa-user-shield"></i>
-      </div>
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+    <div>
+      <h1 class="text-lg font-black text-slate-900">Sistem Yöneticisi (Admin)</h1>
+      <p class="text-xs font-bold text-orange-600 mt-0.5">Tam Yetkili Sistem Yöneticisi</p>
     </div>
+    <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-xl">
+      <i class="fa-solid fa-user-shield"></i>
+    </div>
+  </div>
 
-    <!-- Admin Paneli Ana Konteyner -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-left" id="demandListContainer">
+  <!-- Admin Paneli Ana Konteyner (app.js tarafından dinamik doldurulur) -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-left" id="demandListContainer"></div>
+
+  <!-- YENİ EKLENEN: MUHASEBE / HAK EDİŞ MODALI -->
+  <div id="adminEarningsModal" class="fixed inset-0 bg-black/70 hidden z-[90] flex items-center justify-center p-4">
+    <div class="bg-slate-50 rounded-2xl max-w-3xl w-full p-6 shadow-2xl relative text-left flex flex-col max-h-[90vh]">
+      <button type="button" onclick="document.getElementById('adminEarningsModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+      <h3 class="text-lg font-black text-slate-900 mb-4 border-b border-slate-200 pb-2 flex items-center justify-between">
+         <span><i class="fa-solid fa-wallet text-emerald-500 mr-2"></i>Muhasebe & Hak Ediş Yönetimi</span>
+         <span id="earningsModalProName" class="text-sm bg-slate-200 px-3 py-1 rounded-lg text-slate-700">Personel Adı</span>
+      </h3>
       
-      <!-- Sekmeler (Tabs) -->
-      <div class="flex border-b border-slate-200 mb-4">
-        <button id="adminTabProsBtn" onclick="switchAdminTab('pros')" class="px-4 py-2 text-sm font-bold text-orange-600 border-b-2 border-orange-600 transition">Usta Yönetimi</button>
-        <button id="adminTabDemandsBtn" onclick="switchAdminTab('demands')" class="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition">İlan Yönetimi</button>
+      <!-- Filtre ve Excel Butonu -->
+      <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-200 shadow-sm mb-4">
+         <select id="earningsFilterStatus" onchange="filterEarningsTable()" class="text-xs p-2 rounded-lg border border-slate-300 focus:outline-none bg-slate-50 font-bold">
+            <option value="all">Tüm Hak Edişler</option>
+            <option value="pending" selected>Bekleyenler (Ödenmeyenler)</option>
+            <option value="paid">Ödenenler</option>
+         </select>
+         <button type="button" onclick="exportEarningsCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow transition flex items-center gap-1">
+           <i class="fa-solid fa-file-excel"></i> Excel Olarak İndir
+         </button>
       </div>
 
-      <!-- 1. USTA YÖNETİMİ SEKME İÇERİĞİ -->
-      <div id="adminTabContentPros">
-        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-users-gear text-orange-600 mr-2"></i>Kayıtlı Usta Yönetim Paneli</h3>
-          
-          <!-- DÜZELTİLDİ: Mükerrer kopya silindi, tek bir buton grubu bırakıldı -->
-          <div class="flex items-center gap-2">
-            <button type="button" onclick="openBulkWaModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition flex items-center gap-1">
-              <i class="fa-brands fa-whatsapp"></i>Toplu Mesaj
-            </button>
-            <button type="button" onclick="window.location.href=`${window.API_BASE_URL}/api/auth/export-pros-csv`" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition flex items-center gap-1">
-              <i class="fa-solid fa-file-excel"></i>Excel/CSV İndir
-            </button>
-            <button type="button" onclick="triggerAdminReset('pros')" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition">
-  <i class="fa-solid fa-trash mr-1"></i>Sıfırla
-</button>
-<span id="adminTotalProCount" class="text-xs bg-slate-900 text-white px-2.5 py-1 rounded-full font-bold">Toplam Usta: 0</span>
-          </div>
-        </div>
-
-        <!-- YENİ: 5'li Gelişmiş Filtre Çubuğu (Grid 5) -->
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-5 gap-3 mb-4 mt-3">
-          
-          <!-- 1. Telefon Filtresi -->
-          <div>
-            <label class="text-[10px] font-bold text-slate-500 block mb-1">Telefon ile Ara</label>
-            <div class="relative">
-              <input type="text" id="adminSearchPhone" placeholder="Örn: 532..." oninput="loadAdminProsFromDB(1)" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-              <i class="fa-solid fa-phone absolute left-2 top-2.5 text-slate-400 text-[10px]"></i>
-            </div>
-          </div>
-
-          <!-- 2. TC Kimlik No Filtresi (YENİ) -->
-          <div>
-            <label class="text-[10px] font-bold text-slate-500 block mb-1">TC Kimlik No</label>
-            <div class="relative">
-              <input type="text" id="adminSearchTcNo" placeholder="Örn: 123456..." oninput="loadAdminProsFromDB(1)" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-              <i class="fa-solid fa-id-card absolute left-2 top-2.5 text-slate-400 text-[10px]"></i>
-            </div>
-          </div>
-
-          <!-- 3. İl Filtresi -->
-          <div>
-            <label class="text-[10px] font-bold text-slate-500 block mb-1">İl ile Filtrele</label>
-            <div class="relative">
-              <input type="text" id="adminSearchCity" placeholder="Örn: İstanbul" oninput="handleAdminCityAutocomplete()" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-              <i class="fa-solid fa-map-location-dot absolute left-2 top-2.5 text-slate-400 text-[10px]"></i>
-              <div id="adminCityDropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-48 overflow-y-auto"></div>
-            </div>
-          </div>
-
-          <!-- 4. Sektör Filtresi (Tüm kategoriler korundu) -->
-          <div>
-            <label class="text-[10px] font-bold text-slate-500 block mb-1">Sektör Filtresi</label>
-            <select id="adminSearchCat" onchange="loadAdminProsFromDB(1)" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-              <option value="">Tüm Sektörler</option>
-              <option value="nakliyat">Ev & Ofis Nakliyatı</option>
-              <option value="agir_nakliye">Ağır Nakliye & Tır</option>
-              <option value="temizlik">Temizlik Hizmetleri</option>
-              <option value="oto">Oto & Araç Servisi</option>
-              <option value="organizasyon">Organizasyon</option>
-              <option value="tamir">Tamir & Servis</option>
-              <option value="tadilat">Tadilat & Dekorasyon</option>
-              <option value="ders">Özel Ders & Eğitim</option>
-              <option value="medya">Fotoğraf & Video</option>
-              <option value="pet">Evcil Hayvan Hizmetleri</option>
-              <option value="saglik">Sağlık & Terapi</option>
-              <option value="spor">Spor & Fitness</option>
-              <option value="guzellik">Güzellik & Bakım</option>
-              <option value="dijital">Dijital & Yazılım</option>
-              <option value="danismanlik">Özel Danışmanlık</option>
-            </select>
-          </div>
-
-          <!-- 5. Üyelik Tipi Filtresi (YENİ) -->
-          <div>
-            <label class="text-[10px] font-bold text-slate-500 block mb-1">Üyelik Tipi</label>
-            <select id="adminSearchPackage" onchange="loadAdminProsFromDB(1)" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-              <option value="">Tümü</option>
-              <option value="plus">Plus Ustalar</option>
-              <option value="normal">Standart Ustalar</option>
-            </select>
-          </div>
-        </div>
-
-        <div id="adminProListContainer" class="space-y-3 max-h-[600px] overflow-y-auto pr-1"></div>
-        
-        <!-- YENİ: Sayfalama (Pagination) Alanı -->
-        <div id="adminProPagination" class="flex justify-center items-center gap-1 mt-4 pb-2"></div>
+      <div class="overflow-y-auto flex-1 pr-2 no-scrollbar" id="earningsListContainer">
+          <!-- Kayıtlar JS ile buraya basılacak -->
       </div>
-      <!-- 2. İLAN YÖNETİMİ SEKME İÇERİĞİ -->
-      <div id="adminTabContentDemands" class="hidden">
-        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-black text-slate-900"><i class="fa-solid fa-list-check text-orange-600 mr-2"></i>İlan Yönetim & Moderasyon</h3>
-          <div class="flex items-center gap-2">
-            <!-- YENİ EKLENEN: Filtrelenmiş İlanları CSV Olarak İndirme Butonu -->
-            <button type="button" onclick="downloadFilteredDemandsCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition flex items-center gap-1">
-              <i class="fa-solid fa-file-csv"></i> Excel/CSV İndir
-            </button>
-            
-           <!-- YENİ EKLENEN: Tüm İlanları Sıfırlama Butonu (Seçilenleri Sil'in hemen solu/öncesi) -->
-            <button type="button" onclick="triggerAdminReset('demands')" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow transition">
-              <i class="fa-solid fa-bomb mr-1"></i>Tümünü Sıfırla
-            </button>
-
-            <button id="btnAdminDeleteDemands" onclick="deleteSelectedAdminDemands()" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded-md text-xs font-bold shadow transition opacity-50 cursor-not-allowed" disabled>
-              <i class="fa-solid fa-trash mr-1"></i>Seçilenleri Sil (0)
-            </button>
-            <span id="adminDemandTotalCount" class="text-xs bg-slate-900 text-white px-2.5 py-1 rounded-full font-bold">Toplam İlan: 0</span>
-        </div>
     </div>
-    
-    <!-- Filtre Kutuları Alanı (grid-cols-6 olarak güncellendi) -->
-    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-6 gap-3 mb-4 mt-3">
-      <div>
-        <label class="text-[10px] font-bold text-slate-500 block mb-1">Müşteri Tel</label>
-        <input type="text" id="adminFilterDemandPhone" placeholder="Örn: 532..." class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-      </div>
-      <div>
-        <label class="text-[10px] font-bold text-slate-500 block mb-1">Sektör (Ana Kategori)</label>
-        <select id="adminFilterDemandCat" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-          <option value="">Tüm Sektörler</option>
-          <option value="nakliyat">Nakliyat</option>
-          <option value="agir_nakliye">Ağır Nakliye</option>
-          <option value="temizlik">Temizlik</option>
-          <option value="oto">Oto Servis</option>
-          <option value="organizasyon">Organizasyon</option>
-          <option value="tamir">Tamir & Servis</option>
-          <option value="tadilat">Tadilat</option>
-          <option value="ders">Özel Ders</option>
-          <option value="medya">Foto & Video</option>
-          <option value="pet">Evcil Hayvan</option>
-          <option value="saglik">Sağlık</option>
-          <option value="spor">Spor & Fitness</option>
-          <option value="guzellik">Güzellik</option>
-          <option value="dijital">Dijital & Yazılım</option>
-          <option value="danismanlik">Danışmanlık</option>
-        </select>
-      </div>
+  </div>
 
-      <!-- YENİ EKLENEN İL FİLTRESİ (Açılır Menülü) -->
-      <div class="relative">
-        <label class="text-[10px] font-bold text-slate-500 block mb-1">İl</label>
-        <input type="text" id="adminFilterDemandCity" placeholder="Örn: Sakarya" autocomplete="off" onkeyup="handleDemandCityAutocomplete()" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-        <div id="demandCityDropdown" class="absolute z-50 w-full bg-white border border-slate-200 shadow-lg rounded-lg mt-1 hidden max-h-48 overflow-y-auto"></div>
-      </div>
-
-      <!-- YENİ EKLENEN İLÇE FİLTRESİ (Okla Açılır Menü - Select) -->
-      <div>
-        <label class="text-[10px] font-bold text-slate-500 block mb-1">İlçe</label>
-        <select id="adminFilterDemandDistrict" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white cursor-pointer">
-          <option value="">Tüm İlçeler</option>
-        </select>
-      </div>
-      <div>
-            <label class="text-[10px] font-bold text-slate-500 block mb-1">Başlangıç Tarihi</label>
-            <input type="date" id="adminFilterDemandStart" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-          </div>
-          <div>
-            <label class="text-[10px] font-bold text-slate-500 block mb-1">Bitiş Tarihi</label>
-            <div class="flex gap-2">
-              <input type="date" id="adminFilterDemandEnd" class="w-full text-xs p-2 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-white">
-              <button onclick="loadAdminDemandsFromDB()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm">Filtrele</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="w-full overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-600">
-<thead class="bg-slate-100 text-[10px] uppercase text-slate-500 font-black">
-  <tr>
-    <th class="p-3 w-10"><input type="checkbox" id="adminDemandSelectAll" onchange="toggleAllAdminDemands(this)"></th>
-    <th class="p-3">Tarih</th>
-    <th class="p-3">Ana Kategori</th>
-    <th class="p-3">Alt Kategori</th>
-    <th class="p-3">Müşteri / Tel</th>
-    <th class="p-3">Konum</th>
-    <th class="p-3 w-12 text-center">İşlem</th>
-  </tr>
-</thead>            <tbody id="adminDemandTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-    <!-- Toplu WhatsApp Mesaj Modalı -->
+  <!-- Toplu WhatsApp Mesaj Modalı -->
   <div id="bulkWaModal" class="fixed inset-0 bg-black/70 hidden z-[60] flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative text-left">
       <button onclick="document.getElementById('bulkWaModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
@@ -258,7 +94,7 @@
       <div>
         <label class="block font-bold text-slate-700 text-xs mb-1">Mesaj İçeriği <span class="text-red-500">*</span></label>
         <textarea id="bulkWaMessage" rows="5" placeholder="Sayın ustamız, sistemimize yeni bir kampanya eklenmiştir..." class="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-emerald-500 bg-white resize-none"></textarea>
-        <p class="text-[10px] text-slate-500 mt-1">* Kalın yazmak için kelimenin başına ve sonuna yıldız (*) koyun.</p>
+        <p class="text-[10px] text-slate-500 mt-1">Kalın yazmak için kelimenin başına ve sonuna yıldız (*) koyun.</p>
       </div>
       
       <button id="btnSendBulkWa" onclick="executeBulkWhatsApp()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow-sm mt-2 flex items-center justify-center gap-2">
@@ -266,6 +102,7 @@
       </button>
     </div>
   </div>
+
   <!-- Admin OTP Sıfırlama Modalı -->
   <div id="adminResetOtpModal" class="fixed inset-0 bg-black/70 hidden z-[70] flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative text-center">
@@ -283,17 +120,17 @@
       </button>
     </div>
   </div>
+
   <!-- USTA DÜZENLEME MODALI -->
   <div id="adminEditProModal" class="fixed inset-0 bg-black/70 hidden z-[80] flex items-center justify-center p-4">
     <div class="bg-slate-50 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative text-left">
       <button type="button" onclick="document.getElementById('adminEditProModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
       <h3 class="text-lg font-black text-slate-900 mb-4 border-b border-slate-200 pb-2"><i class="fa-solid fa-user-pen text-orange-500 mr-2"></i>Usta Yönetim Kartı</h3>
-      
-      <!-- Düzenleme İçeriği Buraya JS ile Basılacak -->
       <div id="adminEditProModalContent"></div>
     </div>
   </div>
-  <!-- YENİ: ADMİN YORUM MODERASYON MODALI -->
+
+  <!-- ADMİN YORUM MODERASYON MODALI -->
   <div id="adminReviewsModal" class="fixed inset-0 bg-black/70 hidden z-[90] flex items-center justify-center p-4">
     <div class="bg-slate-50 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative text-left">
       <button type="button" onclick="document.getElementById('adminReviewsModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
@@ -302,7 +139,6 @@
          <span id="adminReviewProName" class="text-sm bg-slate-200 px-2 py-0.5 rounded text-slate-700 ml-2">Usta Adı</span>
       </h3>
       
-      <!-- Filtre Çubuğu -->
       <div class="flex gap-2 mb-4 bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
          <div class="relative flex-1">
             <input type="text" id="adminReviewKeyword" placeholder="Kelime ile ara..." oninput="filterAdminReviews()" class="w-full text-xs p-2 pl-7 rounded-lg border border-slate-300 focus:border-orange-500 focus:outline-none bg-slate-50">
@@ -318,19 +154,21 @@
          </select>
       </div>
 
-      <!-- Yorumların Basılacağı Liste -->
       <div id="adminReviewsListContainer" class="space-y-3 max-h-[400px] overflow-y-auto pr-1"></div>
     </div>
   </div>
-  </main>
+
+</main>
 
   <script src="data.js"></script>
   <script src="auth.js"></script>
   <script src="app.js"></script>
+  
   <script>
     window.onload = function() {
-      if (typeof loadAdminProsFromDB === 'function') {
-          loadAdminProsFromDB();
+      // Sayfa yüklendiğinde HTML iskeletinin içine sekmeleri ve tabloları çiz:
+      if (typeof renderAdminDashboard === 'function') {
+          renderAdminDashboard();
       }
     };
   </script>

@@ -1894,4 +1894,161 @@ window.cancelDemandProcess = function() {
     if (isConfirmed) {
         window.location.reload(); // İlan verilerini silmenin ve ana sayfaya dönmenin en güvenli yoludur
     }
+};// --- YENİ EKLENEN: MUHASEBE VE HAK EDİŞ YÖNETİMİ FONKSİYONLARI ---
+
+window.currentEarningsData = { promoterId: null, earnings: [] };
+
+window.openEarningsModal = async function(promoterId) {
+    var modal = document.getElementById('adminEarningsModal');
+    var container = document.getElementById('earningsListContainer');
+    var nameSpan = document.getElementById('earningsModalProName');
+    
+    if(modal) modal.classList.remove('hidden');
+    if(container) container.innerHTML = '<div class="text-center py-10 text-slate-400 text-xs"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-emerald-500"></i><br>Hak edişler yükleniyor...</div>';
+    
+    try {
+        var token = localStorage.getItem('tamonda_admin_token');
+        const res = await fetch(`${window.API_BASE_URL}/api/auth/admin/promoter/earnings/${promoterId}`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        
+        if(data.success) {
+            if(nameSpan) nameSpan.innerText = data.promoterName;
+            window.currentEarningsData = {
+                promoterId: promoterId,
+                earnings: data.earnings || []
+            };
+            
+            // Modal açıldığında filtreyi varsayılan olarak "Bekleyenler"e çek ve listele
+            var filterEl = document.getElementById('earningsFilterStatus');
+            if(filterEl) filterEl.value = 'pending';
+            filterEarningsTable();
+        } else {
+            container.innerHTML = '<div class="text-center py-6 text-red-500 text-xs">' + data.message + '</div>';
+        }
+    } catch(err) {
+        container.innerHTML = '<div class="text-center py-6 text-red-500 text-xs">Sunucu bağlantı hatası.</div>';
+    }
+};
+
+window.filterEarningsTable = function() {
+    var container = document.getElementById('earningsListContainer');
+    var filter = document.getElementById('earningsFilterStatus').value; // all, pending, paid
+    
+    var earnings = window.currentEarningsData.earnings || [];
+    var filtered = earnings.filter(function(e) {
+        if (filter === 'pending') return e.isPaid === false;
+        if (filter === 'paid') return e.isPaid === true;
+        return true; 
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="text-center py-8 text-slate-500 text-xs bg-white rounded-xl border border-slate-200">Bu kritere uygun kayıt bulunamadı.</div>';
+        return;
+    }
+
+    var html = '<div class="space-y-3">';
+    filtered.forEach(function(e) {
+        var dateStr = new Date(e.date).toLocaleDateString('tr-TR');
+        var statusBadge = e.isPaid 
+            ? '<span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-black"><i class="fa-solid fa-check mr-1"></i>Ödendi</span>'
+            : '<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-black"><i class="fa-solid fa-clock mr-1"></i>Bekliyor</span>';
+            
+        var payButton = !e.isPaid 
+            ? `<button onclick="payEarning('${e._id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold shadow transition"><i class="fa-solid fa-check-double mr-1"></i>Ödendi İşaretle</button>`
+            : `<div class="text-[10px] text-slate-400 font-bold"><i class="fa-solid fa-calendar-check mr-1"></i>${new Date(e.paidDate).toLocaleDateString('tr-TR')}</div>`;
+
+        html += `
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="font-bold text-slate-800 text-sm">${e.proName}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="text-[10px] text-slate-500 flex gap-2">
+                        <span><i class="fa-solid fa-phone text-slate-400 mr-1"></i>${e.proPhone}</span>
+                        <span><i class="fa-solid fa-box text-slate-400 mr-1"></i>${e.packageType}</span>
+                        <span><i class="fa-solid fa-calendar text-slate-400 mr-1"></i>${dateStr}</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <div class="text-[10px] text-slate-400 font-bold">Hak Ediş</div>
+                        <div class="text-lg font-black text-orange-600">${e.earnedAmount} TL</div>
+                    </div>
+                    <div>${payButton}</div>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+};
+
+window.payEarning = async function(earningId) {
+    if(!confirm("Bu hak edişin ödemesini personelin hesabına yaptığınızı onaylıyor musunuz?")) return;
+    
+    try {
+        var token = localStorage.getItem('tamonda_admin_token');
+        const res = await fetch(`${window.API_BASE_URL}/api/auth/admin/promoter/pay`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token 
+            },
+            body: JSON.stringify({ 
+                promoterId: window.currentEarningsData.promoterId, 
+                earningId: earningId 
+            })
+        });
+        const data = await res.json();
+        
+        if(data.success) {
+            // Başarılıysa veriyi yerel hafızada anında güncelle ve listeyi yeniden çiz
+            var earning = window.currentEarningsData.earnings.find(e => e._id === earningId);
+            if (earning) {
+                earning.isPaid = true;
+                earning.paidDate = new Date().toISOString();
+            }
+            filterEarningsTable();
+        } else {
+            alert("Hata: " + data.message);
+        }
+    } catch (err) {
+        alert("Bağlantı hatası.");
+    }
+};
+
+window.exportEarningsCSV = function() {
+    var filter = document.getElementById('earningsFilterStatus').value;
+    var earnings = window.currentEarningsData.earnings || [];
+    var filtered = earnings.filter(function(e) {
+        if (filter === 'pending') return e.isPaid === false;
+        if (filter === 'paid') return e.isPaid === true;
+        return true;
+    });
+
+    if (filtered.length === 0) {
+        alert("Dışa aktarılacak veri bulunamadı.");
+        return;
+    }
+
+    var csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // Türkçe karakter uyumluluğu için BOM
+    csvContent += "Usta Adi,Usta Telefon,Paket,Hak Edis (TL),Tarih,Durum\r\n";
+
+    filtered.forEach(function(e) {
+        var dateStr = new Date(e.date).toLocaleDateString('tr-TR');
+        var statusStr = e.isPaid ? "Odendi" : "Bekliyor";
+        var row = `"${e.proName}","${e.proPhone}","${e.packageType}","${e.earnedAmount}","${dateStr}","${statusStr}"`;
+        csvContent += row + "\r\n";
+    });
+
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "hak_edis_raporu_" + new Date().getTime() + ".csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 };
