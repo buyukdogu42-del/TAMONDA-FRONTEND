@@ -1526,52 +1526,78 @@ function updatePlusCalculation() {
   // YENİ EKLENEN SATIR: Hesaplanan son fiyatı ödeme fonksiyonuna aktarmak için hafızada tutuyoruz
   window.currentPlusFee = finalFee;
 }
-// YENİDEN YAZILAN FONKSİYON: PayTR Token Alma ve iFrame Açma
-async function completePlusSubscription() {
-  if (!currentProUser) return;
-  
-  var scope = document.getElementById('plusScope').value;
-  var months = parseInt(document.getElementById('plusMonths').value, 10) || 1;
-  var days = months * 30; 
-  var price = window.currentPlusFee || 1000; // Fiyat değişkenini yakala
+async function completePlusSubscription(packageId, price) {
+    try {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        
+        if (!token || !userId) {
+            alert("Oturum süreniz dolmuş, lütfen tekrar giriş yapın.");
+            return;
+        }
 
-  // Butonu bekleme moduna al
-  var btn = event.currentTarget;
-  var originalText = btn.innerHTML;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Güvenli Ödeme Başlatılıyor...';
-  btn.disabled = true;
+        const modal = document.getElementById('paymentModal');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
 
-  try {
-    const response = await fetch(`${window.API_BASE_URL}/api/payment/paytr-token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-          phone: currentProUser.phone, 
-          scope: scope, 
-          days: days, 
-          price: price 
-      })
-    });
+        // 1. Aşama: Yükleniyor Ekranı
+        modal.innerHTML = `
+            <div class="bg-white rounded-2xl w-full max-w-lg p-8 shadow-2xl relative text-center">
+                <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-orange-500 mb-4 inline-block"></i>
+                <h3 class="text-xl font-bold text-slate-800">Güvenli Ödeme Ekranı Hazırlanıyor...</h3>
+                <p class="text-sm text-slate-500 mt-2">iyzico altyapısı ile şifrelenmiş bağlantı kuruluyor.</p>
+            </div>
+        `;
 
-    const data = await response.json();
-    
-    if (data.success) {
-      // 1. Plus seçim modalını kapat
-      closePlusModal();
-      
-      // 2. PayTR Token'ını iFrame URL'sine göm ve ödeme modalını aç
-      document.getElementById('paytrIframe').src = "https://www.paytr.com/odeme/guvenli/" + data.token;
-      document.getElementById('paymentModal').classList.remove('hidden');
-    } else {
-      alert(data.message || 'Ödeme sistemi başlatılamadı. Lütfen tekrar deneyin.');
+        // 2. Aşama: Backend'e iyzico formu oluşturması için istek atıyoruz
+        const response = await fetch('https://tamonda-backend.onrender.com/api/payment/start', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ packageId, price, userId })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.checkoutFormContent) {
+            // 3. Aşama: iyzico formunun çizileceği alanı oluşturuyoruz
+            modal.innerHTML = `
+                <div class="relative bg-white/95 rounded-2xl w-full max-w-2xl p-4 shadow-2xl flex flex-col h-[90vh] md:h-auto overflow-y-auto">
+                    <button onclick="closePaymentModal()" class="absolute top-4 right-4 z-50 text-slate-500 hover:text-slate-800 text-2xl font-bold bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">&times;</button>
+                    <!-- İYZİCO FORMUNUN OTOMATİK ÇİZİLECEĞİ DİV -->
+                    <div id="iyzipay-checkout-form" class="responsive w-full mt-6"></div>
+                </div>
+            `;
+            
+            // iyzico API'sinden gelen script'i sayfaya ekleyip çalışmasını (render edilmesini) sağlıyoruz
+            const scriptContainer = document.createElement('div');
+            scriptContainer.innerHTML = data.checkoutFormContent;
+            
+            // Vanilla JS'de innerHTML ile gelen <script> tagleri otomatik çalışmaz, manuel tetikliyoruz
+            const scripts = scriptContainer.getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                const newScript = document.createElement('script');
+                newScript.text = scripts[i].text;
+                // Eğer src özelliği varsa (harici script), onu da kopyala
+                if(scripts[i].src) {
+                    newScript.src = scripts[i].src;
+                }
+                document.body.appendChild(newScript);
+            }
+
+        } else {
+            alert("Ödeme başlatılamadı: " + (data.message || "Bilinmeyen bir hata oluştu."));
+            closePaymentModal();
+        }
+
+    } catch (error) {
+        console.error("Ödeme İşlemi Hatası:", error);
+        alert("Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin.");
+        closePaymentModal();
     }
-  } catch (err) {
-    alert("Sunucu ile iletişim kurulamadı: " + err.message);
-  } finally {
-    // Butonu eski haline getir
-    btn.innerHTML = originalText;
-    btn.disabled = false;
-  }
 }
 
 // YENİ EKLENEN: PayTR iFrame'inden Dönen "Başarılı / Başarısız" Sinyallerini Dinleme
