@@ -1528,11 +1528,23 @@ function updatePlusCalculation() {
 }
 async function completePlusSubscription(packageId, price) {
     try {
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
+        let token = localStorage.getItem('token');
+        let userId = localStorage.getItem('userId');
         
+        // --- EKLENEN ESNEK KİMLİK KONTROLÜ ---
+        // Eğer 'userId' doğrudan yoksa, 'user' isimli objenin (JSON) içine bakıyoruz
+        if (!userId && localStorage.getItem('user')) {
+            try {
+                const userObj = JSON.parse(localStorage.getItem('user'));
+                userId = userObj._id || userObj.id;
+            } catch (e) {
+                console.error("Kullanıcı verisi çözümlenemedi.");
+            }
+        }
+        // -------------------------------------
+
         if (!token || !userId) {
-            alert("Oturum süreniz dolmuş, lütfen tekrar giriş yapın.");
+            alert("Kullanıcı kimliğiniz tam doğrulanamadı. Lütfen usta panelinden çıkış yapıp tekrar giriş yapın.");
             return;
         }
 
@@ -1589,16 +1601,7 @@ async function completePlusSubscription(packageId, price) {
             }
 
         } else {
-            alert("Ödeme başlatılamadı: " + (data.message || "Bilinmeyen bir hata oluştu."));
-            closePaymentModal();
-        }
-
-    } catch (error) {
-        console.error("Ödeme İşlemi Hatası:", error);
-        alert("Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin.");
-        closePaymentModal();
-    }
-}
+            alert("Ödeme başlatılamadı: " + (data.message || "Bilinmeyen
 
 // YENİ EKLENEN: PayTR iFrame'inden Dönen "Başarılı / Başarısız" Sinyallerini Dinleme
 window.addEventListener('message', function(event) {
