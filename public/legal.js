@@ -71,8 +71,8 @@ const legalTexts = {
         content: `
             <h4 class="font-bold text-slate-800 mb-2">Firma Bilgileri</h4>
             <p class="mb-2"><strong>Ticaret Unvanı:</strong> Ümit Kilimci - TamOnda Hizmet Platformu</p>
-            <p class="mb-2"><strong>Vergi Dairesi / No:</strong> [Vergi Daireniz] / [Vergi Numaranız veya TC]</p>
-            <p class="mb-2"><strong>Merkez Adresi:</strong> Akyazı / Sakarya</p>
+            <p class="mb-2"><strong>Vergi Dairesi / No:</strong> [GÜMRÜKÖNÜ] / [48613475570]</p>
+            <p class="mb-2"><strong>Merkez Adresi:</strong> ADAPAZARI / Sakarya</p>
             <h4 class="font-bold text-slate-800 mt-4 mb-2">İletişim Kanalları</h4>
             <p class="mb-2"><strong>Telefon:</strong> 0506 545 66 97</p>
             <p class="mb-2"><strong>E-posta:</strong> info@tamonda.com.tr</p>
