@@ -1601,7 +1601,16 @@ async function completePlusSubscription(packageId, price) {
             }
 
         } else {
-            alert("Ödeme başlatılamadı: " + (data.message || "Bilinmeyen
+            alert("Ödeme başlatılamadı: " + (data.message || "Bilinmeyen bir hata oluştu."));
+            closePaymentModal();
+        }
+
+    } catch (error) {
+        console.error("Ödeme İşlemi Hatası:", error);
+        alert("Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin.");
+        closePaymentModal();
+    }
+}
 
 // YENİ EKLENEN: PayTR iFrame'inden Dönen "Başarılı / Başarısız" Sinyallerini Dinleme
 window.addEventListener('message', function(event) {
