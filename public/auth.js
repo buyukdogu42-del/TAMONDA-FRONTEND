@@ -1526,88 +1526,7 @@ function updatePlusCalculation() {
   // YENİ EKLENEN SATIR: Hesaplanan son fiyatı ödeme fonksiyonuna aktarmak için hafızada tutuyoruz
   window.currentPlusFee = finalFee;
 }
-async function completePlusSubscription(packageId, price) {
-    try {
-        const token = localStorage.getItem('tamonda_token');
-        let userId = null;
 
-        // EN SAĞLAM YÖNTEM: Kimliği (userId) doğrudan JWT token'ı parçalayarak alıyoruz
-        if (token) {
-            try {
-                // Token'ın orta kısmını (payload) alıp Base64'ten normal JSON'a çeviriyoruz
-                const payloadBase64 = token.split('.')[1];
-                const decodedPayload = JSON.parse(window.atob(payloadBase64));
-                userId = decodedPayload.userId || decodedPayload.id || decodedPayload._id;
-            } catch (e) {
-                console.error("Token çözümlenemedi:", e);
-            }
-        }
-
-        if (!token || !userId) {
-            alert("Kullanıcı kimliğiniz tam doğrulanamadı. Lütfen usta panelinden çıkış yapıp tekrar giriş yapın.");
-            return;
-        }
-
-        const modal = document.getElementById('paymentModal');
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-
-        // 1. Aşama: Yükleniyor Ekranı
-        modal.innerHTML = `
-            <div class="bg-white rounded-2xl w-full max-w-lg p-8 shadow-2xl relative text-center">
-                <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
-                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-orange-500 mb-4 inline-block"></i>
-                <h3 class="text-xl font-bold text-slate-800">Güvenli Ödeme Ekranı Hazırlanıyor...</h3>
-                <p class="text-sm text-slate-500 mt-2">iyzico altyapısı ile şifrelenmiş bağlantı kuruluyor.</p>
-            </div>
-        `;
-
-        // 2. Aşama: Backend'e iyzico formu oluşturması için istek atıyoruz
-        const response = await fetch('https://tamonda-backend.onrender.com/api/payment/start', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ packageId, price, userId })
-        });
-
-        const data = await response.json();
-
-        if (data.success && data.checkoutFormContent) {
-            // 3. Aşama: iyzico formunun çizileceği alanı oluşturuyoruz
-            modal.innerHTML = `
-                <div class="relative bg-white/95 rounded-2xl w-full max-w-2xl p-4 shadow-2xl flex flex-col h-[90vh] md:h-auto overflow-y-auto">
-                    <button onclick="closePaymentModal()" class="absolute top-4 right-4 z-50 text-slate-500 hover:text-slate-800 text-2xl font-bold bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">&times;</button>
-                    <!-- İYZİCO FORMUNUN OTOMATİK ÇİZİLECEĞİ DİV -->
-                    <div id="iyzipay-checkout-form" class="responsive w-full mt-6"></div>
-                </div>
-            `;
-            
-            const scriptContainer = document.createElement('div');
-            scriptContainer.innerHTML = data.checkoutFormContent;
-            
-            const scripts = scriptContainer.getElementsByTagName('script');
-            for (let i = 0; i < scripts.length; i++) {
-                const newScript = document.createElement('script');
-                newScript.text = scripts[i].text;
-                if(scripts[i].src) {
-                    newScript.src = scripts[i].src;
-                }
-                document.body.appendChild(newScript);
-            }
-
-        } else {
-            alert("Ödeme başlatılamadı: " + (data.message || "Bilinmeyen bir hata oluştu."));
-            closePaymentModal();
-        }
-
-    } catch (error) {
-        console.error("Ödeme İşlemi Hatası:", error);
-        alert("Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin.");
-        closePaymentModal();
-    }
-}
 
 // YENİ EKLENEN: PayTR iFrame'inden Dönen "Başarılı / Başarısız" Sinyallerini Dinleme
 window.addEventListener('message', function(event) {
@@ -2508,16 +2427,19 @@ window.confirmRecoveryOtp = async function() {
         alert("Doğrulama sırasında hata oluştu.");
     }
 };
-// Modal kapatma fonksiyonu eklendi
-function closePaymentModal() {
+
+// 1. Modal kapatma fonksiyonunu GLOBAL (window) yapıyoruz ki HTML içinden sorunsuz çağrılabilsin
+window.closePaymentModal = function() {
     const modal = document.getElementById('paymentModal');
     if (modal) {
         modal.classList.add('hidden');
+        modal.innerHTML = ''; // İçini temizliyoruz ki eski form kalmasın
         document.body.style.overflow = 'auto';
     }
-}
+};
 
-async function completePlusSubscription(packageId, price) {
+// 2. Butondan parametre beklemeden, ekrandaki gerçek verileri okuyan ana ödeme fonksiyonu
+window.completePlusSubscription = async function() {
     try {
         const token = localStorage.getItem('tamonda_token');
         let userId = null;
@@ -2537,6 +2459,14 @@ async function completePlusSubscription(packageId, price) {
             return;
         }
 
+        // --- EN KRİTİK KISIM: Fiyatı ve Paketi Formdan / Hafızadan Dinamik Okuyoruz ---
+        const scope = document.getElementById('plusScope') ? document.getElementById('plusScope').value : 'single_city';
+        const months = document.getElementById('plusMonths') ? document.getElementById('plusMonths').value : '12';
+        
+        const finalPackageId = `PLUS_${scope.toUpperCase()}_${months}M`;
+        const finalPrice = window.currentPlusFee ? String(window.currentPlusFee) : '1000'; // auth.js'deki hesaplamadan gelir
+        // ---------------------------------------------------------------------------------
+
         const modal = document.getElementById('paymentModal');
         if (modal) {
             modal.classList.remove('hidden');
@@ -2544,20 +2474,17 @@ async function completePlusSubscription(packageId, price) {
             
             modal.innerHTML = `
                 <div class="bg-white rounded-2xl w-full max-w-lg p-8 shadow-2xl relative text-center">
-                    <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+                    <button onclick="window.closePaymentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
                     <i class="fa-solid fa-circle-notch fa-spin text-4xl text-orange-500 mb-4 inline-block"></i>
                     <h3 class="text-xl font-bold text-slate-800">Güvenli Ödeme Ekranı Hazırlanıyor...</h3>
                     <p class="text-sm text-slate-500 mt-2">iyzico altyapısı ile şifrelenmiş bağlantı kuruluyor.</p>
                 </div>
             `;
-        } else {
-             console.error("paymentModal bulunamadı.");
         }
 
-        // packageId ve price değerlerinin boş olmadığından emin olun (Varsayılan değerler eklendi)
-        const finalPackageId = packageId || 'PLUS_PACKAGE';
-        const finalPrice = price || '100.0';
+        console.log("İyzico'ya Gönderilen Paket:", finalPackageId, "Fiyat:", finalPrice);
 
+        // 3. BACKEND'E İSTEK
         const response = await fetch('https://tamonda-backend.onrender.com/api/payment/start', {
             method: 'POST',
             headers: {
@@ -2573,8 +2500,8 @@ async function completePlusSubscription(packageId, price) {
             if(modal) {
                modal.innerHTML = `
                 <div class="relative bg-white/95 rounded-2xl w-full max-w-2xl p-4 shadow-2xl flex flex-col h-[90vh] md:h-auto overflow-y-auto">
-                    <button onclick="closePaymentModal()" class="absolute top-4 right-4 z-50 text-slate-500 hover:text-slate-800 text-2xl font-bold bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">&times;</button>
-                    <div id="iyzipay-checkout-form" class="responsive w-full mt-6"></div>
+                    <button onclick="window.closePaymentModal()" class="absolute top-4 right-4 z-50 text-slate-500 hover:text-slate-800 text-3xl font-bold bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md">&times;</button>
+                    <div id="iyzipay-checkout-form" class="responsive w-full mt-8"></div>
                 </div>
                `;
             }
@@ -2593,12 +2520,25 @@ async function completePlusSubscription(packageId, price) {
             }
         } else {
             alert("Ödeme başlatılamadı: " + (data.message || "Bilinmeyen bir hata oluştu."));
-            closePaymentModal();
+            window.closePaymentModal();
         }
 
     } catch (error) {
         console.error("Ödeme İşlemi Hatası:", error);
         alert("Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin.");
-        closePaymentModal();
+        window.closePaymentModal();
     }
-}
+};
+
+// 4. İyzico'dan dönen (veya webhook'un fırlattığı) sinyalleri yakalama
+window.addEventListener('message', function(event) {
+    if (event.data.status === 'success') {
+        window.closePaymentModal();
+        alert("Tebrikler! Ödemeniz başarıyla tamamlandı. Plus yetkileriniz hesabınıza tanımlandı.");
+        window.location.reload(); 
+    } 
+    else if (event.data.status === 'fail') {
+        window.closePaymentModal();
+        alert("Ödeme işlemi başarısız oldu veya tarafınızca iptal edildi. Lütfen tekrar deneyiniz.");
+    }
+});
