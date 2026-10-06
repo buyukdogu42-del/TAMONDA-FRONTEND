@@ -35,7 +35,7 @@ const legalTexts = {
             <h4 class="font-bold text-slate-800 mt-4 mb-2">1. İşlenen Veriler ve Amacı</h4>
             <p class="mb-3">Sisteme kayıt olan kullanıcılarımızın Ad-Soyad, Telefon Numarası, TC Kimlik Numarası (yalnızca yasal faturalandırma ve güvenlik doğrulama amaçlı), Hizmet Kategorisi ve Şehir bilgileri sistemde saklanmaktadır. Bu veriler; hizmetlerin güvenli bir şekilde sunulması, usta-müşteri eşleşmelerinin sağlanması ve Plus abonelik paketlerinin faturalandırılması amaçlarıyla işlenmektedir.</p>
             <h4 class="font-bold text-slate-800 mt-4 mb-2">2. Veri Güvenliği ve Paylaşım</h4>
-            <p class="mb-3">Kredi kartı ve ödeme bilgileriniz platformumuzun sunucularında kesinlikle tutulmaz. Abonelik ödeme işlemleri, BDDK lisanslı güvenli ödeme altyapısı sağlayıcısı (PayTR) üzerinden doğrudan bankalara iletilir.</p>
+            <p class="mb-3">Kredi kartı ve ödeme bilgileriniz platformumuzun sunucularında kesinlikle tutulmaz. Abonelik ödeme işlemleri, BDDK lisanslı güvenli ödeme altyapısı sağlayıcısı (iyzico) üzerinden doğrudan bankalara iletilir.</p>
             <h4 class="font-bold text-slate-800 mt-4 mb-2">3. Kullanıcı Hakları</h4>
             <p class="mb-3">KVKK'nın 11. maddesi uyarınca kullanıcılarımız; verilerinin işlenip işlenmediğini öğrenme, yanlış ise düzeltilmesini ve şartlar oluştuğunda silinmesini talep etme hakkına sahiptir. Talepleriniz için info@tamonda.com.tr adresi üzerinden bizimle iletişime geçebilirsiniz.</p>
         `
@@ -47,7 +47,7 @@ const legalTexts = {
             <h4 class="font-bold text-slate-800 mb-2">Cayma Hakkı İstisnası ve İade Durumu</h4>
             <p class="mb-3">TamOnda üzerinden ustalara sunulan <strong>"Plus Abonelik"</strong> ücretli paketleri, ödeme işleminin başarıyla tamamlanmasının ardından sistemsel olarak anında aktif edilen ve kullanıma sunulan dijital hizmetlerdir.</p>
             <p class="mb-3">6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği’nin 15. maddesinin birinci fıkrasının (ğ) bendi ("Elektronik ortamda anında ifa edilen hizmetler veya tüketiciye anında teslim edilen gayrimaddi mallara ilişkin sözleşmeler") uyarınca, anında ifa edilen bu dijital abonelik hizmetlerinde <strong>cayma hakkı bulunmamaktadır.</strong></p>
-            <p class="mb-3">Kullanıcılar (Ustalar), ödeme ekranında işlemi onaylayarak bu dijital aboneliğin anında ifa edileceğini ve cayma hakkını kaybedeceklerini kabul ederler. İstisnai olarak, sistemsel bir hata nedeniyle mükerrer çekim yapılması durumunda, fazla çekilen tutar PayTR altyapısı üzerinden iade edilir.</p>
+            <p class="mb-3">Kullanıcılar (Ustalar), ödeme ekranında işlemi onaylayarak bu dijital aboneliğin anında ifa edileceğini ve cayma hakkını kaybedeceklerini kabul ederler. İstisnai olarak, sistemsel bir hata nedeniyle mükerrer çekim yapılması durumunda, fazla çekilen tutar iyzico altyapısı üzerinden iade edilir.</p>
         `
     },
     mesafeli: {
@@ -55,14 +55,27 @@ const legalTexts = {
         icon: "fa-file-contract",
         content: `
             <h4 class="font-bold text-slate-800 mt-4 mb-2">MADDE 1 - TARAFLAR</h4>
-            <p class="mb-2"><strong>SATICI:</strong><br>Ünvanı: TAMONDA HİZMET PLATFORMU<br>Adresi: Sakarya<br>Telefon: 0500 000 54 54<br>E-posta: info@tamonda.com.tr<br>Vergi No: 48613475570</p>
+            <p class="mb-2"><strong>SATICI:</strong><br>Ünvanı: TAMONDA HİZMET PLATFORMU<br>Adresi: Akyazı / Sakarya<br>Telefon: 0506 545 66 97<br>E-posta: info@tamonda.com.tr<br>Vergi No: 48613475570</p>
             <p class="mb-3"><strong>ALICI (KULLANICI):</strong><br>Platform üzerinden "Plus Abonelik" dijital hizmet paketini satın alan ve bilgileri üyelik profilinde yer alan hizmet veren (Usta) kişi/kurumdur.</p>
             <h4 class="font-bold text-slate-800 mt-4 mb-2">MADDE 2 - SÖZLEŞMENİN KONUSU</h4>
             <p class="mb-3">İşbu sözleşmenin konusu, Alıcı'nın Satıcı'ya ait platform üzerinden siparişini verdiği <strong>"Plus Abonelik (Aylık/Yıllık Erişim)"</strong> dijital hizmetinin satışı ile ilgili olarak tarafların hak ve yükümlülüklerinin saptanmasıdır.</p>
             <h4 class="font-bold text-slate-800 mt-4 mb-2">MADDE 3 - HİZMET BEDELİ VE ÖDEME</h4>
-            <p class="mb-3">Abonelik hizmetinin nihai fiyatı, Alıcı'nın bulunduğu şehre ve paket kapsamına göre sistem tarafından dinamik hesaplanarak ödeme sayfasında açıkça gösterilir. İşlem, güvenli ödeme kuruluşu (PayTR) arayüzü üzerinden gerçekleşir.</p>
+            <p class="mb-3">Abonelik hizmetinin nihai fiyatı, Alıcı'nın bulunduğu şehre ve paket kapsamına göre sistem tarafından dinamik hesaplanarak ödeme sayfasında açıkça gösterilir. İşlem, güvenli ödeme kuruluşu (iyzico) arayüzü üzerinden gerçekleşir.</p>
             <h4 class="font-bold text-slate-800 mt-4 mb-2">MADDE 4 - CAYMA HAKKI EKSİKLİĞİ</h4>
             <p class="mb-3">Hizmet, elektronik ortamda anında ifa edilen bir dijital abonelik paketi olduğundan, Alıcı işbu sözleşmeyi onayladığında mevzuat gereği cayma hakkının bulunmadığını peşinen kabul eder.</p>
+        `
+    },
+    iletisim: {
+        title: "İletişim ve Kurumsal Bilgiler",
+        icon: "fa-address-book",
+        content: `
+            <h4 class="font-bold text-slate-800 mb-2">Firma Bilgileri</h4>
+            <p class="mb-2"><strong>Ticaret Unvanı:</strong> Ümit Kilimci - TamOnda Hizmet Platformu</p>
+            <p class="mb-2"><strong>Vergi Dairesi / No:</strong> [Vergi Daireniz] / [Vergi Numaranız veya TC]</p>
+            <p class="mb-2"><strong>Merkez Adresi:</strong> Akyazı / Sakarya</p>
+            <h4 class="font-bold text-slate-800 mt-4 mb-2">İletişim Kanalları</h4>
+            <p class="mb-2"><strong>Telefon:</strong> 0506 545 66 97</p>
+            <p class="mb-2"><strong>E-posta:</strong> info@tamonda.com.tr</p>
         `
     }
 };
@@ -90,14 +103,15 @@ function closeLegalModal() {
 }
 
 function initLegalUI() {
-    // SSS Linki eklendi
     const footerHtml = `
         <footer class="bg-slate-900 border-t border-slate-800 mt-8 pt-6 pb-8 px-4 text-center">
             <div class="max-w-2xl mx-auto">
                 <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-4">
                     <button onclick="openLegalModal('hakkimizda')" class="text-xs font-medium text-slate-400 hover:text-orange-400 transition">Hakkımızda</button>
                     <span class="text-slate-700">|</span>
-                    <button onclick="openLegalModal('sss')" class="text-xs font-bold text-orange-500 hover:text-orange-400 transition">Sıkça Sorulan Sorular</button>
+                    <button onclick="openLegalModal('iletisim')" class="text-xs font-bold text-orange-500 hover:text-orange-400 transition">İletişim</button>
+                    <span class="text-slate-700">|</span>
+                    <button onclick="openLegalModal('sss')" class="text-xs font-medium text-slate-400 hover:text-orange-400 transition">S.S.S.</button>
                     <span class="text-slate-700">|</span>
                     <button onclick="openLegalModal('kvkk')" class="text-xs font-medium text-slate-400 hover:text-orange-400 transition">KVKK & Gizlilik</button>
                     <span class="text-slate-700">|</span>
@@ -105,9 +119,19 @@ function initLegalUI() {
                     <span class="text-slate-700">|</span>
                     <button onclick="openLegalModal('mesafeli')" class="text-xs font-medium text-slate-400 hover:text-orange-400 transition">Mesafeli Satış Sözleşmesi</button>
                 </div>
+                
+                <!-- İYZİCO LOGOLARI BURADA -->
+                <div class="flex justify-center items-center gap-3 mt-4 mb-4">
+                    <i class="fa-brands fa-cc-visa text-3xl text-slate-300"></i>
+                    <i class="fa-brands fa-cc-mastercard text-3xl text-slate-300"></i>
+                    <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-2">
+                        <i class="fa-solid fa-shield-check text-emerald-500"></i> iyzico ile Öde
+                    </span>
+                </div>
+
                 <div class="text-[10px] text-slate-500">
                     &copy; 2026 TamOnda Hizmet Platformu. Tüm hakları saklıdır.<br>
-                    <span class="opacity-75">BDDK lisanslı PayTR altyapısı ile güvenli abonelik ödemesi.</span>
+                    <span class="opacity-75">Sitemizdeki tüm ödemeler BDDK lisanslı iyzico altyapısı ile güvence altındadır.</span>
                 </div>
             </div>
         </footer>
@@ -132,6 +156,12 @@ function initLegalUI() {
             </div>
         </div>
     `;
+
+    // Eski footer veya modal varsa temizle (Çift yazmayı engeller)
+    const oldFooter = document.querySelector('footer');
+    if (oldFooter) oldFooter.remove();
+    const oldModal = document.getElementById('legalModal');
+    if (oldModal) oldModal.remove();
 
     document.body.insertAdjacentHTML('beforeend', footerHtml);
     document.body.insertAdjacentHTML('beforeend', modalHtml);
