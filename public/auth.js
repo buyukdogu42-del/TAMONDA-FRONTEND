@@ -1528,20 +1528,20 @@ function updatePlusCalculation() {
 }
 async function completePlusSubscription(packageId, price) {
     try {
-        let token = localStorage.getItem('token');
-        let userId = localStorage.getItem('userId');
+        // Sistemin verileri kaydettiği gerçek anahtar isimleri:
+        let token = localStorage.getItem('tamonda_token');
+        let userId = null;
         
-        // --- EKLENEN ESNEK KİMLİK KONTROLÜ ---
-        // Eğer 'userId' doğrudan yoksa, 'user' isimli objenin (JSON) içine bakıyoruz
-        if (!userId && localStorage.getItem('user')) {
+        // Usta kimliğini tamonda_current_pro objesinin içinden çıkartıyoruz
+        const currentPro = localStorage.getItem('tamonda_current_pro');
+        if (currentPro) {
             try {
-                const userObj = JSON.parse(localStorage.getItem('user'));
-                userId = userObj._id || userObj.id;
+                const proObj = JSON.parse(currentPro);
+                userId = proObj._id || proObj.id;
             } catch (e) {
                 console.error("Kullanıcı verisi çözümlenemedi.");
             }
         }
-        // -------------------------------------
 
         if (!token || !userId) {
             alert("Kullanıcı kimliğiniz tam doğrulanamadı. Lütfen usta panelinden çıkış yapıp tekrar giriş yapın.");
@@ -1584,16 +1584,13 @@ async function completePlusSubscription(packageId, price) {
                 </div>
             `;
             
-            // iyzico API'sinden gelen script'i sayfaya ekleyip çalışmasını (render edilmesini) sağlıyoruz
             const scriptContainer = document.createElement('div');
             scriptContainer.innerHTML = data.checkoutFormContent;
             
-            // Vanilla JS'de innerHTML ile gelen <script> tagleri otomatik çalışmaz, manuel tetikliyoruz
             const scripts = scriptContainer.getElementsByTagName('script');
             for (let i = 0; i < scripts.length; i++) {
                 const newScript = document.createElement('script');
                 newScript.text = scripts[i].text;
-                // Eğer src özelliği varsa (harici script), onu da kopyala
                 if(scripts[i].src) {
                     newScript.src = scripts[i].src;
                 }
