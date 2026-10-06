@@ -1528,18 +1528,18 @@ function updatePlusCalculation() {
 }
 async function completePlusSubscription(packageId, price) {
     try {
-        // Sistemin verileri kaydettiği gerçek anahtar isimleri:
-        let token = localStorage.getItem('tamonda_token');
+        const token = localStorage.getItem('tamonda_token');
         let userId = null;
-        
-        // Usta kimliğini tamonda_current_pro objesinin içinden çıkartıyoruz
-        const currentPro = localStorage.getItem('tamonda_current_pro');
-        if (currentPro) {
+
+        // EN SAĞLAM YÖNTEM: Kimliği (userId) doğrudan JWT token'ı parçalayarak alıyoruz
+        if (token) {
             try {
-                const proObj = JSON.parse(currentPro);
-                userId = proObj._id || proObj.id;
+                // Token'ın orta kısmını (payload) alıp Base64'ten normal JSON'a çeviriyoruz
+                const payloadBase64 = token.split('.')[1];
+                const decodedPayload = JSON.parse(window.atob(payloadBase64));
+                userId = decodedPayload.userId || decodedPayload.id || decodedPayload._id;
             } catch (e) {
-                console.error("Kullanıcı verisi çözümlenemedi.");
+                console.error("Token çözümlenemedi:", e);
             }
         }
 
