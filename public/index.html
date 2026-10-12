@@ -109,56 +109,99 @@
             <p class="text-xs text-slate-500 mt-0.5">Doğrulanmış uzmanlardan anında fiyat teklifi alın.</p>
           </div>
 
-          <!-- Vitrin Hızlı Kategori Butonları -->
-          <div class="grid grid-cols-6 gap-1.5 pt-1 pb-1">
-            <button type="button" onclick="filterCustomerCatalog('agir_nakliye')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="agir_nakliye"><div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-trailer"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Ağır Nakliye</span></button>
-            <button type="button" onclick="filterCustomerCatalog('nakliyat')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="nakliyat"><div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-truck-moving"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Nakliyat</span></button>
-            <button type="button" onclick="filterCustomerCatalog('temizlik')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="temizlik"><div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-broom"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Temizlik</span></button>
-            <button type="button" onclick="filterCustomerCatalog('oto')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="oto"><div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-car-side"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Oto Servis</span></button>
-            <button type="button" onclick="filterCustomerCatalog('tamir')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="tamir"><div class="w-9 h-9 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-wrench"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Tamir</span></button>
-            <button type="button" onclick="filterCustomerCatalog('tadilat')" class="featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm" data-cat="tadilat"><div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-sm group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1"><i class="fa-solid fa-paint-roller"></i></div><span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Tadilat</span></button>
-          </div>
-
-          <!-- Canlı Arama Barı -->
-          <div class="relative text-left">
-            <input type="text" id="custSearchInput" placeholder="75+ alt hizmet içinde ara (Örn: Evden Eve, Botoks, Yazılım)..." oninput="handleUniversalSearch('custSearchInput','custSearchResults')" class="w-full text-xs p-3 pl-9 rounded-xl border-2 border-slate-300 focus:border-orange-500 bg-slate-50 focus:bg-white focus:outline-none transition shadow-inner font-medium" autocomplete="off">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-orange-500 text-xs"></i>
-            <div id="custSearchResults" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-50 text-xs py-1 divide-y divide-slate-100"></div>
-          </div>
-
-          <!-- 15 Ana Sektör Yatay Filtre Çubuğu (Oklu Kaydırma) -->
-          <div class="relative group border-b border-slate-100 mb-1">
-            <button type="button" onclick="scrollCategories(-200)" class="absolute left-0 top-0 bottom-1 w-10 bg-gradient-to-r from-white via-white to-transparent flex items-center justify-start z-10 text-slate-400 hover:text-orange-500 transition opacity-0 group-hover:opacity-100 hidden md:flex cursor-pointer">
-              <i class="fa-solid fa-chevron-left bg-white rounded-full shadow p-1.5 ml-1 border border-slate-100"></i>
+          <!-- Vitrin Hızlı Kategori Butonları (16 Kategori - 4x4 Simetrik Yapı - Doğrudan Popup Açılışlı) -->
+          <div class="grid grid-cols-4 gap-2 pt-1 pb-3">
+            <!-- 1. SATIR -->
+            <button type="button" onclick="openSubCategoryModal('agir_nakliye')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-trailer"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Ağır Nakliye</span>
             </button>
-            
-            <div id="categoryPillContainer" class="flex gap-1.5 overflow-x-auto pb-2 text-[11px] font-bold no-scrollbar scroll-smooth relative z-0 px-1">
-              <button type="button" onclick="filterCustomerCatalog('all')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-900 text-white whitespace-nowrap">Tümü</button>
-              <button type="button" onclick="filterCustomerCatalog('agir_nakliye')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Ağır Nakliye</button>
-              <button type="button" onclick="filterCustomerCatalog('nakliyat')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Nakliyat</button>
-              <button type="button" onclick="filterCustomerCatalog('temizlik')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Temizlik</button>
-              <button type="button" onclick="filterCustomerCatalog('oto')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Oto Servis</button>
-              <button type="button" onclick="filterCustomerCatalog('organizasyon')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Organizasyon</button>
-              <button type="button" onclick="filterCustomerCatalog('tamir')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Tamir</button>
-              <button type="button" onclick="filterCustomerCatalog('tadilat')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Tadilat</button>
-              <button type="button" onclick="filterCustomerCatalog('ders')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Özel Ders</button>
-              <button type="button" onclick="filterCustomerCatalog('medya')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Foto & Video</button>
-              <button type="button" onclick="filterCustomerCatalog('pet')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Evcil Hayvan</button>
-              <button type="button" onclick="filterCustomerCatalog('saglik')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Sağlık & Terapi</button>
-              <button type="button" onclick="filterCustomerCatalog('spor')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Spor & Fitness</button>
-              <button type="button" onclick="filterCustomerCatalog('guzellik')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Güzellik</button>
-              <button type="button" onclick="filterCustomerCatalog('dijital')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Dijital & Yazılım</button>
-              <button type="button" onclick="filterCustomerCatalog('danismanlik')" class="cust-pill px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">Danışmanlık</button>
+            <button type="button" onclick="openSubCategoryModal('nakliyat')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-truck-moving"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Nakliyat</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('uluslararasi')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-earth-europe"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Uluslararası</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('temizlik')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-broom"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Temizlik</span>
+            </button>
+
+            <!-- 2. SATIR -->
+            <button type="button" onclick="openSubCategoryModal('oto')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-car-side"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Oto Servis</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('organizasyon')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-champagne-glasses"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Organizasyon</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('tamir')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-wrench"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Tamir</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('tadilat')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-paint-roller"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Tadilat</span>
+            </button>
+
+            <!-- 3. SATIR -->
+            <button type="button" onclick="openSubCategoryModal('ders')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-graduation-cap"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Özel Ders</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('medya')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-camera"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Medya</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('pet')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-paw"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Pet</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('saglik')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-heart-pulse"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Sağlık</span>
+            </button>
+
+            <!-- 4. SATIR -->
+            <button type="button" onclick="openSubCategoryModal('spor')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-lime-100 text-lime-700 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-dumbbell"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Spor</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('guzellik')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-fuchsia-100 text-fuchsia-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-spa"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Güzellik</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('dijital')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-laptop-code"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Dijital</span>
+            </button>
+            <button type="button" onclick="openSubCategoryModal('danismanlik')" class="featured-cat-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition shadow-sm mb-1.5"><i class="fa-solid fa-user-tie"></i></div>
+              <span class="text-[10px] font-extrabold text-slate-700 group-hover:text-orange-600 transition leading-tight text-center">Danışmanlık</span>
+            </button>
+          </div>
+          <!-- Canlı Arama Barı ve Dinamik 4'lü Kart Alanı -->
+          <div class="pt-2">
+            <!-- Arama Kutusu -->
+            <div class="relative text-left mb-4">
+              <input type="text" id="custSearchInput" placeholder="75+ alt hizmet içinde ara (Örn: Evden Eve, Çocuk Bakıcısı)..." oninput="handleDynamicSearch(this.value)" class="w-full text-sm p-3.5 pl-11 rounded-xl border-2 border-slate-200 focus:border-orange-500 bg-white focus:outline-none transition shadow-sm font-medium" autocomplete="off">
+              <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-orange-400 text-lg"></i>
             </div>
 
-            <button type="button" onclick="scrollCategories(200)" class="absolute right-0 top-0 bottom-1 w-10 bg-gradient-to-l from-white via-white to-transparent flex items-center justify-end z-10 text-slate-400 hover:text-orange-500 transition opacity-0 group-hover:opacity-100 hidden md:flex cursor-pointer">
-              <i class="fa-solid fa-chevron-right bg-white rounded-full shadow p-1.5 mr-1 border border-slate-100"></i>
-            </button>
+            <!-- Kart Başlığı ve Yenile Butonu -->
+            <div class="flex justify-between items-center mb-2 px-1">
+              <span id="searchGridTitle" class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Popüler Hizmetler</span>
+              <button onclick="renderRandomSubCats()" class="text-[10px] text-orange-500 font-bold hover:bg-orange-50 px-2 py-1 rounded transition"><i class="fa-solid fa-rotate mr-1"></i>Yenile</button>
+            </div>
+
+            <!-- Dinamik 4'lü Alt Kategori Kutuları -->
+            <div id="dynamicSubCatGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+              <!-- JS ile buraya 4 adet kart basılacak -->
+            </div>
           </div>
-
-          <!-- Kartlar Grid -->
-          <div id="serviceCardsGrid" class="grid grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1"></div>
-
           <!-- Sayfa Sonu Tamamlanan İşler & Yorumlar Galerisi -->
           <div class="pt-4 border-t border-slate-200 text-left">
             <div class="flex items-center justify-between mb-2">
@@ -504,6 +547,7 @@
             <div class="text-xs font-black text-slate-400 uppercase tracking-widest text-left mb-3 pl-1">Hızlı Kategoriler</div>
             <div class="grid grid-cols-3 sm:grid-cols-5 gap-2.5 overflow-y-auto max-h-[35vh] overscroll-contain pb-2 custom-scrollbar">
                 <button onclick="filterFromModal('agir_nakliye')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-trailer text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Ağır Nakliye</span></button>
+                <button onclick="filterFromModal('uluslararasi')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-earth-europe text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Uluslararası</span></button>
                 <button onclick="filterFromModal('nakliyat')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-orange-50 hover:border-orange-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-truck-moving text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Nakliyat</span></button>
                 <button onclick="filterFromModal('temizlik')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-broom text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Temizlik</span></button>
                 <button onclick="filterFromModal('oto')" class="flex flex-col items-center justify-center p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 hover:shadow-sm transition group"><div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition mb-2"><i class="fa-solid fa-car-side text-lg"></i></div><span class="text-[10px] font-bold text-slate-700 text-center leading-tight">Oto Servis</span></button>
@@ -545,6 +589,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto max-h-[50vh] overscroll-contain pb-2 pr-1 custom-scrollbar">
                 <button onclick="startCustomDemandFromModal('agir_nakliye', 'Ağır Nakliye')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-amber-50 hover:border-amber-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-trailer text-amber-600 w-4"></i> Ağır Nakliye</button>
                 <button onclick="startCustomDemandFromModal('nakliyat', 'Nakliyat')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-truck-moving text-orange-600 w-4"></i> Nakliyat</button>
+                <button onclick="startCustomDemandFromModal('uluslararasi', 'Uluslararası Taşımacılık')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-blue-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-earth-europe text-blue-600 w-4"></i> Uluslararası Taşımacılık</button>
                 <button onclick="startCustomDemandFromModal('temizlik', 'Temizlik')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-blue-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-broom text-blue-600 w-4"></i> Temizlik</button>
                 <button onclick="startCustomDemandFromModal('oto', 'Oto Servis')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-car-side text-emerald-600 w-4"></i> Oto Servis</button>
                 <button onclick="startCustomDemandFromModal('organizasyon', 'Organizasyon')" class="p-3 text-left rounded-xl border border-slate-200 bg-slate-50 hover:bg-pink-50 hover:border-pink-400 transition font-bold text-slate-700 text-xs shadow-sm flex items-center gap-2"><i class="fa-solid fa-champagne-glasses text-pink-600 w-4"></i> Organizasyon</button>

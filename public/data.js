@@ -2,120 +2,186 @@
 // DOSYA 1: data.js (HİZMET KATALOĞU VE LOKASYON VERİLERİ)
 // ==========================================
 
+// ==========================================
+// DOSYA 1: data.js (HİZMET KATALOĞU VE LOKASYON VERİLERİ)
+// ==========================================
+
 var serviceCatalog = [
   // 1. Ağır Nakliye
   { key: 'agir_kapali_tir', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Kapalı Kasa Tır / Kamyon Nakliye', desc: 'Paletli yük, tekstil, koli', icon: 'fa-truck-front' },
-  { key: 'agir_acik_tir', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Açık Kasa Tır / Platform Nakliye', desc: 'Demir, profil, inşaat malzemesi', icon: 'fa-truck-plane' },
+  { key: 'agir_acik_tir', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Açık Kasa Tır / Platform Nakliye', desc: 'Demir, profil, inşaat', icon: 'fa-truck-plane' },
   { key: 'agir_parsiyel_yuk', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Parsiyel (Parça) Ağır Yük Taşıma', desc: '1-5 palet arası taşıma', icon: 'fa-boxes-packing' },
-  { key: 'agir_lowbed', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Lowbed & İş Makinesi Taşımacılığı', desc: 'Ekskavatör, dozer, ağır sanayi', icon: 'fa-trailer' },
+  { key: 'agir_lowbed', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Lowbed & İş Makinesi Taşımacılığı', desc: 'Ekskavatör, dozer, sanayi', icon: 'fa-trailer' },
   { key: 'agir_frigo', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Frigo (Soğutuculu) Ağır Nakliye', desc: 'Soğuk zincir ve gıda taşıma', icon: 'fa-snowflake' },
   { key: 'agir_konteyner', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Konteyner Taşımacılığı', desc: 'Liman ve fabrika sevkiyatı', icon: 'fa-box' },
+  { key: 'agir_damperli', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Damperli Kamyon / Hafriyat Taşıma', desc: 'Kum, çakıl, toprak, kömür', icon: 'fa-truck-ramp-box' },
+  { key: 'agir_silobas', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Silobas / Dökme Yük Taşımacılığı', desc: 'Çimento, un, buğday', icon: 'fa-truck-droplet' },
+  { key: 'agir_tehlikeli', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Tehlikeli Madde (ADR) Taşımacılığı', desc: 'Yanıcı, akaryakıt, kimyasal', icon: 'fa-skull-crossbones' },
+  { key: 'agir_ototasiyici', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Oto Taşıyıcı / Çoklu Araç Taşıma', desc: 'Galeri ve filo araç taşıma', icon: 'fa-car-side' },
+  { key: 'agir_diger', mainCat: 'agir_nakliye', group: 'agir_nakliye', title: 'Diğer / Özel Ağır Nakliye Talebi', desc: 'Listede olmayan özel talepleriniz', icon: 'fa-plus' },
 
   // 2. Nakliyat & Taşımacılık
-  { key: 'nakliyat_evden_eve', mainCat: 'nakliyat', group: 'nakliyat', title: 'Evden Eve Nakliyat', desc: 'Şehir içi & Şehirlerarası ev taşıma', icon: 'fa-truck-ramp-box' },
+  { key: 'nakliyat_evden_eve', mainCat: 'nakliyat', group: 'nakliyat', title: 'Evden Eve Nakliyat', desc: 'Şehir içi & Şehirlerarası ev taşıma', icon: 'fa-truck-moving' },
   { key: 'nakliyat_ofis', mainCat: 'nakliyat', group: 'nakliyat', title: 'Ofis & İş Yeri Taşıma', desc: 'Dükkan, ofis, şirket taşıma', icon: 'fa-building' },
   { key: 'nakliyat_parca_esya', mainCat: 'nakliyat', group: 'nakliyat', title: 'Parça Eşya & Kargo Taşıma', desc: '1-2 parça mobilya, beyaz eşya', icon: 'fa-box-open' },
   { key: 'nakliyat_kamyonet', mainCat: 'nakliyat', group: 'nakliyat', title: 'Şoförlü Kamyonet Kiralama', desc: 'Saatlik / günlük araç tahsisi', icon: 'fa-truck-pickup' },
   { key: 'nakliyat_depolama', mainCat: 'nakliyat', group: 'nakliyat', title: 'Eşya Depolama', desc: 'Güvenli aylık/yıllık depo', icon: 'fa-warehouse' },
   { key: 'nakliyat_ozel_esya', mainCat: 'nakliyat', group: 'nakliyat', title: 'Özel & Ağır Eşya Taşıma', desc: 'Piyano, çelik kasa, antika', icon: 'fa-dolly' },
+  { key: 'nakliyat_asansor', mainCat: 'nakliyat', group: 'nakliyat', title: 'Modüler Dış Cephe Asansörü', desc: 'Eşya taşıma asansörü', icon: 'fa-elevator' },
+  { key: 'nakliyat_diger', mainCat: 'nakliyat', group: 'nakliyat', title: 'Diğer / Özel Nakliye Talebi', desc: 'Listede olmayan nakliye işleri', icon: 'fa-plus' },
 
-  // 3. Temizlik & Yıkama
+  // 3. Uluslararası Taşımacılık
+  { key: 'uluslararasi_zati', mainCat: 'uluslararasi', group: 'uluslararasi', title: 'Uluslararası Evden Eve (Zati Eşya)', desc: 'Yurt dışı ev taşıma', icon: 'fa-earth-europe' },
+  { key: 'uluslararasi_ticari', mainCat: 'uluslararasi', group: 'uluslararasi', title: 'Uluslararası Ticari & Ağır Yük', desc: 'Sınır ötesi komple tır, konteyner', icon: 'fa-ship' },
+  { key: 'uluslararasi_parsiyel', mainCat: 'uluslararasi', group: 'uluslararasi', title: 'Uluslararası Parsiyel (Parça) Yük', desc: 'Yurt dışı palet ve kargo', icon: 'fa-plane-departure' },
+  { key: 'uluslararasi_oto', mainCat: 'uluslararasi', group: 'uluslararasi', title: 'Uluslararası Araç Taşıma (Transfer)', desc: 'Yurt dışına binek araç transferi', icon: 'fa-car-on' },
+  { key: 'uluslararasi_diger', mainCat: 'uluslararasi', group: 'uluslararasi', title: 'Diğer Uluslararası Nakliye', desc: 'Listede olmayan sınır ötesi yükler', icon: 'fa-plus' },
+
+  // 4. Temizlik
   { key: 'temizlik_ev', mainCat: 'temizlik', group: 'temizlik', title: 'Ev & Gündelik Temizlik', desc: 'Standart, yarım gün veya detaylı', icon: 'fa-broom' },
   { key: 'temizlik_bos_ev', mainCat: 'temizlik', group: 'temizlik', title: 'Taşınma & İnşaat Sonrası', desc: 'Boş ev, tadilat sonrası dip köşe', icon: 'fa-house-chimney-crack' },
   { key: 'temizlik_koltuk_hali', mainCat: 'temizlik', group: 'temizlik', title: 'Koltuk, Yatak & Halı Yıkama', desc: 'Yerinde buharlı ve vakumlu', icon: 'fa-couch' },
   { key: 'temizlik_ofis', mainCat: 'temizlik', group: 'temizlik', title: 'Ofis & İş Yeri Temizliği', desc: 'Periyodik ve kurumsal mekan', icon: 'fa-building-shield' },
   { key: 'temizlik_cam', mainCat: 'temizlik', group: 'temizlik', title: 'Cam & Dış Cephe Temizliği', desc: 'Balkon camı, plaza dış cephe', icon: 'fa-window-maximize' },
   { key: 'temizlik_ilaclama', mainCat: 'temizlik', group: 'temizlik', title: 'Böcek & Haşere İlaçlama', desc: 'Ev, apartman ve iş yeri ilaçlama', icon: 'fa-bug' },
+  { key: 'temizlik_apartman', mainCat: 'temizlik', group: 'temizlik', title: 'Apartman & Site Ortak Alan', desc: 'Merdiven boşluğu, periyodik', icon: 'fa-stairs' },
+  { key: 'temizlik_afet', mainCat: 'temizlik', group: 'temizlik', title: 'Su Baskını / Yangın Sonrası', desc: 'Afet sonrası özel temizlik', icon: 'fa-fire-extinguisher' },
+  { key: 'temizlik_diger', mainCat: 'temizlik', group: 'temizlik', title: 'Diğer / Özel Temizlik Talebi', desc: 'Listede bulunmayan temizlik işleri', icon: 'fa-plus' },
 
-  // 4. Oto & Araç Servisi
+  // 5. Oto Servis
   { key: 'oto_mekanik', mainCat: 'oto', group: 'oto', title: 'Mekanik & Ağır Bakım', desc: 'Motor, şanzıman, rektifiye, triger', icon: 'fa-gears' },
   { key: 'oto_periyodik', mainCat: 'oto', group: 'oto', title: 'Periyodik Bakım & Hızlı Servis', desc: 'Motor yağı, filtreler, balata', icon: 'fa-droplet' },
-  { key: 'oto_elektrik_klima', mainCat: 'oto', group: 'oto', title: 'Oto Elektrik, Elektronik & Klima', desc: 'Akü, marş, klima gazı dolumu', icon: 'fa-snowflake' },
+  { key: 'oto_elektrik_klima', mainCat: 'oto', group: 'oto', title: 'Oto Elektrik, Elektronik & Klima', desc: 'Akü, marş, klima gazı dolumu', icon: 'fa-bolt' },
   { key: 'oto_kaporta', mainCat: 'oto', group: 'oto', title: 'Kaporta, Boya & Göçük Onarımı', desc: 'Fırın boya, PDR göçük düzeltme', icon: 'fa-palette' },
   { key: 'oto_kaplama', mainCat: 'oto', group: 'oto', title: 'Kaplama, Cam Filmi & Seramik', desc: 'PPF koruma, renk değişimi', icon: 'fa-shield-halved' },
   { key: 'oto_kuafor', mainCat: 'oto', group: 'oto', title: 'Oto Kuaför, Temizlik & Pasta Cila', desc: 'Detaylı iç temizlik, boya koruma', icon: 'fa-spray-can-sparkles' },
   { key: 'oto_lastik', mainCat: 'oto', group: 'oto', title: 'Oto Lastik, Jant & Balans', desc: 'Lastik değişimi, mobil lastikçi', icon: 'fa-compact-disc' },
-  { key: 'oto_ekspertiz', mainCat: 'oto', group: 'oto', title: 'Oto Ekspertiz & Cam Servisi', desc: 'TSE onaylı rapor ve cam tamiri', icon: 'fa-car-side' },
+  { key: 'oto_ekspertiz', mainCat: 'oto', group: 'oto', title: 'Oto Ekspertiz & Cam Servisi', desc: 'TSE onaylı rapor ve cam tamiri', icon: 'fa-magnifying-glass-chart' },
+  { key: 'oto_cekici', mainCat: 'oto', group: 'oto', title: 'Oto Çekici & Kurtarıcı', desc: 'Yolda kalma, şehirden şehre çekici', icon: 'fa-truck-fast' },
+  { key: 'oto_ses_multimedya', mainCat: 'oto', group: 'oto', title: 'Oto Ses, Görüntü & Multimedya', desc: 'Teyp, ekran, ses sistemi montajı', icon: 'fa-radio' },
+  { key: 'oto_karavan_donusum', mainCat: 'oto', group: 'oto', title: 'Panelvan & Motokaravan Dönüşümü', desc: 'Sıfırdan karavan yapımı', icon: 'fa-van-shuttle' },
+  { key: 'oto_karavan_imalat', mainCat: 'oto', group: 'oto', title: 'Çekme Karavan & Tiny House', desc: 'O1/O2 belgeli karavan imalatı', icon: 'fa-caravan' },
+  { key: 'oto_karavan_tamir', mainCat: 'oto', group: 'oto', title: 'Karavan Tamir, Bakım & Revizyon', desc: 'Güneş paneli, webasto, su arızası', icon: 'fa-toolbox' },
+  { key: 'oto_diger', mainCat: 'oto', group: 'oto', title: 'Diğer / Özel Oto Servis Talebi', desc: 'Listede olmayan araç işlemleri', icon: 'fa-plus' },
 
-  // 5. Organizasyon & Etkinlik
-  { key: 'org_dugun', mainCat: 'organizasyon', group: 'organizasyon', title: 'Düğün, Nişan & Söz', desc: 'Konsept süsleme, mekan planlama', icon: 'fa-champagne-glasses' },
-  { key: 'org_dogum', mainCat: 'organizasyon', group: 'organizasyon', title: 'Doğum Günü & Parti', desc: 'Animatör, süsleme, catering', icon: 'fa-cake-candles' },
-  { key: 'org_catering', mainCat: 'organizasyon', group: 'organizasyon', title: 'Catering & Toplu Yemek', desc: 'Sıcak yemek, kokteyl, lokma', icon: 'fa-utensils' },
-  { key: 'org_muzik', mainCat: 'organizasyon', group: 'organizasyon', title: 'Müzisyen, DJ & Eğlence', desc: 'Canlı müzik, DJ, bando, davul zurna', icon: 'fa-music' },
-  { key: 'org_ekipman', mainCat: 'organizasyon', group: 'organizasyon', title: 'Ekipman, Masa & Ses Sistemi', desc: 'Masa sandalye, ses, ışık kiralama', icon: 'fa-volume-high' },
+  // 6. Organizasyon
+  { key: 'org_dugun', mainCat: 'organizasyon', group: 'organizasyon', title: 'Düğün & Nişan Organizasyonu', desc: 'Konsept süsleme, mekan planlama', icon: 'fa-champagne-glasses' },
+  { key: 'org_dogum', mainCat: 'organizasyon', group: 'organizasyon', title: 'Doğum Günü & Parti', desc: 'Çocuk/Yetişkin parti planlama', icon: 'fa-cake-candles' },
+  { key: 'org_catering', mainCat: 'organizasyon', group: 'organizasyon', title: 'Catering & Yemek Hizmeti', desc: 'Sıcak yemek, kokteyl, lokma', icon: 'fa-utensils' },
+  { key: 'org_muzik', mainCat: 'organizasyon', group: 'organizasyon', title: 'Müzik, DJ & Eğlence', desc: 'Canlı müzik, DJ, bando, davul zurna', icon: 'fa-music' },
+  { key: 'org_ekipman', mainCat: 'organizasyon', group: 'organizasyon', title: 'Ekipman Kiralama', desc: 'Masa sandalye, ses, ışık kiralama', icon: 'fa-volume-high' },
   { key: 'org_pasta', mainCat: 'organizasyon', group: 'organizasyon', title: 'Butik Pasta, Çiçek & Hediyelik', desc: 'Özel tasarım pasta, nikah şekeri', icon: 'fa-gift' },
-  { key: 'org_arac', mainCat: 'organizasyon', group: 'organizasyon', title: 'Araç, Tekne & Yat Kiralama', desc: 'Lüks gelin arabası, yat kiralama', icon: 'fa-car' },
-  { key: 'org_dini', mainCat: 'organizasyon', group: 'organizasyon', title: 'Dini Tören, Nikah & Özel Dikim', desc: 'Dini nikah, mevlüt, gelinlik dikim', icon: 'fa-ring' },
+  { key: 'org_arac', mainCat: 'organizasyon', group: 'organizasyon', title: 'Araç, Tekne & Karavan Kiralama', desc: 'Gelin arabası, yat, tatil karavanı', icon: 'fa-car' },
+  { key: 'org_dini', mainCat: 'organizasyon', group: 'organizasyon', title: 'Dini & Özel Törenler', desc: 'Dini nikah, mevlüt, semazen', icon: 'fa-ring' },
+  { key: 'org_fuar', mainCat: 'organizasyon', group: 'organizasyon', title: 'Fuar & Kurumsal Etkinlik', desc: 'Açılış, lansman, hostes temini', icon: 'fa-building-user' },
+  { key: 'org_palyaco', mainCat: 'organizasyon', group: 'organizasyon', title: 'Palyaço, Animatör & Sihirbaz', desc: 'Gösteri ekibi, yüz boyama', icon: 'fa-masks-theater' },
+  { key: 'org_diger', mainCat: 'organizasyon', group: 'organizasyon', title: 'Diğer / Özel Organizasyon Talebi', desc: 'Listede olmayan etkinlik talepleri', icon: 'fa-plus' },
 
-  // 6. Tamir, Montaj & Servis
+  // 7. Tamir & Servis
   { key: 'tamir_beyaz_esya', mainCat: 'tamir', group: 'tamir', title: 'Beyaz Eşya & Ankastre Servisi', desc: 'Buzdolabı, çamaşır makinesi tamiri', icon: 'fa-blender' },
   { key: 'tamir_tesisat', mainCat: 'tamir', group: 'tamir', title: 'Su Tesisatı, Gider & Rezervuar', desc: 'Su kaçağı, tıkalı gider açma', icon: 'fa-faucet-drip' },
   { key: 'tamir_elektrik', mainCat: 'tamir', group: 'tamir', title: 'Elektrik, Aydınlatma & Kablo', desc: 'Avize montajı, fiber internet', icon: 'fa-bolt' },
   { key: 'tamir_mobilya', mainCat: 'tamir', group: 'tamir', title: 'Mobilya Montajı & Kurulum', desc: 'IKEA montaj, dolap kurulum', icon: 'fa-screwdriver-wrench' },
   { key: 'tamir_kombi', mainCat: 'tamir', group: 'tamir', title: 'Kombi, Klima & Doğalgaz', desc: 'Kombi bakım, petek temizliği', icon: 'fa-temperature-arrow-up' },
-  { key: 'tamir_cilingir', mainCat: 'tamir', group: 'tamir', title: 'Çilingir, Kapı & Pencere Servisi', desc: 'Kilit değiştirme, panjur tamiri', icon: 'fa-key' },
+  { key: 'tamir_cilingir', mainCat: 'tamir', group: 'tamir', title: 'Çilingir, Kapı & Pencere', desc: 'Kilit değiştirme, panjur tamiri', icon: 'fa-key' },
   { key: 'tamir_bilgisayar', mainCat: 'tamir', group: 'tamir', title: 'Bilgisayar & Telefon Tamiri', desc: 'Ekran değişimi, format, tamir', icon: 'fa-laptop' },
-  { key: 'tamir_guvenlik', mainCat: 'tamir', group: 'tamir', title: 'Kamera, Güvenlik, Uydu & Diafon', desc: 'Kamera montajı, çanak anten', icon: 'fa-video' },
+  { key: 'tamir_guvenlik', mainCat: 'tamir', group: 'tamir', title: 'Kamera, Güvenlik & Uydu', desc: 'Kamera montajı, çanak anten', icon: 'fa-video' },
   { key: 'tamir_dusakabin', mainCat: 'tamir', group: 'tamir', title: 'Cam, Ayna & Duşakabin', desc: 'Duşakabin montaj, ayna montajı', icon: 'fa-shower' },
+  { key: 'tamir_tv', mainCat: 'tamir', group: 'tamir', title: 'TV & Görüntü Sistemleri Tamiri', desc: 'LED bar, ekran kırığı tamiri', icon: 'fa-tv' },
+  { key: 'tamir_kucuk_ev', mainCat: 'tamir', group: 'tamir', title: 'Küçük Ev Aletleri Tamiri', desc: 'Süpürge, robot, ütü tamiratı', icon: 'fa-plug' },
+  { key: 'tamir_terzi', mainCat: 'tamir', group: 'tamir', title: 'Özel Dikim & Terzi Tadilatı', desc: 'Kıyafet, elbise ve perde dikimi', icon: 'fa-shirt' },
+  { key: 'tamir_ayakkabi_canta', mainCat: 'tamir', group: 'tamir', title: 'Ayakkabı, Çanta & Bavul Tamiri', desc: 'Topuk değişimi, fermuar onarımı', icon: 'fa-shoe-prints' },
+  { key: 'tamir_deri_mont', mainCat: 'tamir', group: 'tamir', title: 'Deri Mont & Deri Eşya Onarımı', desc: 'Deri boyama ve bakım işlemleri', icon: 'fa-user-tie' },
+  { key: 'tamir_kuru_temizleme', mainCat: 'tamir', group: 'tamir', title: 'Kuru Temizleme & Ütü', desc: 'Leke çıkarma, profesyonel ütü', icon: 'fa-jug-detergent' },
+  { key: 'tamir_diger', mainCat: 'tamir', group: 'tamir', title: 'Diğer / Özel Tamir Talebi', desc: 'Listede olmayan tamir & servis işleri', icon: 'fa-plus' },
 
-  // 7. Tadilat & Dekorasyon
-  { key: 'tadilat_anahtar', mainCat: 'tadilat', group: 'tadilat', title: 'Anahtar Teslim Tadilat & İç Mimari', desc: 'Komple ev yenileme, 3D çizim', icon: 'fa-house-chimney' },
-  { key: 'tadilat_boya', mainCat: 'tadilat', group: 'tadilat', title: 'Boya, Badana & Alçıpan İşleri', desc: 'Daire boyama, asma tavan', icon: 'fa-paint-roller' },
+  // 8. Tadilat
+  { key: 'tadilat_anahtar', mainCat: 'tadilat', group: 'tadilat', title: 'Anahtar Teslim Tadilat', desc: 'Komple ev yenileme, 3D çizim', icon: 'fa-house-chimney' },
+  { key: 'tadilat_boya', mainCat: 'tadilat', group: 'tadilat', title: 'Boya, Badana & Alçıpan', desc: 'Daire boyama, asma tavan', icon: 'fa-paint-roller' },
   { key: 'tadilat_zemin', mainCat: 'tadilat', group: 'tadilat', title: 'Zemin, Fayans & Mutfak Tezgahı', desc: 'Seramik döşeme, tezgah değişimi', icon: 'fa-border-all' },
   { key: 'tadilat_cam_balkon', mainCat: 'tadilat', group: 'tadilat', title: 'Cam Balkon, Kapı & Pencere', desc: 'Cam balkon, çelik kapı', icon: 'fa-door-open' },
   { key: 'tadilat_cati', mainCat: 'tadilat', group: 'tadilat', title: 'Çatı, Yalıtım & İzolasyon', desc: 'Çatı tamiri, su/ısı yalıtımı', icon: 'fa-house' },
   { key: 'tadilat_bahce', mainCat: 'tadilat', group: 'tadilat', title: 'Bahçe, Peyzaj & Çevre', desc: 'Ağaç budama, çim, çit sistemleri', icon: 'fa-seedling' },
   { key: 'tadilat_marangoz', mainCat: 'tadilat', group: 'tadilat', title: 'Marangoz & Özel Mobilya', desc: 'Özel dolap imalatı, merdiven', icon: 'fa-hammer' },
   { key: 'tadilat_prefabrik', mainCat: 'tadilat', group: 'tadilat', title: 'İnşaat, Prefabrik & Çelik Ev', desc: 'Prefabrik ev yapımı, bina yıkım', icon: 'fa-city' },
+  { key: 'tadilat_havuz', mainCat: 'tadilat', group: 'tadilat', title: 'Havuz Yapımı & Bakımı', desc: 'Villa / site havuz inşaatı ve tamiri', icon: 'fa-water-ladder' },
+  { key: 'tadilat_demir', mainCat: 'tadilat', group: 'tadilat', title: 'Demir Doğrama & Kaynak', desc: 'Ferforje, sundurma, korkuluk işleri', icon: 'fa-helmet-safety' },
+  { key: 'tadilat_diger', mainCat: 'tadilat', group: 'tadilat', title: 'Diğer / Özel Tadilat Talebi', desc: 'Listede olmayan inşaat/tadilat işleri', icon: 'fa-plus' },
 
-  // 8. Özel Ders & Eğitim
+  // 9. Özel Ders
   { key: 'ders_okul', mainCat: 'ders', group: 'ders', title: 'Okul Takviye & Sınav Hazırlık', desc: 'LGS, YKS, Lise/Ortaokul dersleri', icon: 'fa-graduation-cap' },
   { key: 'ders_dil', mainCat: 'ders', group: 'ders', title: 'Yabancı Dil Eğitimi', desc: 'İngilizce, Almanca, IELTS', icon: 'fa-language' },
   { key: 'ders_muzik', mainCat: 'ders', group: 'ders', title: 'Müzik & Enstrüman Dersleri', desc: 'Gitar, piyano, keman, şan', icon: 'fa-guitar' },
   { key: 'ders_direksiyon', mainCat: 'ders', group: 'ders', title: 'Direksiyon & Sürüş Eğitimi', desc: 'Özel direksiyon, motor eğitimi', icon: 'fa-car' },
-  { key: 'ders_koc', mainCat: 'ders', group: 'ders', title: 'Özel Eğitim, Oyun Ablası & Koçluk', desc: 'Eğitim koçu, oyun ablası, disleksi', icon: 'fa-children' },
+  { key: 'ders_koc', mainCat: 'ders', group: 'ders', title: 'Özel Eğitim, Oyun Ablası', desc: 'Eğitim koçu, oyun ablası, disleksi', icon: 'fa-children' },
   { key: 'ders_spor', mainCat: 'ders', group: 'ders', title: 'Spor, Dans & Savunma Sanatları', desc: 'Yüzme, kick boks, dans dersi', icon: 'fa-person-running' },
-  { key: 'ders_mesleki', mainCat: 'ders', group: 'ders', title: 'Mesleki, Yazılım & Kişisel Gelişim', desc: 'AutoCAD, diksiyon, hızlı okuma', icon: 'fa-laptop-code' },
+  { key: 'ders_mesleki', mainCat: 'ders', group: 'ders', title: 'Mesleki & Yazılım Eğitimi', desc: 'Yazılım, tasarım, diksiyon', icon: 'fa-laptop-code' },
   { key: 'ders_dini', mainCat: 'ders', group: 'ders', title: 'Kuran-ı Kerim & Dini Eğitim', desc: 'Kuran okuma, hafızlık eğitimi', icon: 'fa-book-quran' },
+  { key: 'ders_sanat', mainCat: 'ders', group: 'ders', title: 'Güzel Sanatlar & Çizim Eğitimi', desc: 'Yetenek sınavlarına hazırlık', icon: 'fa-palette' },
+  { key: 'ders_satranc', mainCat: 'ders', group: 'ders', title: 'Satranç & Zeka Oyunları', desc: 'Turnuva hazırlık, zeka geliştirme', icon: 'fa-chess-knight' },
+  { key: 'ders_diger', mainCat: 'ders', group: 'ders', title: 'Diğer / Özel Ders Talebi', desc: 'Listede olmayan eğitim ihtiyaçları', icon: 'fa-plus' },
 
-  // 9. Fotoğraf, Video & Medya
+  // 10. Medya
   { key: 'medya_dugun', mainCat: 'medya', group: 'medya', title: 'Düğün, Özel Gün & Dış Çekim', desc: 'Dış çekim, nişan, hikaye klibi', icon: 'fa-camera-retro' },
-  { key: 'medya_kurumsal', mainCat: 'medya', group: 'medya', title: 'Kurumsal, Ürün & E-Ticaret', desc: 'Ürün çekimi, tanıtım filmi, drone', icon: 'fa-clapperboard' },
+  { key: 'medya_kurumsal', mainCat: 'medya', group: 'medya', title: 'Kurumsal, Ürün & E-Ticaret', desc: 'Ürün çekimi, tanıtım filmi', icon: 'fa-clapperboard' },
   { key: 'medya_sosyal', mainCat: 'medya', group: 'medya', title: 'Sosyal Medya & Video Kurgu', desc: 'Reels çekimi, video edit/kurgu', icon: 'fa-video' },
+  { key: 'medya_drone', mainCat: 'medya', group: 'medya', title: 'Drone ile Havadan Görüntüleme', desc: 'Arsa, emlak ve proje çekimi', icon: 'fa-helicopter' },
+  { key: 'medya_seslendirme', mainCat: 'medya', group: 'medya', title: 'Seslendirme, Dublaj & Müzik', desc: 'Reklam, santral ve jingle', icon: 'fa-microphone-lines' },
+  { key: 'medya_diger', mainCat: 'medya', group: 'medya', title: 'Diğer / Özel Medya Talebi', desc: 'Listede olmayan prodüksiyon işleri', icon: 'fa-plus' },
 
-  // 10. Evcil Hayvanlar (Pet)
+  // 11. Pet
   { key: 'pet_kuafor', mainCat: 'pet', group: 'pet', title: 'Pet Kuaför & Tıraş Hizmetleri', desc: 'Kedi/köpek tırnak, tıraş, banyo', icon: 'fa-scissors' },
   { key: 'pet_pansiyon', mainCat: 'pet', group: 'pet', title: 'Pansiyon, Otel & Konaklama', desc: 'Güvenli kedi ve köpek oteli', icon: 'fa-hotel' },
-  { key: 'pet_egitim', mainCat: 'pet', group: 'pet', title: 'Köpek Eğitimi & Tuvalet Eğitimi', desc: 'İtaat, tuvalet, sosyalleşme', icon: 'fa-dog' },
+  { key: 'pet_egitim', mainCat: 'pet', group: 'pet', title: 'Köpek Eğitimi & Tuvalet', desc: 'İtaat, tuvalet, sosyalleşme', icon: 'fa-dog' },
   { key: 'pet_bakim', mainCat: 'pet', group: 'pet', title: 'Günlük Evde Bakım & Gezdirme', desc: 'Köpek gezdirme, evde gözetim', icon: 'fa-paw' },
+  { key: 'pet_taksi', mainCat: 'pet', group: 'pet', title: 'Pet Taksi & Transfer Hizmeti', desc: 'Klinik veya şehirlerarası transfer', icon: 'fa-taxi' },
+  { key: 'pet_diger', mainCat: 'pet', group: 'pet', title: 'Diğer / Özel Evcil Hayvan Talebi', desc: 'Listede olmayan pet hizmetleri', icon: 'fa-plus' },
 
-  // 11. Sağlık, Terapi & Yaşam
+  // 12. Sağlık
   { key: 'saglik_terapi', mainCat: 'saglik', group: 'saglik', title: 'Psikolojik Danışmanlık & Terapi', desc: 'Klinik psikolog, çift terapisi', icon: 'fa-brain' },
   { key: 'saglik_diyet', mainCat: 'saglik', group: 'saglik', title: 'Diyetisyen & Beslenme', desc: 'Kilo kontrolü, sporcu beslenmesi', icon: 'fa-carrot' },
   { key: 'saglik_fizyoterapi', mainCat: 'saglik', group: 'saglik', title: 'Fizyoterapi & Manuel Terapi', desc: 'Evde fizik tedavi, fıtık bakımı', icon: 'fa-hand-holding-medical' },
+  { key: 'saglik_cocuk_bakim', mainCat: 'saglik', group: 'saglik', title: 'Çocuk Bakıcılığı', desc: 'Yatılı / Gündüzlü çocuk bakımı', icon: 'fa-baby-carriage' },
+  { key: 'saglik_hemsire', mainCat: 'saglik', group: 'saglik', title: 'Evde Hemşire & Hasta Bakım', desc: 'Serum, enjeksiyon, yatılı refakatçi', icon: 'fa-user-nurse' },
+  { key: 'saglik_dil_terapi', mainCat: 'saglik', group: 'saglik', title: 'Konuşma ve Dil Terapisi', desc: 'Gecikmiş konuşma, kekemelik', icon: 'fa-head-side-medical' },
+  { key: 'saglik_diger', mainCat: 'saglik', group: 'saglik', title: 'Diğer / Özel Sağlık Talebi', desc: 'Listede olmayan uzman arayışları', icon: 'fa-plus' },
 
-  // 12. Spor & Fitness
+  // 13. Spor
   { key: 'spor_pt', mainCat: 'spor', group: 'spor', title: 'Personal Trainer & Özel Antrenör', desc: 'Kişiye özel fitness, kondisyon', icon: 'fa-dumbbell' },
   { key: 'spor_pilates', mainCat: 'spor', group: 'spor', title: 'Pilates & Reformer Stüdyo', desc: 'Birebir aletli pilates dersleri', icon: 'fa-child-reaching' },
+  { key: 'spor_yoga', mainCat: 'spor', group: 'spor', title: 'Yoga & Meditasyon Stüdyosu', desc: 'Hatha, Vinyasa, Hamile Yogası', icon: 'fa-om' },
+  { key: 'spor_diyetisyen', mainCat: 'spor', group: 'spor', title: 'Diyetisyen Destekli Online Koçluk', desc: 'Uzaktan antrenman ve makro takibi', icon: 'fa-mobile-screen' },
+  { key: 'spor_diger', mainCat: 'spor', group: 'spor', title: 'Diğer / Özel Spor Talebi', desc: 'Listede olmayan spor branşları', icon: 'fa-plus' },
 
-  // 13. Güzellik & Kişisel Bakım
+  // 14. Güzellik
   { key: 'guzellik_kuafor', mainCat: 'guzellik', group: 'guzellik', title: 'Kuaför, Saç Kesim & Kaynak', desc: 'Saç kesim, boya, mikro kaynak', icon: 'fa-wand-magic-sparkles' },
   { key: 'guzellik_gelin', mainCat: 'guzellik', group: 'guzellik', title: 'Gelin, Nişan Saç & Makyaj', desc: 'Porselen makyaj, gelin başı', icon: 'fa-face-smile-beam' },
   { key: 'guzellik_tirnak', mainCat: 'guzellik', group: 'guzellik', title: 'Protez Tırnak, Manikür & Nail Art', desc: 'Jel tırnak, kalıcı oje', icon: 'fa-hand-sparkles' },
   { key: 'guzellik_epilasyon', mainCat: 'guzellik', group: 'guzellik', title: 'Epilasyon & Cilt Bakımı', desc: 'Lazer epilasyon, medikal cilt bakımı', icon: 'fa-spa' },
-  { key: 'guzellik_dovme', mainCat: 'guzellik', group: 'guzellik', title: 'Dövme (Tattoo) & Masaj', desc: 'Profesyonel dövme ve relax masaj', icon: 'fa-hand-holding-heart' },
+  { key: 'guzellik_dovme', mainCat: 'guzellik', group: 'guzellik', title: 'Dövme (Tattoo) Stüdyosu', desc: 'Profesyonel dövme ve silme işlemi', icon: 'fa-pen-nib' },
+  { key: 'guzellik_spa', mainCat: 'guzellik', group: 'guzellik', title: 'Spa & Masaj Terapi', desc: 'Medikal masaj, Thai masajı', icon: 'fa-hot-tub-person' },
+  { key: 'guzellik_kalici_makyaj', mainCat: 'guzellik', group: 'guzellik', title: 'Kalıcı Makyaj & İpek Kirpik', desc: 'Microblading, dudak renklendirme', icon: 'fa-eye' },
+  { key: 'guzellik_diger', mainCat: 'guzellik', group: 'guzellik', title: 'Diğer / Özel Güzellik Talebi', desc: 'Listede olmayan güzellik işlemleri', icon: 'fa-plus' },
 
-  // 14. Dijital, Yazılım & Kurumsal
+  // 15. Dijital
   { key: 'dijital_pazarlama', mainCat: 'dijital', group: 'dijital', title: 'Dijital Pazarlama, SEO & Reklam', desc: 'Sosyal medya yönetimi, Google Ads', icon: 'fa-chart-line' },
   { key: 'dijital_yazilim', mainCat: 'dijital', group: 'dijital', title: 'Web Tasarım & Yazılım', desc: 'E-ticaret sitesi, mobil uygulama', icon: 'fa-code' },
   { key: 'dijital_grafik', mainCat: 'dijital', group: 'dijital', title: 'Grafik Tasarım, 3D Modelleme', desc: 'Logo, kurumsal kimlik, 3D çizim', icon: 'fa-pen-nib' },
   { key: 'dijital_danismanlik', mainCat: 'dijital', group: 'dijital', title: 'Kurumsal Danışmanlık & Şirket', desc: 'Şirket kuruluşu, marka tescil', icon: 'fa-briefcase' },
   { key: 'dijital_tercume', mainCat: 'dijital', group: 'dijital', title: 'Tercüme & Metin Yazarlığı', desc: 'Yeminli tercüme, makale yazarlığı', icon: 'fa-language' },
-  { key: 'dijital_matbaa', mainCat: 'dijital', group: 'dijital', title: 'Matbaa, Tabela, Promosyon & Baskı', desc: 'Kartvizit, tabela, tekstil baskı', icon: 'fa-print' },
+  { key: 'dijital_matbaa', mainCat: 'dijital', group: 'dijital', title: 'Matbaa, Tabela & Promosyon', desc: 'Kartvizit, tabela, tekstil baskı', icon: 'fa-print' },
+  { key: 'dijital_video', mainCat: 'dijital', group: 'dijital', title: 'Video Animasyon & Seslendirme', desc: '2D/3D explainer animasyon', icon: 'fa-film' },
+  { key: 'dijital_diger', mainCat: 'dijital', group: 'dijital', title: 'Diğer / Özel Dijital Talep', desc: 'Listede olmayan dijital hizmetler', icon: 'fa-plus' },
 
-  // 15. Özel Danışmanlık & Butik
-  { key: 'danismanlik_terzi', mainCat: 'danismanlik', group: 'danismanlik', title: 'Özel Dikim & Terzi Tadilatı', desc: 'Kıyafet, elbise ve perde dikimi', icon: 'fa-shirt' },
-  { key: 'danismanlik_karavan', mainCat: 'danismanlik', group: 'danismanlik', title: 'Karavan İmalatı & Kiralama', desc: 'Karavan dönüşüm ve bakımı', icon: 'fa-van-shuttle' }
+  // 16. Danışmanlık
+  { key: 'danismanlik_mali', mainCat: 'danismanlik', group: 'danismanlik', title: 'Mali Müşavirlik, Vergi & Muhasebe', desc: 'Şirket kuruluşu, defter tutma', icon: 'fa-calculator' },
+  { key: 'danismanlik_vize', mainCat: 'danismanlik', group: 'danismanlik', title: 'Vize, Göçmenlik & Yurtdışı Eğitim', desc: 'Schengen, oturum izni, dil okulu', icon: 'fa-passport' },
+  { key: 'danismanlik_hukuk', mainCat: 'danismanlik', group: 'danismanlik', title: 'Hukuk & Arabuluculuk', desc: 'İş hukuku, sözleşme hazırlama', icon: 'fa-scale-balanced' },
+  { key: 'danismanlik_kariyer', mainCat: 'danismanlik', group: 'danismanlik', title: 'Kariyer, İK & CV Danışmanlığı', desc: 'Özgeçmiş hazırlama, mülakat koçluğu', icon: 'fa-id-badge' },
+  { key: 'danismanlik_emlak', mainCat: 'danismanlik', group: 'danismanlik', title: 'Emlak, Tapu & Gayrimenkul', desc: 'Tapu takibi, ekspertiz, yabancıya satış', icon: 'fa-house-circle-check' },
+  { key: 'danismanlik_sigorta', mainCat: 'danismanlik', group: 'danismanlik', title: 'Sigorta & Risk Danışmanlığı', desc: 'Kasko, sağlık, konut sigortası', icon: 'fa-shield-heart' },
+  { key: 'danismanlik_muhendislik', mainCat: 'danismanlik', group: 'danismanlik', title: 'Mühendislik Danışmanlığı & Proje', desc: 'İnşaat, makine, orman mühendisliği', icon: 'fa-compass-drafting' },
+  { key: 'danismanlik_diger', mainCat: 'danismanlik', group: 'danismanlik', title: 'Diğer / Özel Danışmanlık Talebi', desc: 'Listede olmayan danışmanlık hizmeti', icon: 'fa-plus' }
 ];
 // --- TÜRKİYE İL VE İLÇE VERİTABANI (81 İL TAM LİSTE) ---
 var rawTurkeyLocations = {

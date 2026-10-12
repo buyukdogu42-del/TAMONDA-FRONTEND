@@ -4,12 +4,7 @@
 window.API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:3000'
   : 'https://tamonda-backend.onrender.com';// Kategori Çubuğu Sağa/Sola Kaydırma Motoru
-function scrollCategories(amount) {
-  var container = document.getElementById('categoryPillContainer');
-  if (container) {
-    container.scrollBy({ left: amount, behavior: 'smooth' });
-  }
-}
+
 // YENİ: Formlarda "Diğer" seçilince gizli metin kutusunu açan fonksiyon
 window.toggleCustomInput = function(selectEl, fieldId) {
     var customInput = document.getElementById('custom_' + fieldId);
@@ -24,81 +19,78 @@ window.toggleCustomInput = function(selectEl, fieldId) {
     }
 };
 
-function handleUniversalSearch(inputId, resultsId) {
-  var val = document.getElementById(inputId).value.trim().toLocaleLowerCase('tr');
-  var box = document.getElementById(resultsId);
-  box.innerHTML = '';
-  if(val.length < 2) { box.classList.add('hidden'); return; }
 
-  var matches = serviceCatalog.filter(function(s) {
-    return s.title.toLocaleLowerCase('tr').indexOf(val) !== -1 || s.desc.toLocaleLowerCase('tr').indexOf(val) !== -1;
-  });
 
-  if(!matches.length) {
-    box.innerHTML = '<div class="px-3 py-2 text-slate-400 italic">Eşleşen hizmet bulunamadı</div>';
-    box.classList.remove('hidden');
-    return;
-  }
+// ==========================================
+// ANA SAYFA DİNAMİK ARAMA VE 4'LÜ KART MOTORU
+// ==========================================
 
-  matches.forEach(function(m) {
-    var row = document.createElement('div');
-    row.className = 'px-3 py-2 hover:bg-orange-50 cursor-pointer flex items-center gap-2 text-slate-800 transition';
-    row.innerHTML = '<i class="fa-solid ' + m.icon + ' text-orange-500"></i><div><span class="font-bold">' + m.title + '</span> <span class="text-slate-400 text-[10px]">(' + m.desc + ')</span></div>';
-    row.onclick = function() {
-      selectCategory(m.key, m.title, m.mainCat);
-      document.getElementById(inputId).value = '';
-      box.classList.add('hidden');
-    };
-    box.appendChild(row);
-  });
-  box.classList.remove('hidden');
-}
-
-function renderServiceCards(group) {
-  var grid = document.getElementById('serviceCardsGrid');
-  // EKLENEN KORUMA: Eğer sayfa usta.html ise bu div olmayacağı için işlemi sessizce durdur
-  if (!grid) return; 
-
-  grid.innerHTML = '';
-  var list = group === 'all' ? serviceCatalog : serviceCatalog.filter(function(i){ return i.group === group; });
-
-  list.forEach(function(item) {
-    var card = document.createElement('button');
-    card.type = 'button';
+// 1. Rastgele 4 popüler alt kategoriyi ekrana basar (Sayfa açıldığında veya yenile dendiğinde)
+window.renderRandomSubCats = function() {
+    var grid = document.getElementById('dynamicSubCatGrid');
+    if(!grid) return;
     
-    // YENİ EKLENEN: VIP "DİĞER" KARTI KONTROLÜ VE TASARIMI
-    if (item.key.endsWith('_diger')) {
-        // Sonraki adımlarda "Diğer" yerine daha profesyonel bir başlık görünsün
-        var customTitle = 'Özel Hizmet Talebi'; 
-        card.onclick = function() { selectCategory(item.key, customTitle, item.mainCat); };
-        
-        // Tam satır kaplayan (col-span-2) ve dikkat çekici renk tonlarına sahip özel tasarım
-        card.className = 'col-span-2 p-3.5 rounded-xl border-2 border-orange-300 hover:border-orange-500 text-left bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 transition shadow-sm group flex items-center gap-3';
-        card.innerHTML = '<div class="w-10 h-10 min-w-[40px] rounded-full bg-white shadow-sm group-hover:bg-orange-500 group-hover:text-white text-orange-500 flex items-center justify-center text-lg transition"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div class="flex-1"><div class="font-black text-[13px] text-orange-900">🔍 Aradığınız Hizmeti Bulamadınız mı?</div><div class="text-[10px] text-orange-800/80 font-medium leading-tight mt-0.5">Hiç dert etmeyin! İhtiyacınız olan işi kısaca anlatın, en uygun uzmanlarımız size özel teklif versin.</div></div>';
-    } else {
-        // Standart Hizmet Kartları
-        card.onclick = function() { selectCategory(item.key, item.title, item.mainCat); };
-        card.className = 'p-3 rounded-xl border border-slate-200 hover:border-orange-500 text-left bg-slate-50 hover:bg-orange-50/40 transition flex flex-col gap-1.5 shadow-sm group';
-        card.innerHTML = '<div class="w-7 h-7 rounded-lg bg-orange-100 group-hover:bg-orange-500 group-hover:text-white text-orange-600 flex items-center justify-center text-xs transition"><i class="fa-solid ' + item.icon + '"></i></div><div><div class="font-bold text-xs text-slate-900">' + item.title + '</div><div class="text-[10px] text-slate-500 line-clamp-1">' + item.desc + '</div></div>';
+    var title = document.getElementById('searchGridTitle');
+    if(title) title.innerText = 'Popüler Hizmetler';
+
+    // "_diger" (Özel Talep) seçeneklerini rastgele listeden hariç tutalım
+    var validCats = serviceCatalog.filter(function(s) { return !s.key.endsWith('_diger'); });
+    
+    // Diziyi karıştır (Shuffle)
+    for (let i = validCats.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [validCats[i], validCats[j]] = [validCats[j], validCats[i]];
     }
     
-    grid.appendChild(card);
-  });
-}function filterCustomerCatalog(group) {
-  document.querySelectorAll('.cust-pill').forEach(function(b){
-    var isTarget = (group==='all' && b.innerText.indexOf('Tümü') !== -1) || b.getAttribute('onclick').indexOf(group) !== -1;
-    b.className = isTarget ? 'cust-pill px-3 py-1.5 rounded-lg whitespace-nowrap font-bold bg-slate-900 text-white' : 'cust-pill px-3 py-1.5 rounded-lg whitespace-nowrap font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
-  });
+    // İlk 4 tanesini ekrana çizdir
+    renderSearchCards(validCats.slice(0, 4));
+};
 
-  document.querySelectorAll('.featured-cat-btn').forEach(function(btn){
-    var isTarget = btn.getAttribute('data-cat') === group;
-    btn.className = isTarget
-      ? 'featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border-2 border-orange-500 bg-orange-50/60 shadow-sm transition group'
-      : 'featured-cat-btn flex flex-col items-center justify-center p-1.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-orange-50 hover:border-orange-500 transition group shadow-sm';
-  });
+// 2. Arama çubuğuna yazıldıkça çalışan canlı filtre
+window.handleDynamicSearch = function(val) {
+    var cleanVal = val.trim().toLocaleLowerCase('tr');
+    
+    // Eğer 2 harften az yazıldıysa eski rastgele 4'lü duruma geri dön
+    if(cleanVal.length < 2) {
+        renderRandomSubCats();
+        return;
+    }
 
-  renderServiceCards(group);
-}
+    // Başlık veya açıklamada eşleşenleri bul
+    var matches = serviceCatalog.filter(function(s) {
+        return !s.key.endsWith('_diger') && 
+               (s.title.toLocaleLowerCase('tr').indexOf(cleanVal) !== -1 || 
+                s.desc.toLocaleLowerCase('tr').indexOf(cleanVal) !== -1);
+    });
+
+    var title = document.getElementById('searchGridTitle');
+    if(title) title.innerText = matches.length > 0 ? 'Arama Sonuçları' : 'Sonuç Bulunamadı';
+
+    // Sadece ilk 4 eşleşmeyi göster ki tasarım (4 kutuluk alan) bozulmasın
+    renderSearchCards(matches.slice(0, 4));
+};
+
+// 3. Kartları HTML içine basan fonksiyon (Tıklandığında doğrudan form popup'ı açılır)
+window.renderSearchCards = function(list) {
+    var grid = document.getElementById('dynamicSubCatGrid');
+    if(!grid) return;
+    grid.innerHTML = '';
+
+    if (list.length === 0) {
+        grid.innerHTML = '<div class="col-span-2 sm:col-span-4 p-4 text-center text-xs font-medium text-slate-500 bg-slate-50 rounded-xl border border-slate-100 border-dashed">Bu aramaya uygun bir alt hizmet bulamadık.<br>Yukarıdaki ana kategorilerden <strong>Özel Talep</strong> oluşturabilirsiniz.</div>';
+        return;
+    }
+
+    list.forEach(function(item) {
+        var card = document.createElement('button');
+        card.type = 'button';
+        // YENİ UYUM: Tıklandığında ana sayfayı geçip doğrudan POPUP formuna ışınlar!
+        card.onclick = function() { startFlowFromModal(item.key, item.title, item.mainCat); };
+        card.className = 'p-3 rounded-xl border border-slate-200 hover:border-orange-500 text-left bg-white hover:bg-orange-50/40 transition flex flex-col gap-2 shadow-sm group';
+        card.innerHTML = '<div class="w-9 h-9 rounded-lg bg-orange-100 group-hover:bg-orange-500 group-hover:text-white text-orange-600 flex items-center justify-center text-sm transition"><i class="fa-solid ' + item.icon + '"></i></div><div><div class="font-bold text-xs text-slate-900 line-clamp-1">' + item.title + '</div><div class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">' + item.desc + '</div></div>';
+        grid.appendChild(card);
+    });
+};
 function goToStep(s){
   for(var i=1;i<=4;i++) {
     var stepEl = document.getElementById('step'+i);
@@ -138,18 +130,18 @@ function selectCategory(k, t, mainCat){
   document.getElementById('selectedCategoryBadge').innerText = t;
 
   var isTransport = (k.indexOf('nakliyat') !== -1) || (mainCat === 'agir_nakliye');
+  var isUluslararasi = (mainCat === 'uluslararasi');
 
   var step2TitleEl = document.getElementById('step2Title');
-  if(step2TitleEl) step2TitleEl.innerText = isTransport ? 'Yük ve Taşıma Detayları' : 'Hizmet ve İş Detayları';
+  if(step2TitleEl) step2TitleEl.innerText = (isTransport || isUluslararasi) ? 'Yük ve Taşıma Detayları' : 'Hizmet ve İş Detayları';
 
   var step3TitleEl = document.getElementById('step3Title');
   var inpCityLabelEl = document.getElementById('inpCityLabel');
   var inpDescLabelEl = document.getElementById('inpDescLabel');
 
-  if(step3TitleEl) step3TitleEl.innerText = isTransport ? 'Çıkış Lokasyonu ve İletişim' : 'Hizmet Lokasyonu ve İletişim';
-  if(inpCityLabelEl) inpCityLabelEl.innerText = isTransport ? 'Yükleme / Çıkış İli' : 'Hizmetin Verileceği İl';
-  if(inpDescLabelEl) inpDescLabelEl.innerText = isTransport ? 'Yük Açıklaması / İrsaliye vb.' : 'İş Detayı / Ustanın Bilmesi Gerekenler';
-
+  if(step3TitleEl) step3TitleEl.innerText = (isTransport || isUluslararasi) ? 'Çıkış Lokasyonu ve İletişim' : 'Hizmet Lokasyonu ve İletişim';
+  if(inpCityLabelEl) inpCityLabelEl.innerText = (isTransport || isUluslararasi) ? 'Yükleme / Çıkış İli' : 'Hizmetin Verileceği İl';
+  if(inpDescLabelEl) inpDescLabelEl.innerText = (isTransport || isUluslararasi) ? 'Yük Açıklaması / İrsaliye vb.' : 'İş Detayı / Ustanın Bilmesi Gerekenler';
   var f = document.getElementById('dynamicFormFields');
   f.innerHTML = '';
 
@@ -1243,7 +1235,7 @@ function handleCityInput(inputId, dropdownId, districtSelectId, hiddenInputId) {
 
 window.onload = function() {
   // Sayfa yüklendiğinde fonksiyonlar kendi içindeki if (!element) korumalarıyla çalışacak
-  filterCustomerCatalog('nakliyat');
+  renderRandomSubCats(); // YENİ: Sayfa açılışında 4 rastgele kutuyu doldur
   if (document.getElementById('proFilterCity')) initProCityDropdown();
   if(typeof checkProAuthState === 'function') checkProAuthState();
   
@@ -2051,4 +2043,31 @@ window.exportEarningsCSV = function() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+};
+// YENİ: Ana sayfadaki vitrinden tıklandığında popup içindeki alt kategori ekranını doğrudan açar
+window.openSubCategoryModal = function(catKey) {
+    // 1. Popup ana kapsayıcısını aç
+    var modal = document.getElementById('welcomeModal');
+    var content = document.getElementById('welcomeModalContent');
+    if (modal && content) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // 2. Popup içindeki diğer tüm adımları gizle
+    var el1 = document.getElementById('welcomeStep1');
+    var el2 = document.getElementById('welcomeStep2');
+    var el3 = document.getElementById('welcomeStep3');
+    var elForm = document.getElementById('welcomeStepForm');
+    
+    if (el1) el1.classList.add('hidden');
+    if (el2) el2.classList.add('hidden');
+    if (el3) el3.classList.add('hidden');
+    if (elForm) elForm.classList.add('hidden');
+
+    // 3. filterFromModal fonksiyonunu tetikleyerek alt kategorileri çizdir ve o ekranı (welcomeStepSub) aç
+    filterFromModal(catKey);
 };

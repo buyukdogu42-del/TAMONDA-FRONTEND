@@ -413,7 +413,7 @@ window.openAdminEditProModal = function(phone) {
   if (!pro) return;
 
   var catOptions = [
-    {k:'nakliyat', t:'Nakliyat'}, {k:'agir_nakliye', t:'Ağır Nakliye'}, {k:'temizlik', t:'Temizlik'},
+    {k:'nakliyat', t:'Nakliyat'}, {k:'agir_nakliye', t:'Ağır Nakliye'}, {k:'uluslararasi', t:'Uluslararası Taşımacılık'}, {k:'temizlik', t:'Temizlik'},
     {k:'oto', t:'Oto Servis'}, {k:'organizasyon', t:'Organizasyon'}, {k:'tamir', t:'Tamir & Servis'},
     {k:'tadilat', t:'Tadilat'}, {k:'ders', t:'Özel Ders'}, {k:'medya', t:'Foto & Video'},
     {k:'pet', t:'Evcil Hayvan'}, {k:'saglik', t:'Sağlık'}, {k:'spor', t:'Spor & Fitness'},
@@ -587,9 +587,9 @@ window.renderAdminDashboard = function() {
   // Kategori Listesi (Ortak Kullanım İçin)
   var catOptionsHTML = '<option value="">Tüm Sektörler</option>';
   var catOptions = [
-    {k:'nakliyat', t:'Nakliyat'}, {k:'agir_nakliye', t:'Ağır Nakliye'}, {k:'temizlik', t:'Temizlik'}, 
+    {k:'nakliyat', t:'Nakliyat'}, {k:'agir_nakliye', t:'Ağır Nakliye'}, {k:'uluslararasi', t:'Uluslararası Taşımacılık'}, {k:'temizlik', t:'Temizlik'},
     {k:'oto', t:'Oto Servis'}, {k:'organizasyon', t:'Organizasyon'}, {k:'tamir', t:'Tamir & Servis'},
-    {k:'tadilat', t:'Tadilat'}, {k:'ders', t:'Özel Ders'}, {k:'medya', t:'Foto & Video'}, 
+    {k:'tadilat', t:'Tadilat'}, {k:'ders', t:'Özel Ders'}, {k:'medya', t:'Foto & Video'},
     {k:'pet', t:'Evcil Hayvan'}, {k:'saglik', t:'Sağlık'}, {k:'spor', t:'Spor & Fitness'},
     {k:'guzellik', t:'Güzellik'}, {k:'dijital', t:'Dijital & Yazılım'}, {k:'danismanlik', t:'Danışmanlık'}
   ];
@@ -770,6 +770,7 @@ function renderAdminDemandTable() {
   var mainCatNames = {
     'nakliyat': 'Nakliyat',
     'agir_nakliye': 'Ağır Nakliye',
+    'uluslararasi': 'Ulus. Taşımacılık', // YENİ EKLENDİ
     'temizlik': 'Temizlik',
     'oto': 'Oto Servis',
     'organizasyon': 'Organizasyon',
@@ -1213,21 +1214,22 @@ function getRandomWelcomeMessage(categoryKey, ustaFullName) {
   // Sol taraf: Veritabanındaki kısa kategori anahtarları (categoryKey)
   // Sağ taraf: welcomeMessages.js içindeki const dizi adları (Birebir aynı ve window takısı olmadan)
   const messagePools = {
-    'nakliyat': nakliyatMesajlari,               
-    'agir_nakliye': agirNakliyeMesajlari,        
-    'temizlik': temizlikMesajlari,               
-    'oto': otoServisMesajlari,             
-    'organizasyon': organizasyonMesajlari,       
-    'tamir': tamirServisMesajlari,         
-    'tadilat': tadilatDekorasyonMesajlari, 
-    'ders': ozelDersMesajlari,             
-    'medya': medyaMesajlari,                     
-    'pet': petHizmetleriMesajlari,         
-    'saglik': saglikTerapiMesajlari,       
-    'spor': sporFitnessMesajlari,          
-    'guzellik': guzelikBakimMesajlari,     
-    'dijital': dijitalYazilimMesajlari,    
-    'danismanlik': danismanlikDigerMesajlari 
+    'nakliyat': typeof nakliyatMesajlari !== 'undefined' ? nakliyatMesajlari : [],               
+    'agir_nakliye': typeof agirNakliyeMesajlari !== 'undefined' ? agirNakliyeMesajlari : [],   
+    'uluslararasi': typeof uluslararasiMesajlari !== 'undefined' ? uluslararasiMesajlari : [], // YENİ EKLENDİ    
+    'temizlik': typeof temizlikMesajlari !== 'undefined' ? temizlikMesajlari : [],               
+    'oto': typeof otoServisMesajlari !== 'undefined' ? otoServisMesajlari : [],             
+    'organizasyon': typeof organizasyonMesajlari !== 'undefined' ? organizasyonMesajlari : [],       
+    'tamir': typeof tamirServisMesajlari !== 'undefined' ? tamirServisMesajlari : [],         
+    'tadilat': typeof tadilatDekorasyonMesajlari !== 'undefined' ? tadilatDekorasyonMesajlari : [], 
+    'ders': typeof ozelDersMesajlari !== 'undefined' ? ozelDersMesajlari : [],             
+    'medya': typeof medyaMesajlari !== 'undefined' ? medyaMesajlari : [],                     
+    'pet': typeof petHizmetleriMesajlari !== 'undefined' ? petHizmetleriMesajlari : [],         
+    'saglik': typeof saglikTerapiMesajlari !== 'undefined' ? saglikTerapiMesajlari : [],       
+    'spor': typeof sporFitnessMesajlari !== 'undefined' ? sporFitnessMesajlari : [],          
+    'guzellik': typeof guzelikBakimMesajlari !== 'undefined' ? guzelikBakimMesajlari : [],     
+    'dijital': typeof dijitalYazilimMesajlari !== 'undefined' ? dijitalYazilimMesajlari : [],    
+    'danismanlik': typeof danismanlikDigerMesajlari !== 'undefined' ? danismanlikDigerMesajlari : [] 
   };
 
   if (messagePools[categoryKey] && messagePools[categoryKey].length > 0) {
