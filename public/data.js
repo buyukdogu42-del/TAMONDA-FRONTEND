@@ -310,7 +310,7 @@ var cityTierMultipliers = {
   "Bitlis": 1.0, "Bolu": 1.0, "Burdur": 1.0, "Bursa": 1.2, "Çanakkale": 1.0, "Çankırı": 1.0,
   "Çorum": 1.0, "Denizli": 1.0, "Diyarbakır": 1.1, "Edirne": 1.0, "Elazığ": 1.0, "Erzincan": 1.0,
   "Erzurum": 1.0, "Eskişehir": 1.1, "Gaziantep": 1.1, "Giresun": 1.0, "Gümüşhane": 1.0, "Hakkari": 1.0,
-  "Hatay": 1.0, "Isparta": 1.0, "Mersin": 1.1, "İstanbul": 2.0, "İzmir": 2.0, "Kars": 1.0,
+  "Hatay": 1.0, "Isparta": 1.0, "Mersin": 1.1, "İstanbul": 1.5, "İzmir": 2.0, "Kars": 1.0,
   "Kastamonu": 1.0, "Kayseri": 1.1, "Kırklareli": 1.0, "Kırşehir": 1.0, "Kocaeli": 1.2, "Konya": 1.1,
   "Kütahya": 1.0, "Malatya": 1.0, "Manisa": 1.0, "Kahramanmaraş": 1.0, "Mardin": 1.0, "Muğla": 1.2,
   "Muş": 1.0, "Nevşehir": 1.0, "Niğde": 1.0, "Ordu": 1.0, "Rize": 1.0, "Sakarya": 1.1,
